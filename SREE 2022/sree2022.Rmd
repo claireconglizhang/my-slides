@@ -1,0 +1,135 @@
+---
+title: "Investigating Causal Impacts of Affective Teacher–Student Relationship on Student Cognitive and Non-Cognitive Outcomes"
+subtitle: "2022 SREE Conference 10A - Exploring the Role of Classroom Processes on Students"
+author: "Congli (Claire) Zhang and Merly Klaas"
+institute: "University of Oregon"
+date: "`r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    css: xaringan-themer.css
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+```
+
+```{r xaringan-themer, include=FALSE, warning=FALSE}
+library(xaringanthemer)
+style_mono_light(base_color = "#23395b",
+                 base_font_size = "20px",
+                 header_h1_font_size = "2.10rem",
+                 header_h2_font_size = "1.10rem")
+```
+
+# Research Significance
+
+#### Extended attachment theory
+
+ - Extended Attachment Theory (Birch & Ladd, 1997; Pianta, 1999) posits teachers as potential attachment figures to students at school (Rhodes et al., 2006)
+
+ - Researchers theorize that if a similar positive emotional bonding is established between teachers and students, students will build confidence and motivations, become more engaged in learning activities, and actively develop academic skills (Birch & Ladd, 1997; Roorda et al., 2011; Pianta et al, 2012)
+
+#### Previous research
+
+ - Significant correlations of teacher-student relationship and student social and cognitive development (e.g., Cornelius-White, 2007; Davis, 2003; Quin, 2017; Roorda et al., 2011) 
+
+---
+
+# Research Significance (cont'd)
+
+#### Threads to causal inference
+
+ - Omitted variables
+   - just one example: highly motivated students may seek for positive relationship with teachers AND perform better than peers
+ - Reverse causality
+   - the observed associations between TSRs and student outcomes is bidirectional
+
+#### We are interested in the causal impact of TSRs on student outcomes
+
+ - We estimate a large, nationally representative data from China
+ 
+ - We implement a quasi-experimental design 
+   - where we leverage random teacher-student assignment as our source of exogeneity
+
+---
+# Research Design
+
+ - We begin with identifying a set of student and teacher characteristics that are significant predictive factors of ATSR. 
+
+ - We also examine the associations between ATSR and student outcomes and maximize the estimation precision by accounting for school fixed effects, student baseline scores, and a rich set of student and teacher time-invariant characteristics. 
+
+ - Most importantly, leveraging the random assignment of teachers and students in the data, we implement an Instrumental Variables Estimation (IVE) approach to identify a source of exogenous variation in ATSR and use only this part to obtain local average treatment effects of ATSR on student outcomes. 
+
+---
+# Research Questions 
+
+1. What student and teacher characteristics are significantly correlated with affective teacher-student relationship (ATSR)?
+
+ - We only have measures on whether the student like the teacher or not
+
+2. What are the associations between positive ATSR and student academic, cognitive, behavioral, and metal health outcomes?
+
+3. Whether and to what extent having a positive ATSR impact student outcomes?
+
+---
+# Background
+
+#### Random assignment of teachers to students in China
+
+ - The 2006 Compulsory Education Law called off the sorting of students to teachers based on performance at elementary and middle school level 
+ 
+ - Schools create either random or stratified homerooms of students and the same amount of teacher groups (one advisor in each group) upon students’ entry to school, then randomly assign teacher groups to student homerooms 
+   - students in the same homeroom share a homeroom schedule and teachers rotate to the homeroom to teach
+   - to further ensure equal education opportunity, students typically stay in the assigned homerooms and teachers follow them rising to higher grades throughout all years at the same school
+
+---
+# Background (cont'd)
+
+#### The dual-role teacher-advisor
+
+ - School counselor is not a professional job position in China
+ 
+ - School counseling programs are carried by a unique group of teachers: teacher-advisors
+   - teacher-advisors are subject teachers (typically core content teachers) who advise a homeroom they teach
+   - take on multiple duties including homeroom management, advisory period, and student counseling
+   - build stronger connections with students than non-advisory teachers do (Shi & Leuwerke, 2010) 
+
+#### Our population of interest
+
+ - Public middle school students in China and their teacher-advisors    
+
+---
+# Data 
+
+We draw sample from the publicly available, two-wave data of China Education Panel Survey (CEPS). 
+
+We restricted our sample schools to 63 public schools that randomly assigned teachers to students and limited student sorting between two waves and obtain an analytic sample of 4,418 students. 
+
+The key variables include the predictor variable ATSR, five outcome variables (including academic performance, cognitive ability, school engagement, behavioral problems, and mental issues), and a rich set of student and teacher covariates. 
+
+Sample descriptive statistics and details of key measures are presented in Table 1 (next page).
+
+---
+class: center, middle
+background-image: url(./table01.png) 
+background-size: contain
+
+
+---
+# Methods
+
+
+---
+
+class: center, middle
+
+# Thanks!
+
+Slides created via the R package [**xaringan**](https://github.com/yihui/xaringan).
+
+The chakra comes from [remark.js](https://remarkjs.com), [**knitr**](https://yihui.org/knitr/), and [R Markdown](https://rmarkdown.rstudio.com).
