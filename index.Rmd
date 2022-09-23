@@ -19,8 +19,8 @@ knitr::opts_chunk$set(echo = TRUE)
 # EDUC 641 2022 Fall Labs
 
 #### [Lab 1 slides (week 1)](./EDUC64122F/lab1.html)
-#### [Lab 2 slides (week 1)](./EDUC64122F/lab2.html)
-#### [Lab 3 slides (week 1)](./EDUC64122F/lab3.html)
+#### [Lab 2 slides (week 2)](./EDUC64122F/lab2.html)
+#### [Lab 3 slides (week 3)](./EDUC64122F/lab3.html)
 
 # Conference presentations
 
