@@ -1,20 +1,19 @@
 ---
 title: "Welcome to my repository for presentation slides!"
 output: html_document
-date: '2022-09-23'
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-This is a personal repository where I store my slides decks for conference presentations, workshops, labs, and more.
+#### This is a personal repository where I store my slides decks for conference presentations, workshops, labs, and more.
 
-## Conference presentations
+# Conference presentations
 
-### 2022
+## 2022
 
-#### SREE 2022
+### SREE 2022
 
 Date: 9/24/2022
 
@@ -28,9 +27,9 @@ Paper title: Investigating Causal Impacts of Affective Teacher–Student Relatio
 
 Authors: Congli (Claire) Zhang and Merly Klaas
 
-[Slides](./SREE2022/sree2022.html)
+#### [CHECK OUT OUR SLIDES](./SREE2022/sree2022.html)
 
-#### AERA 2022
+### AERA 2022
 
 Date: 4/21/2022
 

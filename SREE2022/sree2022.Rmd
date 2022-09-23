@@ -45,7 +45,7 @@ style_mono_light(base_color = "#23395b",
 #### Threats to causal inference
 
  - Omitted variables
-   - just one example: highly motivated students may seek for positive relationship with teachers AND perform better than peers
+   - just one from countless examples: highly motivated students may seek for positive relationship with teachers AND perform better than peers
  - Reverse causality
    - the observed associations between TSRs and student outcomes is bidirectional
 
@@ -59,10 +59,10 @@ style_mono_light(base_color = "#23395b",
 ---
 # Research Questions 
 
-1. What student and teacher characteristics are significantly correlated with affective teacher-student relationship (ATSR)?
- - Our data has measures of whether or not a student likes her teacher 
+1. What teacher characteristics are significantly correlated with affective teacher-student relationship (ATSR)?
+ - Our data has measures of whether or not a student likes her teacher therefore allows us to focus on only the affective aspect of TSR
 
-2. What are the associations between ATSR and student academic and non-academic outcomes?
+2. What are the correlations between ATSR and student academic and non-academic outcomes?
  - We investigate five student outcomes including academic performance, academic confidence, school engagement, interruptive behavior, and mental health issue
 
 3. Whether and to what extent ATSR impacts student outcomes?
@@ -70,9 +70,9 @@ style_mono_light(base_color = "#23395b",
 ---
 # Research Design
 
- - We begin with identifying a set of student and teacher characteristics that are significant predictive factors of ATSR. 
+ - We begin with identifying a set of teacher characteristics that are significant predictive factors of ATSR. 
 
- - We also examine the associations between ATSR and student outcomes and maximize the estimation precision by accounting for school fixed effects, student baseline scores, and a rich set of student and teacher time-invariant characteristics. 
+ - We also examine the associations between ATSR and student outcomes and maximize the estimation precision by accounting for school fixed-effects, student baseline scores, and a rich set of student, teacher, homeroom characteristics. 
 
  - Most importantly, leveraging the random assignment of teachers and students in the data, we implement an Instrumental Variables Estimation (IVE) approach to identify a source of exogenous variation in ATSR and use only this part to obtain local average treatment effects of ATSR on student outcomes. 
 
@@ -110,24 +110,127 @@ We draw sample from the publicly available, 2013/14 and 2014/15 data of China Ed
 
 We restricted our sample schools to 63 public schools that randomly assigned teachers to students and limited student sorting between two waves and obtain an analytic sample of 4,493 students. 
 
-Our key variables include the predictor variable ATSR, five outcome variables, and a rich set of student and teacher covariates. 
+Our key variables include the predictor variable ATSR, five outcome variables, and a rich set of student, teacher, and homeroom-level covariates.
+
 Sample descriptive statistics and details of key measures are presented in Table 1 (next page).
 
 ---
-class: center, middle
-background-image: url(./table01.png) 
-background-size: contain
+<img src="table01.png" style="width: 90%" />
 
 ---
 # Methods
 
+RQ1: What teacher characteristics are significantly correlated with ATSR?
+
+ - we estimate a linear model by Ordinary Least Squares (OLS) 
+   - where we regress the predictor variable (ATSR) separately on each of the teacher characteristics 
+   - control for school fixed-effects and cluster standard errors at school level
+ 
+RQ2: What are the correlations between ATSR and student academic and non-academic outcomes?
+
+ - we estimate a linear model by Ordinary Least Squares (OLS) 
+   - where we regress each of the five outcome variables separately on ATSR 
+   - control for cubic polynomial functions of baseline Chinese, English, math, and CEPS cognitive test scores, as well as student, teacher, and homeroom characteristics
+   - control for school fixed-effects and cluster standard errors at school level
 
 ---
+# Methods (cont'd)
 
+RQ3: Whether and to what extent ATSR impacts student outcomes?
+
+ - We implement a two-stage least squares (2SLS) approach to identify the exogenous variation in ATSR that caused by an instrumental variable (IV) and use only this part to estimate the local average effect of ATSR on student outcomes
+  - our IV meets two critical IVE assumptions 
+     - Relevance (Table 2, next page)
+     - Exogeneity (Table 3, next page after)
+ 
+ - We also control for cubic polynomial functions of baseline Chinese, English, math, and CEPS cognitive test scores, as well as student, teacher, and homeroom characteristics
+  - and control for school fixed-effects and cluster standard errors at school level
+  
+ - We conduct a set of robustness check by adding female student fixed-effects to account for the effect of gender match (potential pathway from IV to outcome)
+ 
+---
+**IV relevance**: IV has impact on predictor variable (only the regression coefficient of female teacher dummy is significant)
+
+<img src="table02.png" style="width: 80%" />
+
+---
+**IV exogeneity**: variation in IV is uncorrelated with omitted variables (evidence from both policy and balance check below)
+
+<img src="table0301.png" style="width: 60%" />
+<img src="table0302.png" style="width: 60%" />
+
+---
+# Results
+
+**RQ1: What teacher characteristics are significantly correlated with ATSR?**
+
+<img src="table02.png" style="width: 80%" />
+
+---
+# Results (cont'd)
+
+**RQ2: What are the correlations between ATSR and student academic and non-academic outcomes?**
+
+<img src="table0401.png" style="width: 80%" />
+
+---
+<img src="table0402.png" style="width: 90%" />
+
+---
+# Results (cont'd)
+
+**RQ3: Whether and to what extent ATSR impacts student outcomes?**
+
+<img src="table0501.png" style="width: 80%" />
+
+---
+<img src="table0502.png" style="width: 90%" />
+
+
+---
+# Results (cont'd)
+
+Robustness check: additionally, we control for female student fixed-effects:
+
+<img src="table0601.png" style="width: 80%" />
+
+---
+<img src="table0602.png" style="width: 90%" />
+
+---
+# Discussions and Conclusions
+
+#### Our findings
+
+ - We confirm the positive relationships between ATSR and student outcomes but these relationships are contaminated by omitted variable bias and reverse causality
+ - Once carefully addressed the threats to internal validity, ATSR does not have causal impact on any of the five outcomes we estimated
+ - Our findings support the scenario educators observe: students learn (or not learn) regardless they like their teachers or not
+   - We don't agree with the book title: "Kids don't learn from people they don't like"
+   
+---
+# Discussions and Conclusions (cont'd)
+
+#### Our limitations
+ - In research design
+  - The random assignment of teachers to students are based on educational policy and observed covariates balance in the data rather than researcher-implemented randomization
+  - Our estimates are local average treatment effects, meaning that different instrumental variable may yield different estimates, future research using different data/IV may have different results
+ - In data
+  - Our data is self-report in nature
+  - Limited explanation to whether and to what degree measurement errors apply/missing (although below 2%) reason
+  - The measures for ATSR are not ideal (two items from parent and student surveys)
+ - In generalizability of our findings
+  - Our findings are most relevant to Chinese middle schools in which random assignment is strictly implemented
+  - Our teacher population is dual-role teacher-advisors, not traditional classroom teachers
+
+---
+References
+<img src="ref.png" style="width: 90%" />
+---
 class: center, middle
 
-# Thanks!
+# Thank you for your time! 
 
-Slides created via the R package [**xaringan**](https://github.com/yihui/xaringan).
+Please forward any questions to congliclairezhang@gmail.com
 
-The chakra comes from [remark.js](https://remarkjs.com), [**knitr**](https://yihui.org/knitr/), and [R Markdown](https://rmarkdown.rstudio.com).
+Slides created via the R package [**xaringan**](https://github.com/yihui/xaringan)
+
