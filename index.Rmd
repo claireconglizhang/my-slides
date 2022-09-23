@@ -1,0 +1,45 @@
+---
+title: "Welcome to my repository for presentation slides!"
+output: html_document
+date: '2022-09-23'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+This is a personal repository where I store my slides decks for conference presentations, workshops, labs, and more.
+
+## Conference presentations
+
+### 2022
+
+#### SREE 2022
+
+Date: 9/24/2022
+
+Conference: SREE 2022
+
+Location: Arlington, VA, USA
+
+Session: 10A - Exploring the Role of Classroom Processes on Students
+
+Paper title: Investigating Causal Impacts of Affective Teacher–Student Relationship on Student Cognitive and Non-Cognitive Outcomes
+
+Authors: Congli (Claire) Zhang and Merly Klaas
+
+[Slides](./SREE2022/sree2022.html)
+
+#### AERA 2022
+
+Date: 4/21/2022
+
+Conference: SREE 2022
+
+Location: San Diego, CA, USA
+
+Session:  Division A - Administration / Section 2: School Organization and Effects / Explaining Student Outcomes: The Role of School Structures and Context
+
+Paper title: Does Advisor-Advisee Relationship with Content Teacher Impact Student Learning? Causal Evidence from Chinese Middle Schools
+
+Author: Congli (Claire) Zhang 

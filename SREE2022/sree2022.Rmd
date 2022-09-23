@@ -118,7 +118,6 @@ class: center, middle
 background-image: url(./table01.png) 
 background-size: contain
 
-
 ---
 # Methods
 
