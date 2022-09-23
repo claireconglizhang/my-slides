@@ -1,13 +1,26 @@
 ---
 title: "Welcome to my repository for presentation slides!"
-output: html_document
+output:
+  html_document:
+    toc: TRUE
+    toc_depth: 3
+    toc_float: TRUE
+    theme: spacelab
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+
 ```
 
+
 #### This is a personal repository where I store my slides decks for conference presentations, workshops, labs, and more.
+
+# EDUC 641 2022 Fall Labs
+
+#### [Lab 1 slides (week 1)](./EDUC64122F/lab1.html)
+#### [Lab 2 slides (week 1)](./EDUC64122F/lab2.html)
+#### [Lab 3 slides (week 1)](./EDUC64122F/lab3.html)
 
 # Conference presentations
 
@@ -42,3 +55,7 @@ Session:  Division A - Administration / Section 2: School Organization and Effec
 Paper title: Does Advisor-Advisee Relationship with Content Teacher Impact Student Learning? Causal Evidence from Chinese Middle Schools
 
 Author: Congli (Claire) Zhang 
+
+# About me
+
+[Check out my website!](https://congliclairezhang.netlify.app)

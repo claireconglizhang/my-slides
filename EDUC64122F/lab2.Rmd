@@ -1,0 +1,77 @@
+---
+title: "EDUC 641 Lab 2"
+subtitle: "(Make friends with RStudio)"
+author: "Congli (Claire) Zhang"
+institute: "University of Oregon"
+date: "`r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    css: xaringan-themer.css
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+```
+
+```{r xaringan-themer, include=FALSE, warning=FALSE}
+library(xaringanthemer)
+style_duo_accent()
+```
+
+# Housekeeping
+
+### We are here
+
+ - to support you with hands-on R programming tasks from lecture, textbook, and assignments
+ - to give you a brief review of the code required for the current week
+   
+### We are NOT here 
+
+ - to introduce new content or give you more tasks
+ - to require your attendance or give you attendance points
+ 
+---
+# Housekeeping (cont'd)
+
+### Two best practice of you 
+
+ - come here with questions 
+   - again, we don't have new content, your questions are best content for you
+ 
+ - make friends with R. R is intimidating in the beginning, but over time, you'll see what a good friend it is in your journey of professional growth. Just like making friends:
+   - make time for it every day
+   - don't let critical misunderstandings stand in between you two
+   - be patient
+   - don't try to internalize everything about it
+   - ...
+
+---
+# Today's checklist
+
+1. (Pre-class), finish [EDUC R Workshop](https://community.uoregon.edu/courses/18778) modules 1 and 2 
+
+2. Download and install R 
+
+3. Download and install RStudio IDE
+
+4. Open your RStudio IDE and familiarize yourself with its interface 
+
+- find the four panes 
+    - code editor
+    - R console
+    - workspace and history
+    - files and plots viewer
+    
+- ask for help information 
+    - go to your 4th pane "help" tab, click home button, see for yourself
+    - ask specific information 
+      - e.g., ask for help information on "mean"
+
+
+
+

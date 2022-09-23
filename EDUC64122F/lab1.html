@@ -1,92 +1,89 @@
 <!DOCTYPE html>
 <html lang="" xml:lang="">
   <head>
-    <title>EDUC 610L (641) Lab 1</title>
+    <title>EDUC 641 Lab 1</title>
     <meta charset="utf-8" />
-    <meta name="author" content="Claire Zhang" />
-    <script src="EDUC641_4_continuous_2_files/header-attrs-2.16/header-attrs.js"></script>
-    <link href="EDUC641_4_continuous_2_files/remark-css-0.0.1/default.css" rel="stylesheet" />
-    <link href="EDUC641_4_continuous_2_files/remark-css-0.0.1/uo.css" rel="stylesheet" />
-    <link href="EDUC641_4_continuous_2_files/remark-css-0.0.1/ki-fonts.css" rel="stylesheet" />
-    <link rel="stylesheet" href="my_custom.css" type="text/css" />
-    <link rel="stylesheet" href="xaringanthemer.css" type="text/css" />
+    <meta name="author" content="Congli (Claire) Zhang" />
+    <meta name="date" content="2022-09-23" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
   </head>
   <body>
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
 .title[
-# EDUC 610L (641) Lab 1
+# EDUC 641 Lab 1
 ]
 .subtitle[
-## Week 1
+## (Make friends with RStudio)
 ]
 .author[
-### Claire Zhang
+### Congli (Claire) Zhang
+]
+.institute[
+### University of Oregon
+]
+.date[
+### 2022-09-23
 ]
 
 ---
 
 
 
-                                                  
----
-# Goals of the unit
-
-- Describe relationships between quantitative data that are continuous
-- Visualize and substantively describe the relationship between two continuous variables 
-- Describe and interpret a fitted bivariate regression line
-- Describe and interpret components of a fitted bivariate linear regression model
-- Visualize and substantively interpret residuals resulting from a bivariate regression model
-- Conduct a statistical inference test of the slope and intercept of a bivariate regression model
-- Write R scripts to conduct these analyses
-- Articulate modern critiques of null-hypothesis significance testing framework
-- Describe strategies to improve replicability and generalizability of quantitative research
 
 
----
-# Reminder of motivating question
 
-#### We learned a lot about the distribution of life expectancy in countries, now we are turning to thinking about relationships between life expectancy and other variables. In particular:
+# Housekeeping
 
-#### .blue[Do individuals living in countries with more total years of attendance in school experience, on average, higher life expectancy?]
+### We are here
 
-#### In other words, we are asking whether the variables *SCHOOLING* and *LIFE_EXPECTANCY* are related.
+ - to support you with hands-on R programming tasks from lecture, textbook, and assignments
+ - to give you a brief review of the code required for the current week
+   
+### We are NOT here 
 
----
-# Materials
-
-### 1. Death penalty data (in file called life_expectancy.csv)
-### 2. Codebook describing the contents of said data
-### 3. R script to conduct the data analytic tasks of the unit
-
----
-class: middle, inverse
-# Bivariate relationships between continuous variables&lt;sup&gt;1&lt;/sup&gt;
-
-.footnote[[1] We can also look at relationships between continuous and categorical variables with increasingly sophisticated methods, including two-sample t-tests, regression, ANOVA and more. We will examine these topics in EDUC 643.]
-
-
-# Key takeaways
-
-- **Understand your data first**
- + Summarize and visualize each variable independently
- + Start with a visual representation of the relationship between your two variables
- + How you display the relationship will influence your perception of the relationship, but will not change the relationship
- + Try to describe what a particular observation in your visualized data represents
-- **The regression model represents your hypothesis about the population**
- + When you fit a regression model, you are estimating *sample* values of *population* parameters that you will not directly observe
- + The goal of classical regression inference (just as with categorical relationships) is to understand how likely the observed data in your sample are in the presence of no relationship in the unobserved population
-- **The regression model has a "smooth" and a "rough" component to it**
- + The "smooth" part is the portion of the relationship that your model explains
- + The "rough" part is the extent to which each observation (and the observations in aggregate) vary from the "smooth" part of your predictions
- + The "rough" parts (the residuals) provide important information on the extent to which our models satisfy their assumptions
+ - to introduce new content or give you more tasks
+ - to require your attendance or give you attendance points
  
-.blue[**More on all of this in EDUC 643**]
+---
+# Housekeeping (cont'd)
+
+### Two best practice of you 
+
+ - come here with questions 
+   - again, we don't have new content, your questions are best content for you
+ 
+ - make friends with R. R is intimidating in the beginning, but over time, you'll see what a good friend it is in your journey of professional growth. Just like making friends:
+   - make time for it every day
+   - don't let critical misunderstandings stand in between you two
+   - be patient
+   - don't try to internalize everything about it
+   - ...
 
 ---
-class: middle, inverse
-# Synthesis and wrap-up
+# Today's checklist
+
+1. (Pre-class), finish [EDUC R Workshop](https://community.uoregon.edu/courses/18778) modules 1 and 2 
+
+2. Download and install R 
+
+3. Download and install RStudio IDE
+
+4. Open your RStudio IDE and familiarize yourself with its interface 
+
+- find the four panes 
+    - code editor
+    - R console
+    - workspace and history
+    - files and plots viewer
+    
+- ask for help information 
+    - go to your 4th pane "help" tab, click home button, see for yourself
+    - ask specific information 
+      - e.g., ask for help information on "mean"
+
 
 
 
