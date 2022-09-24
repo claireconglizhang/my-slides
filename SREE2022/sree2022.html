@@ -55,7 +55,7 @@ class: center, middle, inverse, title-slide
  - Omitted variables
    - just one from countless examples: highly motivated students may seek for positive relationship with teachers AND perform better than peers
  - Reverse causality
-   - the observed associations between TSRs and student outcomes is bidirectional
+   - the observed associations between TSRs and student outcomes are bidirectional
 
 #### We are interested in the causal impact of TSRs on student outcomes
 
@@ -80,9 +80,11 @@ class: center, middle, inverse, title-slide
  - We begin with identifying a set of teacher characteristics that are significant predictive factors of ATSR. 
 
  - Then examine the associations between ATSR and student outcomes
-   - we maximize the estimation precision by accounting for school fixed-effects, student baseline scores, and a rich set of student, teacher, homeroom characteristics. 
+   - we maximize the estimation precision by accounting for a rich set of covariates from baseline, including student baseline scores and a rich set of student, teacher, homeroom characteristics
 
- - Most importantly, leveraging the random assignment of teachers and students in the data, we implement an Instrumental Variables Estimation (IVE) approach to identify a source of exogenous variation in ATSR and use only this part to obtain local average treatment effects of ATSR on student outcomes. 
+ - Most importantly, leveraging the random assignment of teachers and students in the data, we implement an Instrumental Variables Estimation (IVE) approach to identify a source of exogenous variation in ATSR and use only this part to obtain local average treatment effects of ATSR on student outcomes
+ 
+ - Note that in all the models we fit, we control for school fixed-effects and cluster standard errors at school level - an important approach to eliminate systematic differences between schools
 
 ---
 # Background and school settings
@@ -176,7 +178,7 @@ We conclude that teacher female is a valid instrumental variable.
 ---
 # Methods (cont'd)
 
-To answer RQ3, we use teacher female as IV to estimate the local average treatment effects of ATSR on student outcomes in a two-stage least squares approach, where we
+To answer RQ3, we use teacher female as IV to obtain the local average treatment effects of ATSR on student outcomes in a two-stage least squares approach, where we
 
  - control for cubic polynomial functions of baseline Chinese, English, math, and CEPS cognitive test scores, as well as student, teacher, and homeroom characteristics
  - and control for school fixed-effects and cluster standard errors at school level
@@ -234,14 +236,10 @@ Robustness check: additionally, we control for female student fixed-effects:
    - and do not support the book title: "Kids don't learn from people they don't like"
    
 ---
-# Discussions and Conclusions (cont'd)
-
 #### Our limitations
-
 In research design
  - The random assignment of teachers to students are based on educational policy and observed covariates balance in the data rather than researcher-implemented randomized controlled trial
- - Our estimates are "localized" around the IV/teacher female
-   - future research using different instrumental variable may have different estimates
+ - Our estimates are "localized" around the IV/teacher female and future research using different instrumental variable may have different estimates
 
 In data
  - Limited information on the degree of measurement errors or data missingness (although all below 3%, most below 2%) reasons
@@ -249,7 +247,7 @@ In data
 
 In generalizability of our findings
  - Our findings are most relevant to Chinese middle schools in which random assignment is strictly implemented
- - Our teacher population is dual-role teacher-advisors, not traditional classroom teachers
+ - Our teacher population is dual-role teacher-advisors rather than traditional classroom teachers
 
 ---
 References
