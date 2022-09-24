@@ -45,10 +45,9 @@ class: center, middle, inverse, title-slide
 
 #### Previous research
 
- - Significant associationss between teacher-student relationship and student social and cognitive development (e.g., Cornelius-White, 2007; Davis, 2003; Quin, 2017; Roorda et al., 2011) 
+ - Significant associations between teacher-student relationship and student social and cognitive development (e.g., Cornelius-White, 2007; Davis, 2003; Quin, 2017; Roorda et al., 2011) 
 
 ---
-
 # Research Significance (cont'd)
 
 #### Threats to causal inference
@@ -61,7 +60,6 @@ class: center, middle, inverse, title-slide
 #### We are interested in the causal impact of TSRs on student outcomes
 
  - We estimate a large, nationally representative data from China
- 
  - We implement a quasi-experimental design 
    - where we leverage random teacher-student assignment as our source of exogeneity
 
@@ -69,7 +67,7 @@ class: center, middle, inverse, title-slide
 # Research Questions 
 
 1. What teacher characteristics are significantly correlated with affective teacher-student relationship (ATSR)?
- - Our data has measures of whether or not a student likes her teacher therefore allows us to focus on only the affective aspect of TSR
+ - Our data has measures of whether or not a student likes her teacher therefore allows us to focus on the affective aspect of TSR
 
 2. What are the correlations between ATSR and student academic and non-academic outcomes?
  - We investigate five student outcomes including academic performance, academic confidence, school engagement, interruptive behavior, and mental health issue
@@ -81,32 +79,33 @@ class: center, middle, inverse, title-slide
 
  - We begin with identifying a set of teacher characteristics that are significant predictive factors of ATSR. 
 
- - We also examine the associations between ATSR and student outcomes and maximize the estimation precision by accounting for school fixed-effects, student baseline scores, and a rich set of student, teacher, homeroom characteristics. 
+ - Then examine the associations between ATSR and student outcomes
+   - we maximize the estimation precision by accounting for school fixed-effects, student baseline scores, and a rich set of student, teacher, homeroom characteristics. 
 
  - Most importantly, leveraging the random assignment of teachers and students in the data, we implement an Instrumental Variables Estimation (IVE) approach to identify a source of exogenous variation in ATSR and use only this part to obtain local average treatment effects of ATSR on student outcomes. 
 
 ---
 # Background and school settings
 
-#### Random assignment of teachers to students in China
+#### Key to our identification strategy: random assignment of teachers to students in China
 
- - The 2006 Compulsory Education Law called off the sorting of students to teachers based on performance at elementary and middle school level 
+ - The 2006 Compulsory Education Law banned the sorting of students to teachers based on performance at elementary and middle school level 
  
- - Schools are required to create either random or stratified homerooms of students and the same amount of teacher groups (one advisor in each group) upon students’ entry to school, then randomly assign teacher groups to student homerooms 
+ - In practice, schools create either random or stratified homerooms of students and teacher groups upon students’ entry to school, then randomly assign a teacher group to each student homeroom
    - students in the same homeroom share a homeroom schedule and teachers rotate to the homeroom to teach
    - to further ensure equal education opportunity, students typically stay in the assigned homerooms and teachers follow them rising to higher grades throughout all years at the same school
 
 ---
 # Background (cont'd)
 
-#### The dual-role teacher-advisor
+#### Our teacher population of interest: the dual-role teacher-advisors
 
  - School counselor is not a professional job position in China
  
  - School counseling programs are carried by a unique group of teachers: teacher-advisors
-   - teacher-advisors are subject teachers (typically core content teachers) who advise a homeroom they teach
+   - who are subject teachers (typically core content) who advise one homeroom they teach
    - they take on multiple duties including homeroom management, advisory period, and student counseling
-   - they build stronger connections with students than non-advisory teachers do (Shi &amp; Leuwerke, 2010) 
+   - they build stronger connections with students than non-advisor teachers do (Shi &amp; Leuwerke, 2010) 
 
 #### Our population of interest
 
@@ -115,13 +114,17 @@ class: center, middle, inverse, title-slide
 ---
 # Data 
 
-We draw sample from the publicly available, 2013/14 and 2014/15 data of China Education Panel Survey (CEPS). 
+We draw a large, nationally representative sample from the publicly available, 2013/14 (baseline) and 2014/15 (follow-up) data of China Education Panel Survey (CEPS). 
 
-We restricted our sample schools to 63 public schools that randomly assigned teachers to students and limited student sorting between two waves and obtain an analytic sample of 4,493 students. 
+ - CEPS randomly surveyed 112 schools from the nation but we restricted our sample schools to 63 public schools that BOTH
+   - reported that they randomly assigned teachers to students in the beginning of school year 2013/14
+   - eliminated student within-school sorting between two waves
+   
+Our analytic sample contains 4,493 students and our unit of analysis is student.
 
 Our key variables include the predictor variable ATSR, five outcome variables, and a rich set of student, teacher, and homeroom-level covariates.
 
-Sample descriptive statistics and details of key measures are presented in Table 1 (next page).
+ - Sample descriptive statistics are presented in Table 1 (next page).
 
 ---
 &lt;img src="table01.png" style="width: 90%" /&gt;
@@ -135,7 +138,7 @@ RQ1: What teacher characteristics are significantly correlated with ATSR?
    - where we regress the predictor variable (ATSR) separately on each of the teacher characteristics 
    - control for school fixed-effects and cluster standard errors at school level
  
-RQ2: What are the correlations between ATSR and student academic and non-academic outcomes?
+RQ2: What are the correlations between ATSR and student academic/non-academic outcomes?
 
  - we estimate a linear model by Ordinary Least Squares (OLS) 
    - where we regress each of the five outcome variables separately on ATSR 
@@ -147,38 +150,50 @@ RQ2: What are the correlations between ATSR and student academic and non-academi
 
 RQ3: Whether and to what extent ATSR impacts student outcomes?
 
- - We implement a two-stage least squares (2SLS) approach to identify the exogenous variation in ATSR that caused by an instrumental variable (IV) and use only this part to estimate the local average effect of ATSR on student outcomes
-  - our IV meets two critical IVE assumptions 
-     - Relevance (Table 2, next page)
-     - Exogeneity (Table 3, next page after)
- 
- - We also control for cubic polynomial functions of baseline Chinese, English, math, and CEPS cognitive test scores, as well as student, teacher, and homeroom characteristics
-  - and control for school fixed-effects and cluster standard errors at school level
-  
- - We conduct a set of robustness check by adding female student fixed-effects to account for the effect of gender match (potential pathway from IV to outcome)
- 
+We first identify a valid IV that meets two critical assumptions of IV estimation:
+
+ - Exogeneity (variation in IV is uncorrelated with the residuals in outcome)
+   - here we argue that any teacher characteristics meet this assumption because 
+      - they are pre-determined before treatment and randomly assigned to students
+      - we also conducted covariates balance check to add evidence to random assignment (following slides)
+      
+ - Relevance (IV has impact on predictor variable)
+   - during RQ1, we found that among all teacher characteristics, only female teacher dummy variable is significantly correlated with ATSR (following slides)
+   
+We conclude that teacher female is a valid instrumental variable.
+   
 ---
-**IV relevance**: IV has impact on predictor variable (only the regression coefficient of female teacher dummy is significant)
+**Evidence of IV relevance** 
 
 &lt;img src="table02.png" style="width: 80%" /&gt;
 
 ---
-**IV exogeneity**: variation in IV is uncorrelated with omitted variables (evidence from both policy and balance check below)
+**Evidence of IV exogeneity**
 
 &lt;img src="table0301.png" style="width: 60%" /&gt;
 &lt;img src="table0302.png" style="width: 60%" /&gt;
 
 ---
-# Results
+# Methods (cont'd)
 
-**RQ1: What teacher characteristics are significantly correlated with ATSR?**
+To answer RQ3, we use teacher female as IV to estimate the local average treatment effects of ATSR on student outcomes in a two-stage least squares approach, where we
+
+ - control for cubic polynomial functions of baseline Chinese, English, math, and CEPS cognitive test scores, as well as student, teacher, and homeroom characteristics
+ - and control for school fixed-effects and cluster standard errors at school level
+  
+Additionally, we conduct a set of robustness check by adding female student fixed-effects to account for the effect of gender match (potential pathway from IV to outcome)
+
+---
+# RQ1 Results
+
+**What teacher characteristics are significantly correlated with ATSR?**
 
 &lt;img src="table02.png" style="width: 80%" /&gt;
 
 ---
-# Results (cont'd)
+# RQ2 Results
 
-**RQ2: What are the correlations between ATSR and student academic and non-academic outcomes?**
+**What are the correlations between ATSR and student academic and non-academic outcomes?**
 
 &lt;img src="table0401.png" style="width: 80%" /&gt;
 
@@ -186,9 +201,9 @@ RQ3: Whether and to what extent ATSR impacts student outcomes?
 &lt;img src="table0402.png" style="width: 90%" /&gt;
 
 ---
-# Results (cont'd)
+# RQ3 Results 
 
-**RQ3: Whether and to what extent ATSR impacts student outcomes?**
+**Whether and to what extent ATSR impacts student outcomes?**
 
 &lt;img src="table0501.png" style="width: 80%" /&gt;
 
@@ -197,7 +212,7 @@ RQ3: Whether and to what extent ATSR impacts student outcomes?
 
 
 ---
-# Results (cont'd)
+# RQ3 Results (cont'd)
 
 Robustness check: additionally, we control for female student fixed-effects:
 
@@ -211,25 +226,30 @@ Robustness check: additionally, we control for female student fixed-effects:
 
 #### Our findings
 
- - We confirm the positive relationships between ATSR and student outcomes but these relationships are contaminated by omitted variable bias and reverse causality
- - Once carefully addressed the threats to internal validity, ATSR does not have causal impact on any of the five outcomes we estimated
- - Our findings support the scenario educators observe: students learn (or not learn) regardless they like their teachers or not
-   - We don't agree with the book title: "Kids don't learn from people they don't like"
+ - Consistent with existing literature, we found positive relationships between ATSR and student academic performance, confidence, and school engagement, and negative relationships between ATSR and interruptive behaviors and mental health issues
+ 
+ - However, the causal impacts of ATSR on any of the five outcomes are not significantly different from zero
+ 
+ - Our findings support the scenario many educators observe: students learn (or not learn) regardless they like their teachers or not
+   - and do not support the book title: "Kids don't learn from people they don't like"
    
 ---
 # Discussions and Conclusions (cont'd)
 
 #### Our limitations
- - In research design
-  - The random assignment of teachers to students are based on educational policy and observed covariates balance in the data rather than researcher-implemented randomization
-  - Our estimates are local average treatment effects, meaning that different instrumental variable may yield different estimates, future research using different data/IV may have different results
- - In data
-  - Our data is self-report in nature
-  - Limited explanation to whether and to what degree measurement errors apply/missing (although below 2%) reason
-  - The measures for ATSR are not ideal (two items from parent and student surveys)
- - In generalizability of our findings
-  - Our findings are most relevant to Chinese middle schools in which random assignment is strictly implemented
-  - Our teacher population is dual-role teacher-advisors, not traditional classroom teachers
+
+In research design
+ - The random assignment of teachers to students are based on educational policy and observed covariates balance in the data rather than researcher-implemented randomized controlled trial
+ - Our estimates are "localized" around the IV/teacher female
+   - future research using different instrumental variable may have different estimates
+
+In data
+ - Limited information on the degree of measurement errors or data missingness (although all below 3%, most below 2%) reasons
+ - The measure of ATSR is not ideal (average two items from parent and student surveys)
+
+In generalizability of our findings
+ - Our findings are most relevant to Chinese middle schools in which random assignment is strictly implemented
+ - Our teacher population is dual-role teacher-advisors, not traditional classroom teachers
 
 ---
 References
@@ -329,6 +349,51 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     }
   }
 })();
+(function(time) {
+  var d2 = function(number) {
+    return ('0' + number).slice(-2); // left-pad 0 to minutes/seconds
+  },
+
+  time_format = function(total) {
+    var secs = Math.abs(total) / 1000;
+    var h = Math.floor(secs / 3600);
+    var m = Math.floor(secs % 3600 / 60);
+    var s = Math.round(secs % 60);
+    var res = d2(m) + ':' + d2(s);
+    if (h > 0) res = h + ':' + res;
+    return res;  // [hh:]mm:ss
+  },
+
+  slide_number_div = function(i) {
+    return document.getElementsByClassName('remark-slide-number').item(i);
+  },
+
+  current_page_number = function(i) {
+    return slide_number_div(i).firstChild.textContent;  // text "i / N"
+  };
+
+  var timer = document.createElement('span'); timer.id = 'slide-time-left';
+  var time_left = time, k = slideshow.getCurrentSlideIndex(),
+      last_page_number = current_page_number(k);
+
+  setInterval(function() {
+    time_left = time_left - 1000;
+    timer.innerHTML = ' ' + time_format(time_left);
+    if (time_left < 0) timer.style.color = 'red';
+  }, 1000);
+
+  slide_number_div(k).appendChild(timer);
+
+  slideshow.on('showSlide', function(slide) {
+    var i = slide.getSlideIndex(), n = current_page_number(i);
+    // reset timer when a new slide is shown and the page number is changed
+    if (last_page_number !== n) {
+      time_left = time; last_page_number = n;
+      timer.innerHTML = ' ' + time_format(time); timer.style.color = null;
+    }
+    slide_number_div(i).appendChild(timer);
+  });
+})(40000);
 // adds .remark-code-has-line-highlighted class to <pre> parent elements
 // of code chunks containing highlighted lines with class .remark-code-line-highlighted
 (function(d) {
