@@ -54,23 +54,31 @@ style_duo_accent()
 # Today's checklist
 
 1. (Pre-class), finish [EDUC R Workshop](https://community.uoregon.edu/courses/18778) modules 1 and 2 
-
 2. Download and install R 
-
 3. Download and install RStudio IDE
-
+(Friendly note for folks who haven't done the above steps: a quick demo can be found in the [R Tutorial](https://daviddliebowitz.github.io/EDUC641_22F/slides/tutorial.html#5) slides on our corse website)
 4. Open your RStudio IDE and familiarize yourself with its interface 
 
-- find the four panes 
-    - code editor
-    - R console
-    - workspace and history
-    - files and plots viewer
-    
-- ask for help information 
-    - go to your 4th pane "help" tab, click home button, see for yourself
-    - ask specific information 
-      - e.g., ask for help information on "mean"
+ - find the four panes 
+     - code editor
+     - R console
+     - workspace and history
+     - files and plots viewer
+ - ask for help information 
+     - go to your 4th pane "help" tab, click home button, see for yourself
+     - ask specific information (what you've learned from R Workshop), e.g., ask for help information on basic R "mean" function
+
+---
+# Today's add-on
+
+Hands-on activity in page #7 of the [R Tutorial](https://daviddliebowitz.github.io/EDUC641_22F/slides/tutorial.html#7)
+
+  - and let us know if you have any questions
+
+
+#### Feel free to leave after all activities and questions are cleared.
+#### Thank you for attending this lab!
+
 
 
 
