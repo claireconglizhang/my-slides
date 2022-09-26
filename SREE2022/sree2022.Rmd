@@ -3,7 +3,7 @@ title: "Investigating Causal Impacts of Affective Teacher–Student Relationship
 subtitle: "2022 SREE Conference 10A - Exploring the Role of Classroom Processes on Students"
 author: "Congli (Claire) Zhang and Merly Klaas"
 institute: "University of Oregon"
-date: "`r Sys.Date()`"
+date: "9/24/2022"
 output:
   xaringan::moon_reader:
     css: xaringan-themer.css

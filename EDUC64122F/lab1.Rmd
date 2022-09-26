@@ -3,7 +3,7 @@ title: "EDUC 641 Lab 1"
 subtitle: "(Make friends with RStudio)"
 author: "Congli (Claire) Zhang"
 institute: "University of Oregon"
-date: "`r Sys.Date()`"
+date: "9/27/2022"
 output:
   xaringan::moon_reader:
     css: xaringan-themer.css
