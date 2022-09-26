@@ -146,18 +146,18 @@ RQ3: Whether and to what extent ATSR impacts student outcomes?
 
 We first identify a valid IV that meets three critical assumptions of IV estimation:
 
- 1. Exogeneity (variation in IV is uncorrelated with the residuals in outcome)
+ - Exogeneity (variation in IV is uncorrelated with the residuals in outcome)
    - here we argue that any teacher characteristics meet this assumption because 
       - they are pre-determined before treatment and randomly assigned to students
       - we also conducted covariates balance check to add evidence to random assignment (following slides)
       
- 2. Relevance (IV has impact on predictor variable)
+ - Relevance (IV has impact on predictor variable)
    - during RQ1, we found that among all teacher characteristics, only female teacher dummy variable is significantly correlated with ATSR (following slides)
    
 ---
 # Methods (cont'd)
    
- 3. Exclusion restriction (IV ONLY impacts outcomes through predictor)
+ - Exclusion restriction (IV ONLY impacts outcomes through predictor)
    - hardest to fully defend in most IV literature
    - a rich, rigorous empirical literature body shows that teacher gender does have causal impact on student outcomes but mainly through teacher-student gender match (e.g., Antecol et al., 2015, Bhattacharya et al., 2022; Gong et al., 2018; Xu & Li, 2018)
    - we will control for student gender fixed-effects (to account for difference in outcomes between male and female students) as robustness check in our analysis
