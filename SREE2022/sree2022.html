@@ -4,7 +4,7 @@
     <title>Investigating Causal Impacts of Affective Teacher–Student Relationship on Student Cognitive and Non-Cognitive Outcomes</title>
     <meta charset="utf-8" />
     <meta name="author" content="Congli (Claire) Zhang and Merly Klaas" />
-    <meta name="date" content="2022-09-24" />
+    <meta name="date" content="2022-09-26" />
     <script src="libs/header-attrs/header-attrs.js"></script>
     <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
   </head>
@@ -25,7 +25,7 @@ class: center, middle, inverse, title-slide
 ### University of Oregon
 ]
 .date[
-### 2022-09-24
+### 2022-09-26
 ]
 
 ---
@@ -152,17 +152,25 @@ RQ2: What are the correlations between ATSR and student academic/non-academic ou
 
 RQ3: Whether and to what extent ATSR impacts student outcomes?
 
-We first identify a valid IV that meets two critical assumptions of IV estimation:
+We first identify a valid IV that meets three critical assumptions of IV estimation:
 
- - Exogeneity (variation in IV is uncorrelated with the residuals in outcome)
+ 1. Exogeneity (variation in IV is uncorrelated with the residuals in outcome)
    - here we argue that any teacher characteristics meet this assumption because 
       - they are pre-determined before treatment and randomly assigned to students
       - we also conducted covariates balance check to add evidence to random assignment (following slides)
       
- - Relevance (IV has impact on predictor variable)
+ 2. Relevance (IV has impact on predictor variable)
    - during RQ1, we found that among all teacher characteristics, only female teacher dummy variable is significantly correlated with ATSR (following slides)
    
-We conclude that teacher female is a valid instrumental variable.
+---
+# Methods (cont'd)
+   
+ 3. Exclusion restriction (IV ONLY impacts outcomes through predictor)
+   - hardest to fully defend in most IV literature
+   - a rich, rigorous empirical literature body shows that teacher gender does have causal impact on student outcomes but mainly through teacher-student gender match (e.g., Antecol et al., 2015, Bhattacharya et al., 2022; Gong et al., 2018; Xu &amp; Li, 2018)
+   - we will control for student gender fixed-effects (to account for difference in outcomes between male and female students) as robustness check in our analysis
+   
+We conclude that teacher female is a valid instrumental variable for our study.
    
 ---
 **Evidence of IV relevance** 
@@ -251,7 +259,8 @@ In generalizability of our findings
 
 ---
 References
-&lt;img src="ref.png" style="width: 90%" /&gt;
+
+&lt;img src="ref.png" style="width: 70%" /&gt;
 ---
 class: center, middle
 
