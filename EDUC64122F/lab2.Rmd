@@ -1,9 +1,9 @@
 ---
 title: "EDUC 641 Lab 2"
-subtitle: "(Make friends with RStudio)"
+subtitle: "(Create R Project & Importing Data)"
 author: "Congli (Claire) Zhang"
 institute: "University of Oregon"
-date: "`r Sys.Date()`"
+date: "10/3 & 10/4/2022"
 output:
   xaringan::moon_reader:
     css: xaringan-themer.css
@@ -23,54 +23,75 @@ library(xaringanthemer)
 style_duo_accent()
 ```
 
-# Housekeeping
+## Motivations for today's lab
 
-### We are here
+1. You're "R-eady"
 
- - to support you with hands-on R programming tasks from lecture, textbook, and assignments
- - to give you a brief review of the code required for the current week
-   
-### We are NOT here 
+2. R can help you understand more about the class content
 
- - to introduce new content or give you more tasks
- - to require your attendance or give you attendance points
- 
+3. Start your workflow and prepare for assignments
+
+  - You'll be submitting two files for each assignment, one of the file is "The .Rmd or .R file that you used to render the tables and figures"
+  - Here you have tons of questions: what is .Rmd or .R file? what do you mean by "render"? how do you produce tables and figures in R?...
+      - while we'll save most of this to future weeks but today you'll learn the first two steps
+     
 ---
-# Housekeeping (cont'd)
+## What is an R project?
 
-### Two best practice of you 
+Simply put, an R project is a collection of documents, workspace, history that
 
- - come here with questions 
-   - again, we don't have new content, your questions are best content for you
- 
- - make friends with R. R is intimidating in the beginning, but over time, you'll see what a good friend it is in your journey of professional growth. Just like making friends:
-   - make time for it every day
-   - don't let critical misunderstandings stand in between you two
-   - be patient
-   - don't try to internalize everything about it
-   - ...
+  - has it's own directory on your computer
+  
+  - and can be loaded to RStudio by opening the file with the ".Proj" extension
+  
+**(Demo on my computer)**
 
 ---
-# Today's checklist
+## Why using R projects?
 
-1. (Pre-class), finish [EDUC R Workshop](https://community.uoregon.edu/courses/18778) modules 1 and 2 
+At least three reasons based on previous definition
 
-2. Download and install R 
+  - your files will be nicely organized
+  
+  - it functions as a file folder where you can access/modify locally 
+  
+  - once it's loaded to your RStudio, you have a working directory:
+    - save you a lot of trouble to tell R where to find your datasets/files
+    - your products will be saved safe and sound in the folder rather than lost in your file ocean
+    - your working history will be saved in the background and restored when you restart RStudio 
+    - ...
 
-3. Download and install RStudio IDE
+---
+## Today's workflow - create a project
 
-4. Open your RStudio IDE and familiarize yourself with its interface 
+1. Create a new R project in a new directory (do it with me; memorize its name and directory on your computer) 
+2. Add a couple of folders to your project root folder (do it with me; each in a different way)
+  - data
+  - literature
+3. Add a dataset to your "data" folder
+  - Go to my slides page (https://claireconglizhang.github.io/my-slides/) and download the "ah_smoke.csv" dataset and codebook (also I'll show you in next slide) 
+  - put the dataset in your "data" folder
+4. Quit your RStudio, go to your project root folder, and open the file with the ".Proj" extension
+  - check if your RStudio is automatically loaded
+  - check if the project name is displayed correctly on top of the window
+  
+---
+## Today's workflow - create an R script and load in data
+1. Within the project, create an R script: a file with the .R extension (do it with me), and save it to your project root folder
+2. Run the following two code lines and see what happened
+  - df <- rio::import(here::here("data", "ah_smoke.csv"))
+  - df
+3. Talk with you neighbor (push this to next week for Monday lab folks):
+  - How many rows and columns in this dataset? Rstudio give "rows" and "columns" "new" names, what are they?
+  - Ignore the all-numeric-coding of the data, refer to the codebook, find four measures on
+     - Nominal scale
+     - Ordinal scale
+     - Interval scale
+     - Ratio scale
 
-- find the four panes 
-    - code editor
-    - R console
-    - workspace and history
-    - files and plots viewer
-    
-- ask for help information 
-    - go to your 4th pane "help" tab, click home button, see for yourself
-    - ask specific information 
-      - e.g., ask for help information on "mean"
+**Thank you for coming! Feel free to leave if finished.**
+
+
 
 
 
