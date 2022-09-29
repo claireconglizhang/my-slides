@@ -44,7 +44,7 @@ class: center, middle, inverse, title-slide
 
   - You'll be submitting two files for each assignment, one of the file is "The .Rmd or .R file that you used to render the tables and figures"
   - Here you have tons of questions: what is .Rmd or .R file? what do you mean by "render"? how do you produce tables and figures in R?...
-      - while we'll save most of this to future weeks but today you'll learn the first two steps
+      - while we'll save most of this to future weeks, today you'll learn the first two steps
      
 ---
 ## What is an R project?
@@ -76,9 +76,9 @@ At least three reasons based on previous definition
 ## Today's workflow - create a project
 
 1. Create a new R project in a new directory (do it with me; memorize its name and directory on your computer) 
-2. Add a couple of folders to your project root folder (do it with me; each in a different way)
-  - data
-  - literature
+2. Add a few folders to your project root folder (do it with me; at least two ways)
+  - "code", "data", "figure", "table"
+  - you can name "data" folder as "Data" but just know that R will treat them as the same directory
 3. Add a dataset to your "data" folder
   - Go to my slides page (https://claireconglizhang.github.io/my-slides/) and download the "ah_smoke.csv" dataset and codebook (also I'll show you in the last slide) 
   - put the dataset in your "data" folder
@@ -88,12 +88,24 @@ At least three reasons based on previous definition
   
 ---
 ## Today's workflow - create an R script and load in data
-1. Within the project, create an R script: a file with the .R extension (do it with me), and save it to your project root folder
-2. Run the following two code lines and see what happened
-  - df &lt;- rio::import(here::here("data", "ah_smoke.csv"))
-  - df
-3. Talk with you neighbor (push this to next week for Monday lab folks):
-  - How many rows and columns in this dataset? Rstudio give "rows" and "columns" "new" names, what are they?
+
+1. Within the project, create an R script: a file with the .R extension (do it with me)
+  - save it to your project root folder
+
+2. (At least) Two ways to read dataset into your R script:
+  - Navigate to RStudio top bar, "File" -&gt; "Import Dataset" -&gt; From Text (base) -&gt; ah_smoke.csv
+     - note here for csv dataset, you only need base R
+     - but know that different types of dataset require different packages
+  - Alternatively, run the following two code lines and see what happened
+     - smoke &lt;- read.csv(file = './data/ah_smoke.csv')
+     - smoke
+---
+## Today's add-on
+
+Talk with you neighbor (push this to next week for Monday lab folks):
+  - How many rows and columns in this dataset? 
+     - Rstudio give rows and columns "new" names, what are they?
+  
   - Ignore the all-numeric-coding of the data, refer to the codebook, find four measures on
      - Nominal scale
      - Ordinal scale
@@ -103,6 +115,7 @@ At least three reasons based on previous definition
 **Thank you for coming! Feel free to leave if finished.**
 
 ---
+ah_smoke codebook:
 &lt;img src="smoke.png" style="width: 100%" /&gt;
 
 
