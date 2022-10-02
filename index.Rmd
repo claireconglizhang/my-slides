@@ -1,5 +1,5 @@
 ---
-title: "Welcome to my repository for presentation slides!"
+title: "Welcome to my slides repository!"
 output:
   html_document:
     toc: TRUE
@@ -15,6 +15,11 @@ knitr::opts_chunk$set(echo = TRUE)
 
 
 #### This is a personal repository where I store my slides decks for conference presentations, workshops, labs, and more.
+
+# About me
+
+[Check out my website: http://congliclairezhang.com](http://congliclairezhang.com)
+
 
 # EDUC 641 2022 Fall Labs
 
@@ -61,6 +66,4 @@ Paper title: Does Advisor-Advisee Relationship with Content Teacher Impact Stude
 
 Author: Congli (Claire) Zhang 
 
-# About me
 
-[Check out my website!](https://clairezhang.owlstown.net)
