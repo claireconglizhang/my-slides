@@ -107,6 +107,11 @@ Talk with you neighbor:
 ah_smoke codebook:
 <img src="smoke.png" style="width: 100%" />
 
+---
+Recall the four measurement scales:
 
+<img src="measurementscales.png" style="width: 70%" />
+
+Source: https://www.questionpro.com/blog/nominal-ordinal-interval-ratio/
 
 
