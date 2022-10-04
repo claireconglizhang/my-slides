@@ -95,7 +95,7 @@ Talk with you neighbor:
   - How many rows and columns in this dataset? 
      - Rstudio give rows and columns "new" names, what are they?
   
-  - Ignore the all-numeric-coding of the data, refer to the codebook, find four measures on
+  - Go through the variables and find one variable on each of the below scales:
      - Nominal scale
      - Ordinal scale
      - Interval scale
@@ -108,7 +108,7 @@ ah_smoke codebook:
 <img src="smoke.png" style="width: 100%" />
 
 ---
-Recall the four measurement scales:
+Recall the four measurement scales (if you evaluate a single variable, swap **"variables"** with **"values"** in the pic down below):
 
 <img src="measurementscales.png" style="width: 70%" />
 
