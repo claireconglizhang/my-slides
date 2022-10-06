@@ -1,0 +1,104 @@
+---
+title: "EDUC 641 Lab 3"
+subtitle: "(Describing categorical data and exporting results)"
+author: "Congli (Claire) Zhang"
+institute: "University of Oregon"
+date: "10/10 or 10/11/2022"
+output:
+  xaringan::moon_reader:
+    css: xaringan-themer.css
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+```
+
+```{r xaringan-themer, include=FALSE, warning=FALSE}
+library(xaringanthemer)
+library(countdown)
+style_duo_accent()
+```
+
+### Today's objectives
+
+1. Check your learning in R:
+
+  - describing a categorical variable (present in a table)
+  - visualizing a categorical variable (present in a plot)
+  - interpret and summarize information from table and plot 
+  
+2. Learn how to save tables and plots out of RStudio
+
+  - besides the "copy-paste" or "screenshot" strategy (okay to use for assignment 1 but let's get fancy today)
+
+---
+### First thing first
+
+One of the best ways to learn in this class: did you successfully replicate Dr. Liebowitz's code from class OR at least run it on your own computer?
+
+  - Where they are? For class #3, courseweb -> schedule -> unit1 -> lectures -> R code (download it NOW if haven't)
+  
+  - What you do? Open the script, run the code line-by-line, and see the results for yourself (we'll do this together in a sec)
+  
+  - What if? Highly likely you will:
+     - find it hard to understand all the code - don't dwell on it. You'll revisit it again and again and good news, you'll know more about it each time.
+     - run into some issues - best learning opportunity. Solving issues is the way you get better with R.
+     
+---
+### Make the lecture code your own (practicing workflow from lab 2)
+
+1. Create a new R project, call it **"class03"**
+2. Create four folders, **"data", "code", "table", "plot"**
+3. Go to courseweb, download the dataset **"deathpenalty.csv"** (where? courseweb -> schedule -> unit1 -> lectures -> data)
+4. Put the dataset in your **data folder**
+5. Within your R project, create a new R script (the file with .R extension), call it **"class3_code"**, and save it to your **code folder**
+6. DIFFERENT FROM LAB 2, today we'll load a package in the beginning of your R script:
+    - library(tidyverse)
+7. Write code to load the dataset to your R script, call the dataframe **"df"** (to be consistent with lecture code - IMPORTANT)
+8. You are now ready to copy (line #30 forward) from lecture code to your own script
+
+`r countdown(minutes = 6, seconds = 0, left = 0, right = 0, padding = "5px", margin = "2%", font_size = "3em")`
+---
+### Major learning points from lecture code
+
+1. Present a categorical variable in a table: run **code line #56 and #61** in your own R script
+2. Visualize a categorical variable in a barplot in two ways:
+    - Using base R (build-in functions, don't need any package): run **code line #57 and #62** in your own R script 
+    - Using {ggplot2} package: run **code line #69 - #79** in your own R script 
+3. Go around your table, answer questions below:
+    - Describe the structure of the data (how many variables are there, what is the current type of each variable and what the type should be, how many rows/observations, etc.)
+    - How many defendants were sentenced to death? In which table did you find this information? In which plot did you find this information?
+    - What was the proportion of black victims? In which table did you find this information? In which plot did you find this information?
+    
+`r countdown(minutes = 6, seconds = 0, left = 0, right = 0, padding = "5px", margin = "2%", font_size = "3em")`
+---
+### Save your tables out of RStudio
+(because most of the time, you need to share your tables and plots without the help of RStudio)
+
+1. Find in the environment (or your previous code) the assigned names of the deathpenalty count table (hint: **counts**) and race proportion table (**prop**)
+2. Write the below code to export the tables to .csv files and store them into your **table folder**
+    - write.csv(counts, file = "./table/counts.csv", row.names = FALSE)
+    - write.csv(prop, file = "./table/prop.csv", row.names = FALSE)
+3. Go to your **table folder** and see if they are there
+
+`r countdown(minutes = 6, seconds = 0, left = 0, right = 0, padding = "5px", margin = "2%", font_size = "3em")`
+
+---
+### Save your plots out of RStudio
+
+1. Find in the environment (or your previous code) the assigned name of the plot (e.g., **rd**) 
+2. Save all types of plot in the most intuitive way (**demo on my computer**) - which works nice for Base R plots
+3. Save the plot created by {ggplot2}: write the below code to export the ggplot to .jpeg file and store it into your **plot folder**
+    - ggsave(plot = rd, "./plot/race.jpeg")
+4. Go to your **plot folder** and see if it's there
+
+
+**Thank you for coming! Feel free to leave if finished.**
+
+
+

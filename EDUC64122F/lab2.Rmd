@@ -3,7 +3,7 @@ title: "EDUC 641 Lab 2"
 subtitle: "(Create R Project & Importing Data)"
 author: "Congli (Claire) Zhang"
 institute: "University of Oregon"
-date: "10/3 & 10/4/2022"
+date: "10/3 or 10/4/2022"
 output:
   xaringan::moon_reader:
     css: xaringan-themer.css
