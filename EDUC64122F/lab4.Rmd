@@ -66,18 +66,16 @@ One of the best ways to learn in this class: did you successfully replicate Dr. 
 ---
 ### Major learning points from lecture code
 
-1. Recode your categorical variables: run **code line 37-42** in your own R script
-
-2. Present a categorical variable in a table: run **code line 56 and 61** in your own R script
-
-3. Visualize a categorical variable in a barplot in two ways:
-    - Using base R (build-in functions, don't need any package): run **code lines 57 and 62** in your own R script 
-    - Using {ggplot2} package (here using code slightly different than the lecture code)
-        - myplot <- ggplot(df, aes(rdefend)) + geom_bar(fill = "royalblue", width = 0.6) + xlab("Race of Defendant") + ggtitle("Visualizing rdefend") + geom_text(aes(label = ..count..), stat='count', vjust = -0.5, size = 4) + ylim(0,1550) + theme_bw()
-        - you can do more by manipulating the parameters of each function (e.g., **?geom_bar**)
-
+1. Present a categorical variable in a table: run **code line #56 and #61** in your own R script
+2. Visualize a categorical variable in a barplot in two ways:
+    - Using base R (build-in functions, don't need any package): run **code line #57 and #62** in your own R script 
+    - Using {ggplot2} package: run **code line #69 - #79** in your own R script 
+3. Go around your table, answer questions below:
+    - Describe the structure of the data (how many variables are there, what is the current type of each variable and what the type should be, how many rows/observations, etc.)
+    - How many defendants were sentenced to death? In which table did you find this information? In which plot did you find this information?
+    - What was the proportion of black victims? In which table did you find this information? In which plot did you find this information?
     
-`r countdown(minutes = 10, seconds = 0, left = 0, right = 0, padding = "5px", margin = "2%", font_size = "3em")`
+`r countdown(minutes = 6, seconds = 0, left = 0, right = 0, padding = "5px", margin = "2%", font_size = "3em")`
 ---
 ### Save your tables out of RStudio
 (because most of the time, you need to share your tables and plots without the help of RStudio)
@@ -93,16 +91,14 @@ One of the best ways to learn in this class: did you successfully replicate Dr. 
 ---
 ### Save your plots out of RStudio
 
-1. Find in the environment (or your previous code) the assigned name of the plot (e.g., **myplot**) 
-2. Save all types of plot using export button - which works nice for Base R plots
+1. Find in the environment (or your previous code) the assigned name of the plot (e.g., **rd**) 
+2. Save all types of plot in the most intuitive way (**demo on my computer**) - which works nice for Base R plots
 3. Save the plot created by {ggplot2}: write the below code to export the ggplot to .jpeg file and store it into your **plot folder**
-    - ggsave(plot = myplot, "./plot/myplot.jpeg")
+    - ggsave(plot = rd, "./plot/race.jpeg")
 4. Go to your **plot folder** and see if it's there
 
 
-**Note: feel free to scroll down to next slide to find a screenshot of today's code**
+**Thank you for coming! Feel free to leave if finished.**
 
----
-<img src="class03.png" style="width: 80%" />
 
 
