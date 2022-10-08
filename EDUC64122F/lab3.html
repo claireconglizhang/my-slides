@@ -74,7 +74,7 @@ One of the best ways to learn in this class: did you successfully replicate Dr. 
 7. Write code to load the dataset to your R script, call the dataframe **"df"** (to be consistent with lecture code - IMPORTANT)
 8. You are now ready to copy (line #30 forward) from lecture code to your own script
 
-<div class="countdown" id="timer_a789f3a5" data-update-every="1" tabindex="0" style="right:0;bottom:0;left:0;margin:2%;padding:5px;font-size:3em;">
+<div class="countdown" id="timer_1e619ab5" data-update-every="1" tabindex="0" style="right:0;bottom:0;left:0;margin:2%;padding:5px;font-size:3em;">
 <div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
 <code class="countdown-time"><span class="countdown-digits minutes">06</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
@@ -82,17 +82,15 @@ One of the best ways to learn in this class: did you successfully replicate Dr. 
 ### Major learning points from lecture code
 
 1. Recode your categorical variables: run **code line 37-42** in your own R script
-
 2. Present a categorical variable in a table: run **code line 56 and 61** in your own R script
-
+    - alternatively, use package {janitor}: **janitor::tabyl(df, deathpen)**
 3. Visualize a categorical variable in a barplot in two ways:
     - Using base R (build-in functions, don't need any package): run **code lines 57 and 62** in your own R script 
     - Using {ggplot2} package (here using code slightly different than the lecture code)
         - myplot &lt;- ggplot(df, aes(rdefend)) + geom_bar(fill = "royalblue", width = 0.6) + xlab("Race of Defendant") + ggtitle("Visualizing rdefend") + geom_text(aes(label = ..count..), stat='count', vjust = -0.5, size = 4) + ylim(0,1550) + theme_bw()
-        - you can do more by manipulating the parameters of each function (e.g., **?geom_bar**)
+        - you can do more by manipulating the parameters of each function (e.g., **?geom_bar**) - share with your neighbor what you have discovered!
 
-    
-<div class="countdown" id="timer_4ca3c103" data-update-every="1" tabindex="0" style="right:0;bottom:0;left:0;margin:2%;padding:5px;font-size:3em;">
+<div class="countdown" id="timer_6e039a5c" data-update-every="1" tabindex="0" style="right:0;bottom:0;left:0;margin:2%;padding:5px;font-size:3em;">
 <div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
 <code class="countdown-time"><span class="countdown-digits minutes">10</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
@@ -106,7 +104,7 @@ One of the best ways to learn in this class: did you successfully replicate Dr. 
     - write.csv(prop, file = "./table/prop.csv", row.names = FALSE)
 3. Go to your **table folder** and see if they are there
 
-<div class="countdown" id="timer_6c8cd0a4" data-update-every="1" tabindex="0" style="right:0;bottom:0;left:0;margin:2%;padding:5px;font-size:3em;">
+<div class="countdown" id="timer_536c6db3" data-update-every="1" tabindex="0" style="right:0;bottom:0;left:0;margin:2%;padding:5px;font-size:3em;">
 <div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
 <code class="countdown-time"><span class="countdown-digits minutes">06</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>

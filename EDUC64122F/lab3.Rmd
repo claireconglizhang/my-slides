@@ -67,16 +67,14 @@ One of the best ways to learn in this class: did you successfully replicate Dr. 
 ### Major learning points from lecture code
 
 1. Recode your categorical variables: run **code line 37-42** in your own R script
-
 2. Present a categorical variable in a table: run **code line 56 and 61** in your own R script
-
+    - alternatively, use package {janitor}: **janitor::tabyl(df, deathpen)**
 3. Visualize a categorical variable in a barplot in two ways:
     - Using base R (build-in functions, don't need any package): run **code lines 57 and 62** in your own R script 
     - Using {ggplot2} package (here using code slightly different than the lecture code)
         - myplot <- ggplot(df, aes(rdefend)) + geom_bar(fill = "royalblue", width = 0.6) + xlab("Race of Defendant") + ggtitle("Visualizing rdefend") + geom_text(aes(label = ..count..), stat='count', vjust = -0.5, size = 4) + ylim(0,1550) + theme_bw()
-        - you can do more by manipulating the parameters of each function (e.g., **?geom_bar**)
+        - you can do more by manipulating the parameters of each function (e.g., **?geom_bar**) - share with your neighbor what you have discovered!
 
-    
 `r countdown(minutes = 10, seconds = 0, left = 0, right = 0, padding = "5px", margin = "2%", font_size = "3em")`
 ---
 ### Save your tables out of RStudio
