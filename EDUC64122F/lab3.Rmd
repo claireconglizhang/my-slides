@@ -101,6 +101,6 @@ One of the best ways to learn in this class: did you successfully replicate Dr. 
 **Note: feel free to scroll down to next slide to find a screenshot of today's code**
 
 ---
-<img src="class03.png" style="width: 90%" />
+<img src="class3.png" style="width: 75%" />
 
 
