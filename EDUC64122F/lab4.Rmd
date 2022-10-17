@@ -1,7 +1,7 @@
 ---
 title: "EDUC 641 Lab 4"
 subtitle: "(Describing categorical relationship and subsetting data)"
-author: "Congli (Claire) Zhang and Havisha Khurana"
+author: "*(Find today's code in your mailbox)*"
 institute: "University of Oregon"
 date: "10/17 or 10/19/2022"
 output:
@@ -34,42 +34,41 @@ style_duo_accent()
      
   - perform Chi-squared test of categorical association in R
   
-2. Prepare for assignment 2:
+2. R skill for assignment 2:
 
-   - Subsetting data using package {dplyr} function 'filter()'
-   - Note that {dplyr} is built in {tidyverse} so you don't need to load it separately
+  - Subsetting data using package {dplyr} function 'filter()'
+  - Note that {dplyr} is built in {tidyverse} so you don't need to load it separately
 
 ---
 ### Before lab activities
 
-You should have downloaded Unit 2 lecture code and run it on your own (courseweb -> schedule -> unit2 -> lectures -> R code). If not, do it AFTER the lab.
+1. Find today's code in your mailbox and download it NOW if you haven't done so because:
 
-The last 20 minutes of the lab will be used for 
+  - **the code was developed based on a similar structure with assignment 2** (but analyzing deathpenalty.csv rather than cat.csv)
+  - **your goal today is running these code to see the results rather than "live coding"** because the group time will be limited to **30 minutes**
+
+2. The last **20 minutes** of the lab will be used for: 
 
   - Q&A about assignment 2 (you'll highly likely have zero questions if you follow through the lab activities!)
   - your own time working on assignment 2
 
-**Ready? Time to show our time-management skills!**
+3. You should have downloaded Unit 2 lecture code (courseweb -> schedule -> unit2 -> lectures -> R code). If not, do it AFTER the lab
 
 ---
 #### Lab activity 1: set up your working environment in R
-First repeat what we've been doing over the past three weeks: create R project, four folders, R script. Then write and run the code below:
+First repeat what we've been doing over the past three weeks: create R project, four folders, R script. Then run the code below in your R script:
 
-<img src="lab401.png" style="width: 85%" />
+<img src="lab401.png" style="width: 99%" />
 
-`r countdown(minutes = 5, seconds = 0, left = 0, right = 0, padding = "5px", margin = "2%", font_size = "3em")`
 ---
 #### Lab activity 2: categorical relationship in contingency table
 
 <img src="lab402.png" style="width: 99%" />
 
-`r countdown(minutes = 2, seconds = 0, left = 0, right = 0, padding = "5px", margin = "2%", font_size = "3em")`
 ---
 #### Lab activity 3: categorical relationship in grouped bar chart
 
-<img src="lab403.png" style="width: 80%" />
-
-`r countdown(minutes = 5, seconds = 0, left = 0, right = 0, padding = "5px", margin = "2%", font_size = "3em")`
+<img src="lab403.png" style="width: 85%" />
 
 ---
 #### Lab activity 4: Pearson's Chi-squared Test using Base R function 'chisq.test()'
@@ -78,8 +77,6 @@ Share with your table what you've learned from the results
 
 <img src="lab404.png" style="width: 70%" />
 
-`r countdown(minutes = 2, seconds = 0, left = 0, right = 0, padding = "5px", margin = "2%", font_size = "3em")`
-
 ---
 #### Lab activity 5: subsetting data using package {dplyr} function 'filter()'
 
@@ -87,18 +84,10 @@ Create two sub-samples to separate black defendants from white defendants. Compa
  
 <img src="lab405.png" style="width: 70%" />
 
-`r countdown(minutes = 2, seconds = 0, left = 0, right = 0, padding = "5px", margin = "2%", font_size = "3em")`
-
 ---
 #### Lab activity 6: re-investigate the 'rvictim' and 'deathpen' relationship when defendant is black
 
 <img src="lab406.png" style="width: 99%" />
 
-`r countdown(minutes = 2, seconds = 0, left = 0, right = 0, padding = "5px", margin = "2%", font_size = "3em")`
 
----
-### Logistics
-
-Claire has email today's code to the class.
-
-Feel free to leave or stay for your assignment/questions.
+**Feel free to leave or stay for your assignment/questions!**
