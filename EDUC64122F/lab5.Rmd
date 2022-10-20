@@ -1,0 +1,351 @@
+---
+title: "EDUC 610 Lab 5"
+subtitle: "Describing and Visualizing Continuous Variables"
+author: "Havi Khurana<br><span style = 'font-size: 50%;'>University of Oregon<br>Fall 2022</span>"
+date: "10/24 or 10/25/2022"
+output:
+  xaringan::moon_reader:
+    css: xaringan-themer.css
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+```
+
+```{r xaringan-themer, include=FALSE}
+library(xaringanthemer)
+library(countdown)
+
+style_duo_accent(
+  primary_color = "#1F4E79",
+  secondary_color = "#0072B2",
+  header_font_google = xaringanthemer::google_font("Atkinson Hyperlegible", "600"),
+  text_font_google   = xaringanthemer::google_font("Atkinson Hyperlegible", "300", "300i"),
+  code_font_google   = xaringanthemer::google_font("IBM Plex Mono"),
+  colors = c(
+    darkblue = "#0072B2",
+    lightblue = "#56B4E9",
+    darkorange = "#D55E00",
+    lightorange = "#E69f00",
+    yellow = "#F0E442",
+    green = "#009E73",
+    pink = "#CC79A7",
+    gray = "999999",
+    white = "#FFFFFF"
+  )
+)
+
+xaringanExtra::use_clipboard()
+```
+
+### Learning objectives
+
+- R Skill
+
+  - Data cleaning with `dplyr` verbs
+      - `select()`
+      - `filter()`
+      - `mutate()`
+      - And, [many more](https://github.com/rstudio/cheatsheets/blob/main/data-transformation.pdf) 
+      
+  
+*Note that {dplyr} is built in {tidyverse} so you don't need to load it separately.
+---
+### Learning objectives - cont.
+
+- Statistical Skills
+
+  - Visualize continuous variables
+     - `geom_histogram()` and `hist()`
+     - `geom_density()`
+     - `geom_boxplot()` and `boxplot()`
+     
+  - Describe conrinuous variables
+      - `mean()`
+      - `median()`
+      - `range()`
+      - `quantile()`
+      - `IQR()`
+
+---
+### Before lab activities
+
+1. Find today's slides in the mailbox. We will use life_expectancy.csv data. You can either watch or follow along. Simply copy the code from the slides to your R script.
+
+2. The last **20 minutes** of the lab will be used for: 
+
+  - Q&A about assignment 3 
+  - Q&A about class
+  - Self-working time
+
+3. You should have downloaded Unit 3 lecture code (courseweb -> schedule -> unit3 -> lectures -> R code). If not, do it AFTER the lab
+
+---
+#### Task 1: Set up your working environment in R
+First repeat what we've been doing over the past three weeks: create R project, make four folders, add life_expectancy.csv in the data folder and start an R script. 
+
+
+Then load the packages and read the file.
+
+```{r load-package, warning=FALSE, message=FALSE}
+library(tidyverse)
+```
+
+
+```{r read file, echo = FALSE}
+life <- read.csv("E:/Dropbox (University of Oregon)/Work@UO/Terms/2022-23/Fall22/GE/Class code/life_expectancy.csv")
+```
+
+```{r, eval = FALSE}
+life <- read.csv("data/life_expectancy.csv")
+```
+
+
+---
+#### Task 2: Let's inspect the structure
+
+```{r}
+dim(life)
+colnames(life)
+```
+
+---
+```{r}
+str(life)
+```
+
+---
+### `dplyr` verbs
+#### `select()` the columns we want
+
+Of the 22 variables, we are interested in the country, life_expectancy, status, and year columns. Let's keep only these.
+
+```{r}
+life_short <- life %>% 
+  #only column names without quotes
+  select(Country, Year, Status, Life.expectancy)
+
+head(life_short)
+#Alternatively, give the index of column you want
+life_short <- life %>% 
+  select(c(1:4))
+```
+
+---
+### `dplyr` verbs
+#### `filter()` the rows using columns
+
+**Brief detour**
+
+Let's look at conditionals
+
+```{r}
+a <- 1
+b <- 3
+c <- 10
+```
+
+
+```{r, eval = FALSE}
+a > b
+a < b
+a == b
+```
+
+---
+
+```{r}
+a > b
+a < b
+a == b
+```
+
+---
+
+```{r}
+a <- 1
+b <- 3
+c <- 10
+```
+
+```{r, eval = FALSE}
+# | is the or operator
+(a > b) | (c > b)
+# read as a greater than b or c greater than b
+
+# & is the and operator
+(a > b) & (c > b)
+# read as a greater than b and c greater than b
+```
+
+---
+
+
+```{r}
+#| is the or operator
+(a > b) | (c > b)
+# read as a greater than b or c greater than b
+
+#& is the and operator
+(a > b) & (c > b)
+# read as a greater than b and c greater than b
+```
+
+---
+### `dplyr` verbs
+#### `filter()` the rows using columns - cont.
+
+```{r}
+unique(life_short$Status)
+```
+
+Say, we only want to look at developed countries.
+
+```{r}
+life_developed <- life_short %>% 
+  filter(Status == "Developed") #Note the two equal signs. 
+#And, the column name is not in quotes but the value is in quotes
+
+head(life_developed)
+```
+
+---
+### `dplyr` verbs
+#### `filter()` the rows using columns - cont.
+
+```{r}
+unique(life_short$Year)
+```
+
+Say, we only want years between 2010 to 2015. How will we filter?
+
+---
+### `dplyr` verbs
+#### `filter()` the rows using columns - cont.
+
+
+```{r}
+life_1015 <- life_short %>% 
+  filter(Year >= 2010 & Year <= 2015)
+
+head(life_1015)
+```
+
+---
+### `dplyr` verbs
+#### `mutate()` to the data frame
+
+
+Basically, add a new column to the data frame based on existing values
+Or, modify one of the existing values. 
+
+```{r}
+life_1015$Life.expectancy[1:10]
+```
+Say, we want to round Life.expectancy to neartest integer
+
+```{r}
+life_1015 <- life_1015 %>% 
+  mutate(Life.expectancy = round(Life.expectancy))
+
+life_1015$Life.expectancy[1:10]
+```
+
+---
+### Let's visualize Life.expectancy
+
+The base code remains the same if using `ggplot2()`
+
+```{r, eval = FALSE}
+ggplot(data_file, aes(x = variable_name)) +
+  geom_type()
+```
+
+---
+#### Histogram
+
+```{r,  warning=FALSE, message = FALSE, fig.height=6}
+ggplot(life_1015, aes(x = Life.expectancy)) +
+  geom_histogram()
+```
+
+---
+
+#### Boxplot
+
+```{r, warning=FALSE, message = FALSE, fig.height=6}
+ggplot(life_1015, aes(y = Life.expectancy)) +
+  geom_boxplot()
+```
+
+---
+#### Density plot
+
+```{r, warning=FALSE, message = FALSE, fig.height=6}
+ggplot(life_1015, aes(x = Life.expectancy)) +
+  geom_density()
+```
+---
+### baseR alternative
+
+#### Histogram
+```{r, warning=FALSE, message = FALSE, fig.height=6}
+hist(life_1015$Life.expectancy)
+```
+
+#### Boxplot
+---
+```{r, warning=FALSE, message = FALSE, fig.height=6}
+boxplot(life_1015$Life.expectancy)
+```
+
+---
+#### Let's make our histogram prettier
+
+```{r, warning=FALSE, message = FALSE, fig.height=6}
+ggplot(life_1015, aes(x = Life.expectancy)) +
+  geom_histogram(fill = "cornflowerblue")+
+  labs(
+    x = "Life expectancy",
+    y = "Frequency",
+    title = "Distribution of Life expectancy"
+    # can also give subtitle and caption
+  )+
+  theme_minimal()
+```
+---
+#### For curiosity
+
+Wondering how many geoms? Check [here](https://ggplot2.tidyverse.org/reference/)
+
+---
+#### Some descriptives of the Life.expectancy variable
+
+```{r}
+mean(life_1015$Life.expectancy, na.rm = TRUE)
+median(life_1015$Life.expectancy, na.rm = TRUE)
+min(life_1015$Life.expectancy, na.rm = TRUE)
+max(life_1015$Life.expectancy, na.rm = TRUE)
+```
+
+---
+```{r}
+range(life_1015$Life.expectancy,  na.rm = TRUE)
+IQR(life_1015$Life.expectancy,  na.rm = TRUE)
+quantile(life_1015$Life.expectancy,  na.rm = TRUE)
+```
+
+---
+#### (If time allows) CHALLENGE
+
+**Visualize and describe the Adult.Mortality variable**
+
+  - First, select the relevant columns and save it as `adult` object.
+  - Filter the dataset include data from 2001-2010
+  - Show the distribution of the variable
+  - Use one summary statistic to describe the variable
