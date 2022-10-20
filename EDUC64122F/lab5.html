@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>EDUC 610 Lab 5</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Havi Khurana University of Oregon Fall 2022" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <script src="libs/clipboard/clipboard.min.js"></script>
+    <link href="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"Copy Code","success":"Copied!","error":"Press Ctrl+C to Copy"})</script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# EDUC 610 Lab 5
+]
+.subtitle[
+## Describing and Visualizing Continuous Variables
+]
+.author[
+### Havi Khurana<br><span style="font-size: 50%;">University of Oregon<br>Fall 2022</span>
+]
+.date[
+### 10/24 or 10/25/2022
+]
+
+---
+
+
+
+
+
+
+### Learning objectives
+
+- R Skill
+
+  - Data cleaning with `dplyr` verbs
+      - `select()`
+      - `filter()`
+      - `mutate()`
+      - And, [many more](https://github.com/rstudio/cheatsheets/blob/main/data-transformation.pdf) 
+      
+  
+*Note that {dplyr} is built in {tidyverse} so you don't need to load it separately.
+---
+### Learning objectives - cont.
+
+- Statistical Skills
+
+  - Visualize continuous variables
+     - `geom_histogram()` and `hist()`
+     - `geom_density()`
+     - `geom_boxplot()` and `boxplot()`
+     
+  - Describe conrinuous variables
+      - `mean()`
+      - `median()`
+      - `range()`
+      - `quantile()`
+      - `IQR()`
+
+---
+### Before lab activities
+
+1. Find today's slides in the mailbox. We will use life_expectancy.csv data. You can either watch or follow along. Simply copy the code from the slides to your R script.
+
+2. The last **20 minutes** of the lab will be used for: 
+
+  - Q&amp;A about assignment 3 
+  - Q&amp;A about class
+  - Self-working time
+
+3. You should have downloaded Unit 3 lecture code (courseweb -&gt; schedule -&gt; unit3 -&gt; lectures -&gt; R code). If not, do it AFTER the lab
+
+---
+#### Task 1: Set up your working environment in R
+First repeat what we've been doing over the past three weeks: create R project, make four folders, add life_expectancy.csv in the data folder and start an R script. 
+
+
+Then load the packages and read the file.
+
+
+```r
+library(tidyverse)
+```
+
+
+
+
+
+```r
+life &lt;- read.csv("data/life_expectancy.csv")
+```
+
+
+---
+#### Task 2: Let's inspect the structure
+
+
+```r
+dim(life)
+```
+
+```
+## [1] 2938   22
+```
+
+```r
+colnames(life)
+```
+
+```
+##  [1] "Country"                         "Year"                           
+##  [3] "Status"                          "Life.expectancy"                
+##  [5] "Adult.Mortality"                 "infant.deaths"                  
+##  [7] "Alcohol"                         "percentage.expenditure"         
+##  [9] "Hepatitis.B"                     "Measles"                        
+## [11] "BMI"                             "under.five.deaths"              
+## [13] "Polio"                           "Total.expenditure"              
+## [15] "Diphtheria"                      "HIV.AIDS"                       
+## [17] "GDP"                             "Population"                     
+## [19] "thinness..1.19.years"            "thinness.5.9.years"             
+## [21] "Income.composition.of.resources" "Schooling"
+```
+
+---
+
+```r
+str(life)
+```
+
+```
+## 'data.frame':	2938 obs. of  22 variables:
+##  $ Country                        : chr  "Afghanistan" "Afghanistan" "Afghanistan" "Afghanistan" ...
+##  $ Year                           : int  2015 2014 2013 2012 2011 2010 2009 2008 2007 2006 ...
+##  $ Status                         : chr  "Developing" "Developing" "Developing" "Developing" ...
+##  $ Life.expectancy                : num  65 59.9 59.9 59.5 59.2 58.8 58.6 58.1 57.5 57.3 ...
+##  $ Adult.Mortality                : int  263 271 268 272 275 279 281 287 295 295 ...
+##  $ infant.deaths                  : int  62 64 66 69 71 74 77 80 82 84 ...
+##  $ Alcohol                        : num  0.01 0.01 0.01 0.01 0.01 0.01 0.01 0.03 0.02 0.03 ...
+##  $ percentage.expenditure         : num  71.3 73.5 73.2 78.2 7.1 ...
+##  $ Hepatitis.B                    : int  65 62 64 67 68 66 63 64 63 64 ...
+##  $ Measles                        : int  1154 492 430 2787 3013 1989 2861 1599 1141 1990 ...
+##  $ BMI                            : num  19.1 18.6 18.1 17.6 17.2 16.7 16.2 15.7 15.2 14.7 ...
+##  $ under.five.deaths              : int  83 86 89 93 97 102 106 110 113 116 ...
+##  $ Polio                          : int  6 58 62 67 68 66 63 64 63 58 ...
+##  $ Total.expenditure              : num  8.16 8.18 8.13 8.52 7.87 9.2 9.42 8.33 6.73 7.43 ...
+##  $ Diphtheria                     : int  65 62 64 67 68 66 63 64 63 58 ...
+##  $ HIV.AIDS                       : num  0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 ...
+##  $ GDP                            : num  584.3 612.7 631.7 670 63.5 ...
+##  $ Population                     : num  33736494 327582 31731688 3696958 2978599 ...
+##  $ thinness..1.19.years           : num  17.2 17.5 17.7 17.9 18.2 18.4 18.6 18.8 19 19.2 ...
+##  $ thinness.5.9.years             : num  17.3 17.5 17.7 18 18.2 18.4 18.7 18.9 19.1 19.3 ...
+##  $ Income.composition.of.resources: num  0.479 0.476 0.47 0.463 0.454 0.448 0.434 0.433 0.415 0.405 ...
+##  $ Schooling                      : num  10.1 10 9.9 9.8 9.5 9.2 8.9 8.7 8.4 8.1 ...
+```
+
+---
+### `dplyr` verbs
+#### `select()` the columns we want
+
+Of the 22 variables, we are interested in the country, life_expectancy, status, and year columns. Let's keep only these.
+
+
+```r
+life_short &lt;- life %&gt;% 
+  #only column names without quotes
+  select(Country, Year, Status, Life.expectancy)
+
+head(life_short)
+```
+
+```
+##       Country Year     Status Life.expectancy
+## 1 Afghanistan 2015 Developing            65.0
+## 2 Afghanistan 2014 Developing            59.9
+## 3 Afghanistan 2013 Developing            59.9
+## 4 Afghanistan 2012 Developing            59.5
+## 5 Afghanistan 2011 Developing            59.2
+## 6 Afghanistan 2010 Developing            58.8
+```
+
+```r
+#Alternatively, give the index of column you want
+life_short &lt;- life %&gt;% 
+  select(c(1:4))
+```
+
+---
+### `dplyr` verbs
+#### `filter()` the rows using columns
+
+**Brief detour**
+
+Let's look at conditionals
+
+
+```r
+a &lt;- 1
+b &lt;- 3
+c &lt;- 10
+```
+
+
+
+```r
+a &gt; b
+a &lt; b
+a == b
+```
+
+---
+
+
+```r
+a &gt; b
+```
+
+```
+## [1] FALSE
+```
+
+```r
+a &lt; b
+```
+
+```
+## [1] TRUE
+```
+
+```r
+a == b
+```
+
+```
+## [1] FALSE
+```
+
+---
+
+
+```r
+a &lt;- 1
+b &lt;- 3
+c &lt;- 10
+```
+
+
+```r
+# | is the or operator
+(a &gt; b) | (c &gt; b)
+# read as a greater than b or c greater than b
+
+# &amp; is the and operator
+(a &gt; b) &amp; (c &gt; b)
+# read as a greater than b and c greater than b
+```
+
+---
+
+
+
+```r
+(a &gt; b) | (c &gt; b)
+```
+
+```
+## [1] TRUE
+```
+
+```r
+# read as a greater than b or c greater than b
+
+#&amp; is the and operator
+(a &gt; b) &amp; (c &gt; b)
+```
+
+```
+## [1] FALSE
+```
+
+```r
+# read as a greater than b and c greater than b
+```
+
+---
+### `dplyr` verbs
+#### `filter()` the rows using columns - cont.
+
+
+```r
+unique(life_short$Status)
+```
+
+```
+## [1] "Developing" "Developed"
+```
+
+Say, we only want to look at developed countries.
+
+
+```r
+life_developed &lt;- life_short %&gt;% 
+  filter(Status == "Developed") #Note the two equal signs. 
+#And, the column name is not in quotes but the value is in quotes
+
+head(life_developed)
+```
+
+```
+##     Country Year    Status Life.expectancy
+## 1 Australia 2015 Developed            82.8
+## 2 Australia 2014 Developed            82.7
+## 3 Australia 2013 Developed            82.5
+## 4 Australia 2012 Developed            82.3
+## 5 Australia 2011 Developed            82.0
+## 6 Australia 2010 Developed            81.9
+```
+
+---
+### `dplyr` verbs
+#### `filter()` the rows using columns - cont.
+
+
+```r
+unique(life_short$Year)
+```
+
+```
+##  [1] 2015 2014 2013 2012 2011 2010 2009 2008 2007 2006 2005 2004 2003 2002 2001
+## [16] 2000
+```
+
+Say, we only want years between 2010 to 2015. How will we filter?
+
+---
+### `dplyr` verbs
+#### `filter()` the rows using columns - cont.
+
+
+
+```r
+life_1015 &lt;- life_short %&gt;% 
+  filter(Year &gt;= 2010 &amp; Year &lt;= 2015)
+
+head(life_1015)
+```
+
+```
+##       Country Year     Status Life.expectancy
+## 1 Afghanistan 2015 Developing            65.0
+## 2 Afghanistan 2014 Developing            59.9
+## 3 Afghanistan 2013 Developing            59.9
+## 4 Afghanistan 2012 Developing            59.5
+## 5 Afghanistan 2011 Developing            59.2
+## 6 Afghanistan 2010 Developing            58.8
+```
+
+---
+### `dplyr` verbs
+#### `mutate()` to the data frame
+
+
+Basically, add a new column to the data frame based on existing values
+Or, modify one of the existing values. 
+
+
+```r
+life_1015$Life.expectancy[1:10]
+```
+
+```
+##  [1] 65.0 59.9 59.9 59.5 59.2 58.8 77.8 77.5 77.2 76.9
+```
+Say, we want to round Life.expectancy to neartest integer
+
+
+```r
+life_1015 &lt;- life_1015 %&gt;% 
+  mutate(Life.expectancy = round(Life.expectancy))
+
+life_1015$Life.expectancy[1:10]
+```
+
+```
+##  [1] 65 60 60 60 59 59 78 78 77 77
+```
+
+---
+### Let's visualize Life.expectancy
+
+The base code remains the same if using `ggplot2()`
+
+
+```r
+ggplot(data_file, aes(x = variable_name)) +
+  geom_type()
+```
+
+---
+#### Histogram
+
+
+```r
+ggplot(life_1015, aes(x = Life.expectancy)) +
+  geom_histogram()
+```
+
+![](lab5_files/figure-html/unnamed-chunk-18-1.png)&lt;!-- --&gt;
+
+---
+
+#### Boxplot
+
+
+```r
+ggplot(life_1015, aes(y = Life.expectancy)) +
+  geom_boxplot()
+```
+
+![](lab5_files/figure-html/unnamed-chunk-19-1.png)&lt;!-- --&gt;
+
+---
+#### Density plot
+
+
+```r
+ggplot(life_1015, aes(x = Life.expectancy)) +
+  geom_density()
+```
+
+![](lab5_files/figure-html/unnamed-chunk-20-1.png)&lt;!-- --&gt;
+---
+### baseR alternative
+
+#### Histogram
+
+```r
+hist(life_1015$Life.expectancy)
+```
+
+![](lab5_files/figure-html/unnamed-chunk-21-1.png)&lt;!-- --&gt;
+
+#### Boxplot
+---
+
+```r
+boxplot(life_1015$Life.expectancy)
+```
+
+![](lab5_files/figure-html/unnamed-chunk-22-1.png)&lt;!-- --&gt;
+
+---
+#### Let's make our histogram prettier
+
+
+```r
+ggplot(life_1015, aes(x = Life.expectancy)) +
+  geom_histogram(fill = "cornflowerblue")+
+  labs(
+    x = "Life expectancy",
+    y = "Frequency",
+    title = "Distribution of Life expectancy"
+    # can also give subtitle and caption
+  )+
+  theme_minimal()
+```
+
+![](lab5_files/figure-html/unnamed-chunk-23-1.png)&lt;!-- --&gt;
+---
+#### For curiosity
+
+Wondering how many geoms? Check [here](https://ggplot2.tidyverse.org/reference/)
+
+---
+#### Some descriptives of the Life.expectancy variable
+
+
+```r
+mean(life_1015$Life.expectancy, na.rm = TRUE)
+```
+
+```
+## [1] 71.00546
+```
+
+```r
+median(life_1015$Life.expectancy, na.rm = TRUE)
+```
+
+```
+## [1] 73
+```
+
+```r
+min(life_1015$Life.expectancy, na.rm = TRUE)
+```
+
+```
+## [1] 36
+```
+
+```r
+max(life_1015$Life.expectancy, na.rm = TRUE)
+```
+
+```
+## [1] 89
+```
+
+---
+
+```r
+range(life_1015$Life.expectancy,  na.rm = TRUE)
+```
+
+```
+## [1] 36 89
+```
+
+```r
+IQR(life_1015$Life.expectancy,  na.rm = TRUE)
+```
+
+```
+## [1] 11
+```
+
+```r
+quantile(life_1015$Life.expectancy,  na.rm = TRUE)
+```
+
+```
+##   0%  25%  50%  75% 100% 
+##   36   65   73   76   89
+```
+
+---
+#### (If time allows) CHALLENGE
+
+**Visualize and describe the Adult.Mortality variable**
+
+  - First, select the relevant columns and save it as `adult` object.
+  - Filter the dataset include data from 2001-2010
+  - Show the distribution of the variable
+  - Use one summary statistic to describe the variable
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

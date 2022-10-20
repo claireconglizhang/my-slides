@@ -34,6 +34,8 @@ knitr::opts_chunk$set(echo = TRUE)
 
 #### [Lab 4 slides (week 4)](./EDUC64122F/lab4.html)
 
+#### [Lab 5 slides (week 5)](./EDUC64122F/lab5.html)
+
 # Conference presentations
 
 ## 2022
