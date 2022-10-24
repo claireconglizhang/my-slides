@@ -1,7 +1,7 @@
 ---
 title: "EDUC 610 Lab 5"
 subtitle: "Describing and Visualizing Continuous Variables"
-author: "Havi Khurana<br><span style = 'font-size: 50%;'>University of Oregon<br>Fall 2022</span>"
+author: "Havi and Claire<br><span style = 'font-size: 50%;'>University of Oregon<br>Fall 2022</span>"
 date: "10/24 or 10/25/2022"
 output:
   xaringan::moon_reader:
@@ -25,7 +25,7 @@ style_duo_accent(
   primary_color = "#1F4E79",
   secondary_color = "#0072B2",
   header_font_google = xaringanthemer::google_font("Atkinson Hyperlegible", "600"),
-  text_font_google   = xaringanthemer::google_font("Atkinson Hyperlegible", "300", "300i"),
+  text_font_google   = xaringanthemer::google_font("Atkinson Hyperlegible", "200", "200i"),
   code_font_google   = xaringanthemer::google_font("IBM Plex Mono"),
   colors = c(
     darkblue = "#0072B2",
@@ -51,10 +51,11 @@ xaringanExtra::use_clipboard()
       - `select()`
       - `filter()`
       - `mutate()`
-      - And, [many more](https://github.com/rstudio/cheatsheets/blob/main/data-transformation.pdf) 
+      - Learn more by clicking [here](https://github.com/rstudio/cheatsheets/blob/main/data-transformation.pdf) 
       
   
-*Note that {dplyr} is built in {tidyverse} so you don't need to load it separately.
+  
+*Note that {dplyr} is built in {tidyverse} so you don't need to load it separately.*
 ---
 ### Learning objectives - cont.
 
@@ -87,6 +88,7 @@ xaringanExtra::use_clipboard()
 
 ---
 #### Task 1: Set up your working environment in R
+
 First repeat what we've been doing over the past three weeks: create R project, make four folders, add life_expectancy.csv in the data folder and start an R script. 
 
 
@@ -125,15 +127,37 @@ str(life)
 
 Of the 22 variables, we are interested in the country, life_expectancy, status, and year columns. Let's keep only these.
 
-```{r}
-life_short <- life %>% 
-  #only column names without quotes
-  select(Country, Year, Status, Life.expectancy)
+General syntax - 
 
-head(life_short)
-#Alternatively, give the index of column you want
-life_short <- life %>% 
-  select(c(1:4))
+```{r, eval = FALSE}
+new_name <- select(
+  old_data, #name of dataset
+  c(column names separated by comma) #names of columns as it appears 
+)
+```
+
+---
+### `dplyr` verbs
+#### `select()` the columns we want
+
+```{r}
+life_short <- select(
+  life, 
+  c(Country, Year, Status, Life.expectancy)
+)
+
+dim(life_short)
+```
+
+You can also give index of the columns
+
+```{r}
+life_short <- select(
+  life,
+  c(1:4)
+)
+
+dim(life_short)
 ```
 
 ---
@@ -200,42 +224,75 @@ c <- 10
 ### `dplyr` verbs
 #### `filter()` the rows using columns - cont.
 
-```{r}
-unique(life_short$Status)
+General syntax -
+
+```{r, eval = FALSE}
+new_name <- filter(
+  old_name,
+  (some condition on the columns)
+)
 ```
+
+---
+### `dplyr` verbs
+#### `filter()` the rows using columns - cont.
 
 Say, we only want to look at developed countries.
 
 ```{r}
-life_developed <- life_short %>% 
-  filter(Status == "Developed") #Note the two equal signs. 
-#And, the column name is not in quotes but the value is in quotes
+unique(life_short$Status)
+```
 
-head(life_developed)
+```{r}
+life_developed <- filter(
+  life,
+  Status == "Developed"
+)
+
+dim(life_developed)
+```
+---
+
+### Combining `filter()` and `select()`
+
+Say, we want to look at the these 4 columns- country, life_expectancy, status, and year columns for developed countries only.
+
+
+#### Approach 1
+```{r}
+life_short <- select(
+  life, 
+  c(Country, Year, Status, Life.expectancy)
+)
+
+dim(life_short)
+
+life_developed <- filter(
+  life_short,
+  Status == "Developed"
+)
+
+dim(life_developed)
 ```
 
 ---
-### `dplyr` verbs
-#### `filter()` the rows using columns - cont.
+### Combining `filter()` and `select()`
 
+Say, we want to look at the these 4 columns- country, life_expectancy, status, and year columns for developed countries only.
+
+
+#### Approach 2 - Using pipe %>% 
+
+**First apply the first function. Then, apply the second function on the output of the first function** 
+ 
 ```{r}
-unique(life_short$Year)
+life_short_developed <- life %>% 
+  select(c(Country, Year, Status, Life.expectancy)) %>% 
+  filter(Status == "Developed")
+
+dim(life_short_developed)
 ```
-
-Say, we only want years between 2010 to 2015. How will we filter?
-
----
-### `dplyr` verbs
-#### `filter()` the rows using columns - cont.
-
-
-```{r}
-life_1015 <- life_short %>% 
-  filter(Year >= 2010 & Year <= 2015)
-
-head(life_1015)
-```
-
+**First select the four columns of life. Then, filter those columns where Status is developed **
 ---
 ### `dplyr` verbs
 #### `mutate()` to the data frame
@@ -244,33 +301,61 @@ head(life_1015)
 Basically, add a new column to the data frame based on existing values
 Or, modify one of the existing values. 
 
-```{r}
-life_1015$Life.expectancy[1:10]
+General syntax - 
+```{r, eval = FALSE}
+new_name <- mutate(
+  old_name,
+  new_column_name = (some operation on the exisiting columns)
+)
 ```
-Say, we want to round Life.expectancy to neartest integer
 
-```{r}
-life_1015 <- life_1015 %>% 
-  mutate(Life.expectancy = round(Life.expectancy))
+Or,
 
-life_1015$Life.expectancy[1:10]
+```{r, eval = FALSE}
+new_name <- old_name %>% 
+  mutate(
+  new_column_name = (some operation on the exisiting columns)
+)
 ```
 
 ---
+### `dplyr` verbs
+#### `mutate()` to the data frame
+
+```{r}
+life_short_developed$Life.expectancy[1:10]
+```
+
+Say, we want to round Life.expectancy to nearest integer
+
+```{r}
+life_short_developed <- life_short_developed %>% 
+  mutate(Life.expectancy = round(Life.expectancy))
+
+life_short_developed$Life.expectancy[1:10]
+```
+
+*Note: This is not a very useful example. `mutate()`. In this week's lectures and next week's lab, we will show more useful purposes of `mutate()`.*
+---
 ### Let's visualize Life.expectancy
 
-The base code remains the same if using `ggplot2()`
+General syntax if using `ggplot2()`
 
 ```{r, eval = FALSE}
 ggplot(data_file, aes(x = variable_name)) +
   geom_type()
 ```
 
+General syntax if using `base` functions
+
+```{r, eval = FALSE}
+function_name(data_name$column_name)
+```
 ---
 #### Histogram
 
 ```{r,  warning=FALSE, message = FALSE, fig.height=6}
-ggplot(life_1015, aes(x = Life.expectancy)) +
+ggplot(life_short_developed, aes(x = Life.expectancy)) +
   geom_histogram()
 ```
 
@@ -279,7 +364,7 @@ ggplot(life_1015, aes(x = Life.expectancy)) +
 #### Boxplot
 
 ```{r, warning=FALSE, message = FALSE, fig.height=6}
-ggplot(life_1015, aes(y = Life.expectancy)) +
+ggplot(life_short_developed, aes(y = Life.expectancy)) +
   geom_boxplot()
 ```
 
@@ -287,7 +372,7 @@ ggplot(life_1015, aes(y = Life.expectancy)) +
 #### Density plot
 
 ```{r, warning=FALSE, message = FALSE, fig.height=6}
-ggplot(life_1015, aes(x = Life.expectancy)) +
+ggplot(life_short_developed, aes(x = Life.expectancy)) +
   geom_density()
 ```
 ---
@@ -295,21 +380,38 @@ ggplot(life_1015, aes(x = Life.expectancy)) +
 
 #### Histogram
 ```{r, warning=FALSE, message = FALSE, fig.height=6}
-hist(life_1015$Life.expectancy)
+hist(life_short_developed$Life.expectancy)
 ```
 
 #### Boxplot
 ---
 ```{r, warning=FALSE, message = FALSE, fig.height=6}
-boxplot(life_1015$Life.expectancy)
+boxplot(life_short_developed$Life.expectancy)
 ```
 
 ---
 #### Let's make our histogram prettier
 
-```{r, warning=FALSE, message = FALSE, fig.height=6}
-ggplot(life_1015, aes(x = Life.expectancy)) +
-  geom_histogram(fill = "cornflowerblue")+
+```{r, warning=FALSE, message = FALSE, fig.height=6, eval = FALSE}
+ggplot(life_short_developed, aes(x = Life.expectancy)) +
+  geom_histogram(fill = "cornflowerblue",
+                 bins = 15)+
+  labs(
+    x = "Life expectancy",
+    y = "Frequency",
+    title = "Distribution of Life expectancy"
+    # can also give subtitle and caption
+  )+
+  theme_minimal()
+```
+---
+
+#### Let's make our histogram prettier
+
+```{r, warning=FALSE, message = FALSE, fig.height=6, echo = FALSE}
+ggplot(life_short_developed, aes(x = Life.expectancy)) +
+  geom_histogram(fill = "cornflowerblue",
+                 bins = 15)+
   labs(
     x = "Life expectancy",
     y = "Frequency",
@@ -327,17 +429,17 @@ Wondering how many geoms? Check [here](https://ggplot2.tidyverse.org/reference/)
 #### Some descriptives of the Life.expectancy variable
 
 ```{r}
-mean(life_1015$Life.expectancy, na.rm = TRUE)
-median(life_1015$Life.expectancy, na.rm = TRUE)
-min(life_1015$Life.expectancy, na.rm = TRUE)
-max(life_1015$Life.expectancy, na.rm = TRUE)
+mean(life_short_developed$Life.expectancy, na.rm = TRUE)
+median(life_short_developed$Life.expectancy, na.rm = TRUE)
+min(life_short_developed$Life.expectancy, na.rm = TRUE)
+max(life_short_developed$Life.expectancy, na.rm = TRUE)
 ```
 
 ---
 ```{r}
-range(life_1015$Life.expectancy,  na.rm = TRUE)
-IQR(life_1015$Life.expectancy,  na.rm = TRUE)
-quantile(life_1015$Life.expectancy,  na.rm = TRUE)
+range(life_short_developed$Life.expectancy,  na.rm = TRUE)
+IQR(life_short_developed$Life.expectancy,  na.rm = TRUE)
+quantile(life_short_developed$Life.expectancy,  na.rm = TRUE)
 ```
 
 ---
@@ -345,7 +447,80 @@ quantile(life_1015$Life.expectancy,  na.rm = TRUE)
 
 **Visualize and describe the Adult.Mortality variable**
 
-  - First, select the relevant columns and save it as `adult` object.
+  - Select the relevant columns and save it as `adult` object.
   - Filter the dataset include data from 2001-2010
-  - Show the distribution of the variable
+  - Show the distribution of Adult.Mortality using any one geom
   - Use one summary statistic to describe the variable
+  
+---
+#### One way to do the challenge
+
+```{r}
+adult <- life %>% 
+  select(c(Country, Year, Status, Adult.Mortality)) %>% 
+  filter(Year >= 2001 & Year <= 2010)
+
+dim(adult)
+head(adult)
+```
+
+---
+#### One way to do the challenge
+
+```{r, eval = FALSE}
+ggplot(adult, aes(y = Adult.Mortality)) +
+  geom_boxplot(
+    fill = "cornflowerblue",
+    color = "gray70",
+    width = 0.25,
+    outlier.colour = "red"
+  ) +
+  xlim(-0.4, 0.4)+
+  labs(
+    x = "",
+    y = "Adult Mortality Rate per 1,000",
+    title = "Distribution of Adult Mortality",
+    subtitle = "The boxplot displays the distribution for Developed countries between 2000-2010"
+  )+
+  theme_classic()+
+  theme(
+    axis.text.x = element_blank(),
+    axis.ticks.x = element_blank()
+  )
+  
+
+```
+---
+#### One way to do the challenge
+
+```{r, echo = FALSE}
+ggplot(adult, aes(y = Adult.Mortality)) +
+  geom_boxplot(
+    fill = "cornflowerblue",
+    color = "gray70",
+    width = 0.25,
+    outlier.colour = "red"
+  ) +
+  xlim(-0.4, 0.4)+
+  labs(
+    x = "",
+    y = "Adult Mortality Rate per 1,000",
+    title = "Distribution of Adult Mortality",
+    subtitle = "The boxplot displays the distribution for Developed countries between 2000-2010"
+  )+
+  theme_classic()+
+  theme(
+    axis.text.x = element_blank(),
+    axis.ticks.x = element_blank()
+  )
+  
+
+```
+
+---
+#### One way to do the challenge
+
+```{r}
+mean(adult$Adult.Mortality)
+```
+

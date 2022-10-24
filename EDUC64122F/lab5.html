@@ -3,7 +3,7 @@
   <head>
     <title>EDUC 610 Lab 5</title>
     <meta charset="utf-8" />
-    <meta name="author" content="Havi Khurana University of Oregon Fall 2022" />
+    <meta name="author" content="Havi and Claire University of Oregon Fall 2022" />
     <script src="libs/header-attrs/header-attrs.js"></script>
     <script src="libs/clipboard/clipboard.min.js"></script>
     <link href="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.css" rel="stylesheet" />
@@ -22,7 +22,7 @@ class: center, middle, inverse, title-slide
 ## Describing and Visualizing Continuous Variables
 ]
 .author[
-### Havi Khurana<br><span style="font-size: 50%;">University of Oregon<br>Fall 2022</span>
+### Havi and Claire<br><span style="font-size: 50%;">University of Oregon<br>Fall 2022</span>
 ]
 .date[
 ### 10/24 or 10/25/2022
@@ -43,10 +43,11 @@ class: center, middle, inverse, title-slide
       - `select()`
       - `filter()`
       - `mutate()`
-      - And, [many more](https://github.com/rstudio/cheatsheets/blob/main/data-transformation.pdf) 
+      - Learn more by clicking [here](https://github.com/rstudio/cheatsheets/blob/main/data-transformation.pdf) 
       
   
-*Note that {dplyr} is built in {tidyverse} so you don't need to load it separately.
+  
+*Note that {dplyr} is built in {tidyverse} so you don't need to load it separately.*
 ---
 ### Learning objectives - cont.
 
@@ -79,6 +80,7 @@ class: center, middle, inverse, title-slide
 
 ---
 #### Task 1: Set up your working environment in R
+
 First repeat what we've been doing over the past three weeks: create R project, make four folders, add life_expectancy.csv in the data folder and start an R script. 
 
 
@@ -166,29 +168,48 @@ str(life)
 
 Of the 22 variables, we are interested in the country, life_expectancy, status, and year columns. Let's keep only these.
 
+General syntax - 
+
 
 ```r
-life_short &lt;- life %&gt;% 
-  #only column names without quotes
-  select(Country, Year, Status, Life.expectancy)
-
-head(life_short)
+new_name &lt;- select(
+  old_data, #name of dataset
+  c(column names separated by comma) #names of columns as it appears 
+)
 ```
 
-```
-##       Country Year     Status Life.expectancy
-## 1 Afghanistan 2015 Developing            65.0
-## 2 Afghanistan 2014 Developing            59.9
-## 3 Afghanistan 2013 Developing            59.9
-## 4 Afghanistan 2012 Developing            59.5
-## 5 Afghanistan 2011 Developing            59.2
-## 6 Afghanistan 2010 Developing            58.8
-```
+---
+### `dplyr` verbs
+#### `select()` the columns we want
+
 
 ```r
-#Alternatively, give the index of column you want
-life_short &lt;- life %&gt;% 
-  select(c(1:4))
+life_short &lt;- select(
+  life, 
+  c(Country, Year, Status, Life.expectancy)
+)
+
+dim(life_short)
+```
+
+```
+## [1] 2938    4
+```
+
+You can also give index of the columns
+
+
+```r
+life_short &lt;- select(
+  life,
+  c(1:4)
+)
+
+dim(life_short)
+```
+
+```
+## [1] 2938    4
 ```
 
 ---
@@ -292,6 +313,22 @@ c &lt;- 10
 ### `dplyr` verbs
 #### `filter()` the rows using columns - cont.
 
+General syntax -
+
+
+```r
+new_name &lt;- filter(
+  old_name,
+  (some condition on the columns)
+)
+```
+
+---
+### `dplyr` verbs
+#### `filter()` the rows using columns - cont.
+
+Say, we only want to look at developed countries.
+
 
 ```r
 unique(life_short$Status)
@@ -301,66 +338,77 @@ unique(life_short$Status)
 ## [1] "Developing" "Developed"
 ```
 
-Say, we only want to look at developed countries.
-
 
 ```r
-life_developed &lt;- life_short %&gt;% 
-  filter(Status == "Developed") #Note the two equal signs. 
-#And, the column name is not in quotes but the value is in quotes
+life_developed &lt;- filter(
+  life,
+  Status == "Developed"
+)
 
-head(life_developed)
+dim(life_developed)
 ```
 
 ```
-##     Country Year    Status Life.expectancy
-## 1 Australia 2015 Developed            82.8
-## 2 Australia 2014 Developed            82.7
-## 3 Australia 2013 Developed            82.5
-## 4 Australia 2012 Developed            82.3
-## 5 Australia 2011 Developed            82.0
-## 6 Australia 2010 Developed            81.9
+## [1] 512  22
+```
+---
+
+### Combining `filter()` and `select()`
+
+Say, we want to look at the these 4 columns- country, life_expectancy, status, and year columns for developed countries only.
+
+
+#### Approach 1
+
+```r
+life_short &lt;- select(
+  life, 
+  c(Country, Year, Status, Life.expectancy)
+)
+
+dim(life_short)
+```
+
+```
+## [1] 2938    4
+```
+
+```r
+life_developed &lt;- filter(
+  life_short,
+  Status == "Developed"
+)
+
+dim(life_developed)
+```
+
+```
+## [1] 512   4
 ```
 
 ---
-### `dplyr` verbs
-#### `filter()` the rows using columns - cont.
+### Combining `filter()` and `select()`
+
+Say, we want to look at the these 4 columns- country, life_expectancy, status, and year columns for developed countries only.
 
 
-```r
-unique(life_short$Year)
-```
+#### Approach 2 - Using pipe %&gt;% 
 
-```
-##  [1] 2015 2014 2013 2012 2011 2010 2009 2008 2007 2006 2005 2004 2003 2002 2001
-## [16] 2000
-```
-
-Say, we only want years between 2010 to 2015. How will we filter?
-
----
-### `dplyr` verbs
-#### `filter()` the rows using columns - cont.
-
-
+**First apply the first function. Then, apply the second function on the output of the first function** 
+ 
 
 ```r
-life_1015 &lt;- life_short %&gt;% 
-  filter(Year &gt;= 2010 &amp; Year &lt;= 2015)
+life_short_developed &lt;- life %&gt;% 
+  select(c(Country, Year, Status, Life.expectancy)) %&gt;% 
+  filter(Status == "Developed")
 
-head(life_1015)
+dim(life_short_developed)
 ```
 
 ```
-##       Country Year     Status Life.expectancy
-## 1 Afghanistan 2015 Developing            65.0
-## 2 Afghanistan 2014 Developing            59.9
-## 3 Afghanistan 2013 Developing            59.9
-## 4 Afghanistan 2012 Developing            59.5
-## 5 Afghanistan 2011 Developing            59.2
-## 6 Afghanistan 2010 Developing            58.8
+## [1] 512   4
 ```
-
+**First select the four columns of life. Then, filter those columns where Status is developed **
 ---
 ### `dplyr` verbs
 #### `mutate()` to the data frame
@@ -369,32 +417,57 @@ head(life_1015)
 Basically, add a new column to the data frame based on existing values
 Or, modify one of the existing values. 
 
+General syntax - 
 
 ```r
-life_1015$Life.expectancy[1:10]
+new_name &lt;- mutate(
+  old_name,
+  new_column_name = (some operation on the exisiting columns)
+)
 ```
 
-```
-##  [1] 65.0 59.9 59.9 59.5 59.2 58.8 77.8 77.5 77.2 76.9
-```
-Say, we want to round Life.expectancy to neartest integer
+Or,
 
 
 ```r
-life_1015 &lt;- life_1015 %&gt;% 
-  mutate(Life.expectancy = round(Life.expectancy))
-
-life_1015$Life.expectancy[1:10]
-```
-
-```
-##  [1] 65 60 60 60 59 59 78 78 77 77
+new_name &lt;- old_name %&gt;% 
+  mutate(
+  new_column_name = (some operation on the exisiting columns)
+)
 ```
 
 ---
+### `dplyr` verbs
+#### `mutate()` to the data frame
+
+
+```r
+life_short_developed$Life.expectancy[1:10]
+```
+
+```
+##  [1] 82.8 82.7 82.5 82.3 82.0 81.9 81.7 81.3 81.3 81.2
+```
+
+Say, we want to round Life.expectancy to nearest integer
+
+
+```r
+life_short_developed &lt;- life_short_developed %&gt;% 
+  mutate(Life.expectancy = round(Life.expectancy))
+
+life_short_developed$Life.expectancy[1:10]
+```
+
+```
+##  [1] 83 83 82 82 82 82 82 81 81 81
+```
+
+*Note: This is not a very useful example. `mutate()`. In this week's lectures and next week's lab, we will show more useful purposes of `mutate()`.*
+---
 ### Let's visualize Life.expectancy
 
-The base code remains the same if using `ggplot2()`
+General syntax if using `ggplot2()`
 
 
 ```r
@@ -402,16 +475,22 @@ ggplot(data_file, aes(x = variable_name)) +
   geom_type()
 ```
 
+General syntax if using `base` functions
+
+
+```r
+function_name(data_name$column_name)
+```
 ---
 #### Histogram
 
 
 ```r
-ggplot(life_1015, aes(x = Life.expectancy)) +
+ggplot(life_short_developed, aes(x = Life.expectancy)) +
   geom_histogram()
 ```
 
-![](lab5_files/figure-html/unnamed-chunk-18-1.png)&lt;!-- --&gt;
+![](lab5_files/figure-html/unnamed-chunk-24-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -419,49 +498,50 @@ ggplot(life_1015, aes(x = Life.expectancy)) +
 
 
 ```r
-ggplot(life_1015, aes(y = Life.expectancy)) +
+ggplot(life_short_developed, aes(y = Life.expectancy)) +
   geom_boxplot()
 ```
 
-![](lab5_files/figure-html/unnamed-chunk-19-1.png)&lt;!-- --&gt;
+![](lab5_files/figure-html/unnamed-chunk-25-1.png)&lt;!-- --&gt;
 
 ---
 #### Density plot
 
 
 ```r
-ggplot(life_1015, aes(x = Life.expectancy)) +
+ggplot(life_short_developed, aes(x = Life.expectancy)) +
   geom_density()
 ```
 
-![](lab5_files/figure-html/unnamed-chunk-20-1.png)&lt;!-- --&gt;
+![](lab5_files/figure-html/unnamed-chunk-26-1.png)&lt;!-- --&gt;
 ---
 ### baseR alternative
 
 #### Histogram
 
 ```r
-hist(life_1015$Life.expectancy)
+hist(life_short_developed$Life.expectancy)
 ```
 
-![](lab5_files/figure-html/unnamed-chunk-21-1.png)&lt;!-- --&gt;
+![](lab5_files/figure-html/unnamed-chunk-27-1.png)&lt;!-- --&gt;
 
 #### Boxplot
 ---
 
 ```r
-boxplot(life_1015$Life.expectancy)
+boxplot(life_short_developed$Life.expectancy)
 ```
 
-![](lab5_files/figure-html/unnamed-chunk-22-1.png)&lt;!-- --&gt;
+![](lab5_files/figure-html/unnamed-chunk-28-1.png)&lt;!-- --&gt;
 
 ---
 #### Let's make our histogram prettier
 
 
 ```r
-ggplot(life_1015, aes(x = Life.expectancy)) +
-  geom_histogram(fill = "cornflowerblue")+
+ggplot(life_short_developed, aes(x = Life.expectancy)) +
+  geom_histogram(fill = "cornflowerblue",
+                 bins = 15)+
   labs(
     x = "Life expectancy",
     y = "Frequency",
@@ -470,8 +550,11 @@ ggplot(life_1015, aes(x = Life.expectancy)) +
   )+
   theme_minimal()
 ```
+---
 
-![](lab5_files/figure-html/unnamed-chunk-23-1.png)&lt;!-- --&gt;
+#### Let's make our histogram prettier
+
+![](lab5_files/figure-html/unnamed-chunk-30-1.png)&lt;!-- --&gt;
 ---
 #### For curiosity
 
@@ -482,31 +565,31 @@ Wondering how many geoms? Check [here](https://ggplot2.tidyverse.org/reference/)
 
 
 ```r
-mean(life_1015$Life.expectancy, na.rm = TRUE)
+mean(life_short_developed$Life.expectancy, na.rm = TRUE)
 ```
 
 ```
-## [1] 71.00546
-```
-
-```r
-median(life_1015$Life.expectancy, na.rm = TRUE)
-```
-
-```
-## [1] 73
+## [1] 79.20898
 ```
 
 ```r
-min(life_1015$Life.expectancy, na.rm = TRUE)
+median(life_short_developed$Life.expectancy, na.rm = TRUE)
 ```
 
 ```
-## [1] 36
+## [1] 79
 ```
 
 ```r
-max(life_1015$Life.expectancy, na.rm = TRUE)
+min(life_short_developed$Life.expectancy, na.rm = TRUE)
+```
+
+```
+## [1] 70
+```
+
+```r
+max(life_short_developed$Life.expectancy, na.rm = TRUE)
 ```
 
 ```
@@ -516,28 +599,28 @@ max(life_1015$Life.expectancy, na.rm = TRUE)
 ---
 
 ```r
-range(life_1015$Life.expectancy,  na.rm = TRUE)
+range(life_short_developed$Life.expectancy,  na.rm = TRUE)
 ```
 
 ```
-## [1] 36 89
-```
-
-```r
-IQR(life_1015$Life.expectancy,  na.rm = TRUE)
-```
-
-```
-## [1] 11
+## [1] 70 89
 ```
 
 ```r
-quantile(life_1015$Life.expectancy,  na.rm = TRUE)
+IQR(life_short_developed$Life.expectancy,  na.rm = TRUE)
+```
+
+```
+## [1] 5
+```
+
+```r
+quantile(life_short_developed$Life.expectancy,  na.rm = TRUE)
 ```
 
 ```
 ##   0%  25%  50%  75% 100% 
-##   36   65   73   76   89
+##   70   77   79   82   89
 ```
 
 ---
@@ -545,10 +628,83 @@ quantile(life_1015$Life.expectancy,  na.rm = TRUE)
 
 **Visualize and describe the Adult.Mortality variable**
 
-  - First, select the relevant columns and save it as `adult` object.
+  - Select the relevant columns and save it as `adult` object.
   - Filter the dataset include data from 2001-2010
-  - Show the distribution of the variable
+  - Show the distribution of Adult.Mortality using any one geom
   - Use one summary statistic to describe the variable
+  
+---
+#### One way to do the challenge
+
+
+```r
+adult &lt;- life %&gt;% 
+  select(c(Country, Year, Status, Adult.Mortality)) %&gt;% 
+  filter(Year &gt;= 2001 &amp; Year &lt;= 2010)
+
+dim(adult)
+```
+
+```
+## [1] 1830    4
+```
+
+```r
+head(adult)
+```
+
+```
+##       Country Year     Status Adult.Mortality
+## 1 Afghanistan 2010 Developing             279
+## 2 Afghanistan 2009 Developing             281
+## 3 Afghanistan 2008 Developing             287
+## 4 Afghanistan 2007 Developing             295
+## 5 Afghanistan 2006 Developing             295
+## 6 Afghanistan 2005 Developing             291
+```
+
+---
+#### One way to do the challenge
+
+
+```r
+ggplot(adult, aes(y = Adult.Mortality)) +
+  geom_boxplot(
+    fill = "cornflowerblue",
+    color = "gray70",
+    width = 0.25,
+    outlier.colour = "red"
+  ) +
+  xlim(-0.4, 0.4)+
+  labs(
+    x = "",
+    y = "Adult Mortality Rate per 1,000",
+    title = "Distribution of Adult Mortality",
+    subtitle = "The boxplot displays the distribution for Developed countries between 2000-2010"
+  )+
+  theme_classic()+
+  theme(
+    axis.text.x = element_blank(),
+    axis.ticks.x = element_blank()
+  )
+```
+---
+#### One way to do the challenge
+
+![](lab5_files/figure-html/unnamed-chunk-35-1.png)&lt;!-- --&gt;
+
+---
+#### One way to do the challenge
+
+
+```r
+mean(adult$Adult.Mortality)
+```
+
+```
+## [1] 169.9623
+```
+
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
