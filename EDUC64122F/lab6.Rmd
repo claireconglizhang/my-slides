@@ -1,0 +1,308 @@
+---
+title: "EDUC 610 Lab 6"
+subtitle: "Describing and Visualizing Continuous Variables"
+author: "Havi and Claire<br><span style = 'font-size: 50%;'>University of Oregon<br>Fall 2022</span>"
+date: "10/31 or 11/01/2022"
+output:
+  xaringan::moon_reader:
+    css: xaringan-themer.css
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+```
+
+```{r xaringan-themer, include=FALSE}
+library(xaringanthemer)
+library(countdown)
+
+style_duo_accent(
+  primary_color = "#1F4E79",
+  secondary_color = "#0072B2",
+  header_font_google = xaringanthemer::google_font("Atkinson Hyperlegible", "600"),
+  text_font_google   = xaringanthemer::google_font("Atkinson Hyperlegible", "200", "200i"),
+  code_font_google   = xaringanthemer::google_font("IBM Plex Mono"),
+  colors = c(
+    darkblue = "#0072B2",
+    lightblue = "#56B4E9",
+    darkorange = "#D55E00",
+    lightorange = "#E69f00",
+    yellow = "#F0E442",
+    green = "#009E73",
+    pink = "#CC79A7",
+    gray = "999999",
+    white = "#FFFFFF"
+  )
+)
+
+xaringanExtra::use_clipboard()
+```
+
+### Today's objectives
+
+- Review functions we learnt last time
+- Apply the learning on Assignment 3
+- Go over `dplyr::mutate()`
+
+---
+
+### Plan
+
+- Self/group-working time
+- I'll go around and help with questions/troubleshooting
+- Practice questions are aligned with Assignment 3 questions
+
+---
+
+### Last Week Review
+
+- Data cleaning with `dplyr` verbs
+    - `select()`
+    - `filter()`
+    - `mutate()` (lightly)
+
+- Visualize continuous variables
+    - `geom_histogram()` and `hist()`
+    - `geom_density()`
+    - `geom_boxplot()` and `boxplot()`
+     
+- Describe conrinuous variables
+    - `mean()`
+    - `median()`
+    - `range()`
+    - `quantile()`
+    - `IQR()`
+
+---
+
+### Before lab activities
+
+1. Find today's slides in the mailbox. We will use life_expectancy.csv data. The questions are similar to Assignment 3, but we will practice on a different data set.
+
+2. You should have downloaded Unit 3 lecture code (courseweb -> schedule -> unit3 -> lectures -> R code). If not, do it AFTER the lab
+
+---
+
+### Task 1: Set up your working environment in R
+
+First repeat what we've been doing over the past three weeks: create R project, make four folders, add life_expectancy.csv in the data folder and start an R script. 
+
+Then load the packages and read the file.
+
+```{r load-package, warning=FALSE, message=FALSE}
+library(tidyverse)
+```
+
+```{r read file, echo = FALSE}
+life <- read.csv("E:/Dropbox (University of Oregon)/2022-23/Fall22/GE/Class code/life_expectancy.csv")
+```
+
+*Instead of data use the name of the folder where you saved the file. Instead of life_expectancy, use the name you used to save the file.*
+
+```{r, eval = FALSE}
+life <- read.csv("data/life_expectancy.csv")
+```
+
+
+---
+
+### Task 2: Subset the data and inspect structure
+
+Let's inspect these two continuous variables:
+1. BMI
+2. Schooling
+
+*Create a smaller dataset `life1` the contains the following columns: Country, Year, BMI, Schooling. Change Country into type factor*
+
+**HINT: Use the `select()` and `factor()` functions**
+
+General syntax - 
+
+```{r, eval = FALSE}
+new_df <- select(
+  old_df, #name of dataset
+  c(column names/index separated by comma) 
+  #names of columns as it appears and without quotes
+)
+
+#Or,
+new_df <- old_df %>% 
+    select(c(column names/index separated by comma))
+```
+
+
+---
+
+### Task 2: Inspect the data `life1`
+
+Write your own code to view the structure of the dataset. How many rows/observations are there? How many variables are there? What type is each variable (after converting types)? What does each variable represent?
+
+**HINT: There are many ways to do it. You can use the `str()`, `dim()`, `class()`, `typeof()`, `colnames()` functions**
+
+---
+
+### One way to do Task 2
+
+```{r, eval = FALSE}
+#Select relevant columns
+life1 <- life %>% 
+    select(c(Country, Year, BMI, Schooling))
+
+#Check dimensions
+dim(life1)
+
+#Remove old df
+rm(life)
+
+#Change Country to factor
+life1$Country <- factor(life1$Country)
+
+str(life1)
+colnames(life1)
+```
+
+
+---
+
+
+### Task 3: Descriptive Statistic
+
+- Find the mean, median, range, iner-quartile range, variance and standard deviation of BMI and Schooling?
+- Create a plot to show the distribution of BMI and Schooling. Describe the distribution, referencing your plot as appropriate. Make sure to use the following terms: tail(s), skew, kurtosis, mound/modal.
+
+**HINT: There are several alternatives. You can use the `mean()`, `median()`, `IQR()`, `quantile()`, `range()`, `sd()`, `var()` functions. Remember to use `na.rm = TRUE` to remove missing values. You can draw histograms, boxplots, density plots, either using ggplot2 or base function.**
+
+General syntax if using `ggplot2()`
+
+```{r, eval = FALSE}
+ggplot(data_file, aes(x = variable_name)) +
+  geom_type()
+```
+
+General syntax if using `base` functions
+
+```{r, eval = FALSE}
+function_name(data_name$column_name)
+```
+
+---
+
+### One way to do Task 3
+
+```{r, eval = FALSE}
+#Descriptive Statistics of BMI
+mean(life1$BMI, na.rm = TRUE)
+median(life1$BMI, na.rm = TRUE)
+sd(life1$BMI, na.rm = TRUE)
+var(life1$BMI, na.rm = TRUE)
+range(life1$BMI, na.rm = TRUE)
+#diff(range(life1$BMI, na.rm = TRUE))
+IQR(life1$BMI, na.rm = TRUE)
+quantile(life1$BMI, na.rm = TRUE)
+
+hist(life1$BMI)
+ggplot(life1, aes(x = Schooling))+
+    geom_density()+
+    theme_bw()
+```
+
+---
+
+### Task 4: Transformations
+
+Standardize the variables Schooling a mean of 0 and standard deviation of 1.
+
+---
+
+### One way to do Task 4
+
+```{r, eval = FALSE}
+who$life_expectancy_zscore <- 
+  (who$life_expectancy - mean(who$life_expectancy)) /
+  sd(who$life_expectancy)
+```
+
+
+---
+
+### `dplyr` verbs
+### `mutate()` a new column to the data frame
+
+Basically, add a new column to the data frame based on existing values
+Or, modify one of the existing values. 
+
+General syntax - 
+```{r, eval = FALSE}
+new_df <- mutate(
+  old_df,
+  new_column_name = (some operation on the exisiting columns)
+)
+```
+
+Or,
+
+```{r, eval = FALSE}
+new_df <- old_df %>% 
+  mutate(
+  new_column_name = (some operation on the exisiting columns)
+)
+```
+
+---
+
+### Using `mutate()` to add standardized scores
+
+```{r, eval = FALSE}
+Schooling.mean = mean(life1$Schooling, na.rm = TRUE)
+Schooling.sd = sd(life1$Schooling, na.rm = TRUE)
+
+life1 <- life1 %>% 
+  mutate(
+      Schooling.std = (Schooling - Schooling.mean)/Schooling.sd
+      )
+
+ggplot(life1, aes(x = Schooling.std))+
+    geom_density()+
+    theme_bw()
+```
+
+Can you add another column to include the standardized scores for BMI? 
+
+---
+
+### Task 5: Examine one case
+
+Let's examine one particular country, Australia, for the year 2010. Interpret the z-scores of Schooling and say how it compares in light of the distribution of the two variables.
+
+**HINT: Use the `filter()` function**
+
+General syntax - 
+
+```{r, eval = FALSE}
+new_df <- filter(
+  old_df, #name of dataset
+  some condition on the columns 
+  #names of columns as it appears and without quotes
+)
+
+#Or,
+new_df <- old_df %>% 
+    filter(some condition on the columns)
+```
+
+---
+
+### One way to do Task 5
+
+```{r, eval = FALSE}
+life1_aus <- life1 %>% 
+    filter(Country == "Australia" & Year == "2011")
+
+head(life1_aus)
+
+```
