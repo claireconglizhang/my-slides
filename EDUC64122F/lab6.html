@@ -37,9 +37,7 @@ class: center, middle, inverse, title-slide
 
 ### Today's objectives
 
-- Review functions we learnt last time
-- Apply the learning on Assignment 3
-- Go over `dplyr::mutate()`
+- Apply the concepts of last week's lab on Assignment 3
 
 ---
 
@@ -47,11 +45,12 @@ class: center, middle, inverse, title-slide
 
 - Self/group-working time
 - I'll go around and help with questions/troubleshooting
-- Practice questions are aligned with Assignment 3 questions
+- Refer to slides for hint/guidance 
+- Caveat: The slides focus on the coding aspect of the assignment. In the assignment, you also have to interpret the output. Though this is not included in the slides, you're welcome to discuss it in your groups and with me. 
 
 ---
 
-### Last Week Review
+### Functions covered last week
 
 - Data cleaning with `dplyr` verbs
     - `select()`
@@ -63,7 +62,7 @@ class: center, middle, inverse, title-slide
     - `geom_density()`
     - `geom_boxplot()` and `boxplot()`
      
-- Describe conrinuous variables
+- Describe continuous variables
     - `mean()`
     - `median()`
     - `range()`
@@ -72,19 +71,17 @@ class: center, middle, inverse, title-slide
 
 ---
 
-### Before lab activities
+### Before beginning 
 
-1. Find today's slides in the mailbox. We will use life_expectancy.csv data. The questions are similar to Assignment 3, but we will practice on a different data set.
-
-2. You should have downloaded Unit 3 lecture code (courseweb -&gt; schedule -&gt; unit3 -&gt; lectures -&gt; R code). If not, do it AFTER the lab
+1. Find today's slides in the mailbox. The illustration uses the life_expectancy.csv data. The questions are parallel to Assignment 3, but applies on this dataset.
 
 ---
 
-### Task 1: Set up your working environment in R
+### Similar to Q 1.1
 
-First repeat what we've been doing over the past three weeks: create R project, make four folders, add life_expectancy.csv in the data folder and start an R script. 
+Open your RStudio, create a project and save it. Go to the root directory of the project and create folders named: “Code”, “Data”, “Figures” and “Tables.” Download the cont.csv dataset and store it in the folder “Data”. Create an R script (or .Rmd) file in the Code folder. Read the data into your R environment. You do not need to include this part of the response in your memo; only in your code.
 
-Then load the packages and read the file.
+You will need to load the packages and read the file.
 
 
 ```r
@@ -103,7 +100,7 @@ life &lt;- read.csv("data/life_expectancy.csv")
 
 ---
 
-### Task 2: Subset the data and inspect structure
+### Similar to Q 1.2 - Recode variables
 
 Let's inspect these two continuous variables:
 1. BMI
@@ -131,7 +128,7 @@ new_df &lt;- old_df %&gt;%
 
 ---
 
-### Task 2: Inspect the data `life1`
+### Similar to Q 1.2 - Inspect the data structure
 
 Write your own code to view the structure of the dataset. How many rows/observations are there? How many variables are there? What type is each variable (after converting types)? What does each variable represent?
 
@@ -139,7 +136,7 @@ Write your own code to view the structure of the dataset. How many rows/observat
 
 ---
 
-### One way to do Task 2
+### One way to do Q 1.1 and 1.2
 
 
 ```r
@@ -156,6 +153,9 @@ rm(life)
 #Change Country to factor
 life1$Country &lt;- factor(life1$Country)
 
+#Note there are 193 countries, so I am letting R choose the factor labels and levels
+#For the assignment, you will have to specify labels and levels
+
 str(life1)
 colnames(life1)
 ```
@@ -164,7 +164,7 @@ colnames(life1)
 ---
 
 
-### Task 3: Descriptive Statistic
+### Similar to Q2 - Descriptive Statistics
 
 - Find the mean, median, range, iner-quartile range, variance and standard deviation of BMI and Schooling?
 - Create a plot to show the distribution of BMI and Schooling. Describe the distribution, referencing your plot as appropriate. Make sure to use the following terms: tail(s), skew, kurtosis, mound/modal.
@@ -188,7 +188,7 @@ function_name(data_name$column_name)
 
 ---
 
-### One way to do Task 3
+### One way to do Q2
 
 
 ```r
@@ -210,28 +210,31 @@ ggplot(life1, aes(x = Schooling))+
 
 ---
 
-### Task 4: Transformations
+### Similar to Q 3.1 - Transformations
 
-Standardize the variables Schooling a mean of 0 and standard deviation of 1.
+Standardize the variables Schooling to a mean of 0 and standard deviation of 1.
+
 
 ---
 
-### One way to do Task 4
+#### Using $ sign
 
 
 ```r
-who$life_expectancy_zscore &lt;- 
-  (who$life_expectancy - mean(who$life_expectancy)) /
-  sd(who$life_expectancy)
+Schooling.mean = mean(life1$Schooling, na.rm = TRUE)
+Schooling.sd = sd(life1$Schooling, na.rm = TRUE)
+
+life1$Schooling_zscore &lt;- 
+    (life1$Schooling - Schooling.mean)/Schooling.sd
 ```
 
 
 ---
 
-### `dplyr` verbs
-### `mutate()` a new column to the data frame
+#### Using `dplyr::mutate()` verbs
 
-Basically, add a new column to the data frame based on existing values
+`dplyr::mutate()` add a new column to the data frame based on existing values
+
 Or, modify one of the existing values. 
 
 General syntax - 
@@ -255,7 +258,7 @@ new_df &lt;- old_df %&gt;%
 
 ---
 
-### Using `mutate()` to add standardized scores
+#### Using `dplyr::mutate()` verbs
 
 
 ```r
@@ -272,11 +275,11 @@ ggplot(life1, aes(x = Schooling.std))+
     theme_bw()
 ```
 
-Can you add another column to include the standardized scores for BMI? 
+ 
 
 ---
 
-### Task 5: Examine one case
+### Similar to Q 3.2 - Examine one case
 
 Let's examine one particular country, Australia, for the year 2010. Interpret the z-scores of Schooling and say how it compares in light of the distribution of the two variables.
 
@@ -299,7 +302,7 @@ new_df &lt;- old_df %&gt;%
 
 ---
 
-### One way to do Task 5
+### One way to do Q 3.2
 
 
 ```r
