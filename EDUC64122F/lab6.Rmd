@@ -1,8 +1,8 @@
 ---
-title: "EDUC 610 Lab 6"
+title: "EDUC 610 Lab 6 & 7"
 subtitle: "Describing and Visualizing Continuous Variables"
 author: "Havi and Claire<br><span style = 'font-size: 50%;'>University of Oregon<br>Fall 2022</span>"
-date: "10/31 or 11/01/2022"
+date: "10/31-11/8/22"
 output:
   xaringan::moon_reader:
     css: xaringan-themer.css
@@ -25,7 +25,7 @@ style_duo_accent(
   primary_color = "#1F4E79",
   secondary_color = "#0072B2",
   header_font_google = xaringanthemer::google_font("Atkinson Hyperlegible", "600"),
-  text_font_google   = xaringanthemer::google_font("Atkinson Hyperlegible", "200", "200i"),
+  text_font_google   = xaringanthemer::google_font("Atkinson Hyperlegible", "150", "150i"),
   code_font_google   = xaringanthemer::google_font("IBM Plex Mono"),
   colors = c(
     darkblue = "#0072B2",
@@ -45,20 +45,19 @@ xaringanExtra::use_clipboard()
 
 ### Today's objectives
 
-- Apply the concepts of last week's lab on Assignment 3
+- Personalized R support from Claire and Havi on Assignment 3
+- Discuss interpretations in small groups
 
 ---
 
 ### Plan
 
 - Self/group-working time
-- I'll go around and help with questions/troubleshooting
+- We'll go around and help with questions/troubleshooting
 - Refer to slides for hint/guidance 
-- Caveat: The slides focus on the coding aspect of the assignment. In the assignment, you also have to interpret the output. Though this is not included in the slides, you're welcome to discuss it in your groups and with me. 
-
 ---
 
-### Functions covered last week
+### Functions covered in Week 5
 
 - Data cleaning with `dplyr` verbs
     - `select()`
@@ -108,33 +107,7 @@ life <- read.csv("data/life_expectancy.csv")
 
 ---
 
-### Similar to Q 1.2 - Recode variables
-
-Let's inspect these two continuous variables:
-1. BMI
-2. Schooling
-
-*Create a smaller dataset `life1` the contains the following columns: Country, Year, BMI, Schooling. Change Country into type factor*
-
-**HINT: Use the `select()` and `factor()` functions**
-
-General syntax - 
-
-```{r, eval = FALSE}
-new_df <- select(
-  old_df, #name of dataset
-  c(column names/index separated by comma) 
-  #names of columns as it appears and without quotes
-)
-
-#Or,
-new_df <- old_df %>% 
-    select(c(column names/index separated by comma))
-```
-
-
----
-
+### Similar to Q 1.2
 ### Similar to Q 1.2 - Inspect the data structure
 
 Write your own code to view the structure of the dataset. How many rows/observations are there? How many variables are there? What type is each variable (after converting types)? What does each variable represent?
@@ -143,27 +116,49 @@ Write your own code to view the structure of the dataset. How many rows/observat
 
 ---
 
-### One way to do Q 1.1 and 1.2
+### One way to do Q 1.2
 
 ```{r, eval = FALSE}
-#Select relevant columns
-life1 <- life %>% 
-    select(c(Country, Year, BMI, Schooling))
-
 #Check dimensions
-dim(life1)
+dim(life)
+#returns number of rows and columns in the dataset
 
-#Remove old df
-rm(life)
+#Change Country to factor with default levels
+#Note there are 193 countries, so I am letting R choose the factor labels 
+#and levels
+life$Country <- factor(life$Country)
 
-#Change Country to factor
-life1$Country <- factor(life1$Country)
+#Change Status to factors by specifying exact labels
+#Factor variables with small number of levels can be coded manually
+life$Status <- factor(life$Status,
+                      levels = c("Developing", "Developed"),
+                      labels = c("Developing", "Developed"))
+```
 
-#Note there are 193 countries, so I am letting R choose the factor labels and levels
-#For the assignment, you will have to specify labels and levels
+---
 
-str(life1)
-colnames(life1)
+### One way to do Q 1.2 
+
+```{r, eval = FALSE}
+#Structure of data.frame
+str(life)
+#Returns the column names and their type, as well as some values in that column
+
+#Column names of data.frame
+colnames(life)
+#Returns the names of columns
+
+#Storage type of vectors
+typeof(life$BMI)
+# typeof() returns one of integer, double, character, logical, list
+# It basically tells how R is internally storing the information
+# This is NOT what we are want when asking the type of variable in the assignments
+
+#More informative description of the vector
+class(life$BMI)
+#class() returns a more useful description of the vector
+#It can be numeric, integer, factor, array, matrix, table, data.frame, etc.
+#It tells a bit more about the variable structure
 ```
 
 
@@ -196,17 +191,58 @@ function_name(data_name$column_name)
 
 ```{r, eval = FALSE}
 #Descriptive Statistics of BMI
-mean(life1$BMI, na.rm = TRUE)
-median(life1$BMI, na.rm = TRUE)
-sd(life1$BMI, na.rm = TRUE)
-var(life1$BMI, na.rm = TRUE)
-range(life1$BMI, na.rm = TRUE)
-#diff(range(life1$BMI, na.rm = TRUE))
-IQR(life1$BMI, na.rm = TRUE)
-quantile(life1$BMI, na.rm = TRUE)
 
-hist(life1$BMI)
-ggplot(life1, aes(x = Schooling))+
+#1. mean() returns the average of an numeric/integer column.
+#na.rm is telling to remove the missing information in the column, 
+#and then calculate the average
+mean(life$BMI, na.rm = TRUE)
+
+#2. median() returns the value at the 50th percentile of the data
+median(life$BMI, na.rm = TRUE)
+
+#3. sd() returns the standard deviation, a measure of spread of the distribution.
+sd(life$BMI, na.rm = TRUE)
+
+#4. var() returns the variance, another measure of the spread of a distribution. 
+#It is basically the square of sd
+var(life$BMI, na.rm = TRUE)
+```
+
+---
+
+### One way to do Q2
+
+```{r, eval = FALSE}
+#5. range() returns the min and max observations, aka the upper and lower limit
+#However, in statistics, range is max observation - min observation
+#R doesn't return this number directly, you will have to subtract the 
+#two values and find range yourself
+range(life$BMI, na.rm = TRUE)
+
+#6. quantile() returns the 0th, 25th, 50th, 75th, 100th percentile of a numeric column.
+#Basically the minimum observation (0), 
+#the observation that splits the distribution in 1 and 3 parts (25)
+#The observation that splits in half (50), 
+#the observation that splits in 3 and 1 parts (75), and the maximum (100)
+#You can run this function to find the median, range, and inter-quartile range
+quantile(life$BMI, na.rm = TRUE)
+
+#7. IQR returns the difference of the 75th percentile and 25th percentile of a numeric column
+#For the assignment, you have to find the upper and lower limits, as well as the range. 
+#You should use quantile() to find the upper and lower limits
+
+IQR(life$BMI, na.rm = TRUE)
+```
+
+---
+
+### One way to do Q2
+
+```{r, eval = FALSE}
+#Plots using base and ggplot2
+
+hist(life$BMI)
+ggplot(life, aes(x = Schooling))+
     geom_density()+
     theme_bw()
 ```
@@ -223,11 +259,16 @@ Standardize the variables Schooling to a mean of 0 and standard deviation of 1.
 #### Using $ sign
 
 ```{r, eval = FALSE}
-Schooling.mean = mean(life1$Schooling, na.rm = TRUE)
-Schooling.sd = sd(life1$Schooling, na.rm = TRUE)
+#z-score is (observed value - mean)/(standard deviation)
 
-life1$Schooling_zscore <- 
-    (life1$Schooling - Schooling.mean)/Schooling.sd
+#First, save the mean and sd in another variable to 
+#avoid writing a big chunk of code together
+Schooling.mean <- mean(life$Schooling, na.rm = TRUE)
+Schooling.sd <- sd(life$Schooling, na.rm = TRUE)
+
+#Now, use the formula of the z-score
+life$Schooling_zscore <- 
+    (life$Schooling - Schooling.mean)/Schooling.sd
 ```
 
 
@@ -261,15 +302,16 @@ new_df <- old_df %>%
 #### Using `dplyr::mutate()` verbs
 
 ```{r, eval = FALSE}
-Schooling.mean = mean(life1$Schooling, na.rm = TRUE)
-Schooling.sd = sd(life1$Schooling, na.rm = TRUE)
+Schooling.mean <- mean(life$Schooling, na.rm = TRUE)
+Schooling.sd <- sd(life$Schooling, na.rm = TRUE)
 
-life1 <- life1 %>% 
+life <- life %>% 
   mutate(
       Schooling.std = (Schooling - Schooling.mean)/Schooling.sd
       )
 
-ggplot(life1, aes(x = Schooling.std))+
+#Plotting z-scores
+ggplot(life, aes(x = Schooling.std))+
     geom_density()+
     theme_bw()
 ```
@@ -303,8 +345,26 @@ new_df <- old_df %>%
 ### One way to do Q 3.2
 
 ```{r, eval = FALSE}
-life1_aus <- life1 %>% 
+life_aus <- life %>% 
     filter(Country == "Australia" & Year == "2011")
 
-head(life1_aus)
+head(life_aus)
+#z-scores tell you how many standard deviations away from the mean an observation is
+#The further away the observed value is, the rarer it is to observe.
+#This comes from the 68-95-99 rule
 ```
+
+---
+### Similar to Q 4
+
+A report finds that the average global schooling is 8.7 years in 2022. We want to find if the average schooling in our same is different from 8.7.
+
+```{r, eval =FALSE}
+#we will use a one-sample t-test
+#H0: the mean value of schooling is not different from 8.7 years.
+#H1: the mean value of schooling is not 8.7 years
+
+t.test(life$Schooling, mu = 8.7)
+#You have to report the t-statistic, df, and p-values.
+```
+

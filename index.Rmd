@@ -36,7 +36,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 #### [Lab 5 slides (week 5)](./EDUC64122F/lab5.html)
 
-#### [Lab 6 slides (week 6)](./EDUC64122F/lab6.html)
+#### [Lab 6 & 7 slides(Week 6 & 7)](./EDUC64122F/lab6.html)
 
 # Conference presentations
 
