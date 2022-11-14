@@ -1,6 +1,6 @@
 ---
-title: "EDUC 641 Lab 7"
-subtitle: "(Describing Relationships Between Continuous Variables)"
+title: "EDUC 641 Lab 8"
+subtitle: "Describing Relationships Between Continuous Variables"
 author: "*(Find today's code in your mailbox)*"
 institute: "University of Oregon"
 date: "11/14 or 11/15/2022"
@@ -25,18 +25,15 @@ style_duo_accent()
 
 ### Today's objectives
 
-1. Check your learning from Unit 2:
+1. Check your learning from Unit 4:
 
-  - describe the relationship between two categorical variables by
-     - two-way contingency table with frequency or percentage in cell
-     - grouped bar chart 
-     
-  - perform Chi-squared test of categorical association in R
+  - describe the relationship between two continous variables by
+     - 
+     -  
   
-2. R skill for assignment 2:
+2. R skill for assignment 4:
 
-  - Subsetting data using package {dplyr} function 'filter()'
-  - Note that {dplyr} is built in {tidyverse} so you don't need to load it separately
+  - scatterplots and geom_point() 
 
 ---
 ### Before lab activities

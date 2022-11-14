@@ -1,0 +1,76 @@
+---
+title: "EDUC 641 Lab 8"
+subtitle: "Relationships Between Continuous Variables"
+author: "*(Find today's code in your mailbox)*"
+institute: "University of Oregon"
+date: "11/14 or 11/15/2022"
+output:
+  xaringan::moon_reader:
+    css: xaringan-themer.css
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+```
+
+```{r xaringan-themer, include=FALSE, warning=FALSE}
+library(xaringanthemer)
+style_duo_accent()
+```
+
+### Today's objectives
+
+Check your learning from Unit 4 (so far) while building your R skills:
+
+1. Visualizing the relationship between two continuous variables
+  - Scatterplots
+     - {base} function: **plot()**
+     - {ggplot2} function: **geom_point()** 
+
+  - Best fit lines
+     - {base} function: **abline()**
+     - {ggplot2} function: **geom_smooth()**
+  
+2. Describing the relationship between two continuous variables
+  - Soft landing on bivariate regression
+     - {stats} function: **lm()**
+
+---
+### Clarification before start: Piping
+Piping is not required throughout this course but will likely be for EDUC 643. So, why piping, and how? Below two ways of coding are equivalent. Which do you prefer if you can do both? 
+<img src="pipe.png" style="width: 88%" />
+
+---
+### Prepare your dataset
+Here is one example of your workflow: -- load packages -- read in dataset -- inspect the data -- manage the data (select variables, deal with missing values, recode variables, etc.) -- summarize key variables
+
+<img src="lab801.png" style="width: 92%" />
+
+---
+### Scatterplots (two ways)
+
+<img src="lab802.png" style="width: 99%" />
+
+---
+### Best fit lines (two ways)
+**Make sure to set y axis to the correct range to avoid missleading images**
+
+<img src="lab803.png" style="width: 99%" />
+
+---
+### Perform bivariate regression in R
+
+<img src="lab804.png" style="width: 80%" />
+
+---
+### Working time
+
+  - Retrieve the code file from your mailbox
+  - Run the code and see if you have any issues/questions
+  - Discuss your findings with your neighbors 
+  - Q & A for your TAs

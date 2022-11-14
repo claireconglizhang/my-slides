@@ -32,11 +32,13 @@ knitr::opts_chunk$set(echo = TRUE)
 
 #### [Lab 3 slides (week 3)](./EDUC64122F/lab3.html)
 
-#### [Lab 4 slides (week 4)](./EDUC64122F/lab4.html)
+#### [Lab 4 slides (week 4)](./EDUC64122F/lab4.html) and [Lab 4 code](./EDUC64122F/code/lab4.R)
 
 #### [Lab 5 slides (week 5)](./EDUC64122F/lab5.html)
 
 #### [Lab 6 & 7 slides(Week 6 & 7)](./EDUC64122F/lab6.html)
+
+#### [Lab 8 slides (week 8)](./EDUC64122F/lab8.html) and [Lab 8 code](./EDUC64122F/code/lab8.R)
 
 # Conference presentations
 
@@ -56,7 +58,7 @@ Paper title: Investigating Causal Impacts of Affective Teacher–Student Relatio
 
 Authors: Congli (Claire) Zhang and Merly Klaas
 
-#### [CHECK OUT OUR SLIDES](./SREE2022/sree2022.html)
+#### [Check out our slides](./SREE2022/sree2022.html)
 
 ### AERA 2022
 
