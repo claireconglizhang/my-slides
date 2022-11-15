@@ -59,7 +59,5 @@ summary(model)
 model$coefficients
 model$coefficients[2]
 
-# Based on this model, predict life expectancy if expenditure is 10%
-predict(model, data.frame(total_expenditure = c(10)))
 
 
