@@ -23,7 +23,7 @@ summary(df$life_expectancy)
 df1 <- janitor::clean_names(df)
 ### select the two variables
 df2 <- select(df1, total_expenditure, life_expectancy)
-### use case-wise deletion to deal with missing values
+### use listwise deletion to deal with missing values
 df3 <- drop_na(df2)
 ### recode the variable life_expectancy to be rounded ages
 df4 <- mutate(df3, life_expectancy = round(life_expectancy, digits = 0))

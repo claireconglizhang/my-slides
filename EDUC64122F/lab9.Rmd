@@ -1,7 +1,6 @@
 ---
 title: "EDUC 641 Lab 9"
-subtitle: "Bivariate Regression"
-author: "*(Find today's code in your mailbox)*"
+subtitle: "Relationships Between Continuous Variables (Cont'd)"
 institute: "University of Oregon"
 date: "11/21 or 11/22/2022"
 output:
@@ -25,65 +24,47 @@ style_duo_accent()
 
 ### Today's objectives
 
-1. Check your learning from Unit 4:
+1. A powerful package, {datasummary}, to help you produce two tables
+  - summary statistics table using function: **datasummary_skim()**
+  - model report table using function: **modelsummary()**
 
-  - 
-     - 
-     -  
-  
-2. R skill for assignment 4:
+2. More in supporting your assignment 4
+  - A case study 
 
-  - scatterplots and geom_point() 
+
+
 
 ---
-### Before lab activities
-
-1. Find today's code in your mailbox and download it NOW if you haven't done so because:
-
-  - **the code was developed based on a similar structure with assignment 2** (but analyzing deathpenalty.csv rather than cat.csv)
-  - **your goal today is running these code to see the results rather than "live coding"** because the group time will be limited to **30 minutes**
-
-2. The last **20 minutes** of the lab will be used for: 
-
-  - Q&A about assignment 2 (you'll highly likely have zero questions if you follow through the lab activities!)
-  - your own time working on assignment 2
-
-3. You should have downloaded Unit 2 lecture code (courseweb -> schedule -> unit2 -> lectures -> R code). If not, do it AFTER the lab
+### Clarification before start: Piping
+Piping is not required throughout this course but will likely be for EDUC 643. So, why piping, and how? Below two ways of coding are equivalent. Which do you prefer if you can do both? 
+<img src="pipe.png" style="width: 88%" />
 
 ---
-#### Lab activity 1: set up your working environment in R
-First repeat what we've been doing over the past three weeks: create R project, four folders, R script. Then run the code below in your R script:
+### Prepare your dataset
+Here is one example of your workflow: -- load packages -- read in dataset -- inspect the data -- manage the data (select variables, deal with missing values, recode variables, etc.) -- summarize key variables
 
-<img src="lab401.png" style="width: 99%" />
-
----
-#### Lab activity 2: categorical relationship in contingency table
-
-<img src="lab402.png" style="width: 99%" />
+<img src="lab801.png" style="width: 92%" />
 
 ---
-#### Lab activity 3: categorical relationship in grouped bar chart
-
-<img src="lab403.png" style="width: 85%" />
-
----
-#### Lab activity 4: Pearson's Chi-squared Test using Base R function 'chisq.test()'
-
-Share with your table what you've learned from the results
-
-<img src="lab404.png" style="width: 70%" />
+### Scatterplots (two ways)
+Still providing support for {base} users but let's move toward using {ggplot2} because of at least three things we love about it: more intuitive **language**, more **arguments** you can manipulate, and more **layers** to add on to your plots.
+<img src="lab802.png" style="width: 99%" />
 
 ---
-#### Lab activity 5: subsetting data using package {dplyr} function 'filter()'
+### Best fit lines (two ways)
+Make sure to set y axis to the correct range to avoid missleading images
 
-Create two sub-samples to separate black defendants from white defendants. Compare df2 and df3 and share with your table
- 
-<img src="lab405.png" style="width: 70%" />
+<img src="lab803.png" style="width: 99%" />
 
 ---
-#### Lab activity 6: re-investigate the 'rvictim' and 'deathpen' relationship when defendant is black
+### Perform bivariate regression in R
 
-<img src="lab406.png" style="width: 99%" />
+<img src="lab804.png" style="width: 80%" />
 
+---
+### Working time
 
-**Feel free to leave or stay for your assignment/questions!**
+  - Retrieve the code file from your mailbox
+  - Run the code and see if you have any issues/questions
+  - Discuss your findings with your neighbors 
+  - Q & A for your TAs
