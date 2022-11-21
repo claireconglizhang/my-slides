@@ -30,62 +30,70 @@ class: center, middle, inverse, title-slide
 
 
 
+&lt;style type="text/css"&gt;
+.link-style1 a {
+  color: darkviolet;
+  text-decoration: underline;
+}
+
+.link-style2 a {
+ color: seagreen;
+ text-decoration: underline;
+}
+
+&lt;/style&gt;
+
+
 ### Today's objectives
 
-1. R skills in supporting your remaining assignments
-  - Producing a summary statistics table
-     - you can summarize variables separately and copy the results to your word doc
-       - but you probably want to or have to move beyond
-     - {modelsummary} function: **modelsummary()**
+1. A powerful package, .link-style1[[{modelsummary}](https://vincentarelbundock.github.io/modelsummary/index.html)], to help you produce two types of tables:
 
-
-2. Visualizing the relationship between two continuous variables
-  - Scatterplots
-     - {base} function: **plot()**
-     - {ggplot2} function: **geom_point()** 
-
-  - Best fit lines
-     - {base} function: **abline()**
-     - {ggplot2} function: **geom_smooth()**
+  - Summary statistics tables using function: .link-style2[[datasummary_skim()](https://vincentarelbundock.github.io/modelsummary/articles/datasummary.html)]
   
-2. Describing the relationship between two continuous variables
-  - Soft landing on bivariate regression
-     - {stats} function: **lm()**
+  - Regression tables using function: .link-style2[[modelsummary()](https://vincentarelbundock.github.io/modelsummary/articles/modelsummary.html)]
 
----
-### Clarification before start: Piping
-Piping is not required throughout this course but will likely be for EDUC 643. So, why piping, and how? Below two ways of coding are equivalent. Which do you prefer if you can do both? 
-&lt;img src="pipe.png" style="width: 88%" /&gt;
+2. Your own work time on Assignment 4 
 
----
-### Prepare your dataset
-Here is one example of your workflow: -- load packages -- read in dataset -- inspect the data -- manage the data (select variables, deal with missing values, recode variables, etc.) -- summarize key variables
-
-&lt;img src="lab801.png" style="width: 92%" /&gt;
-
----
-### Scatterplots (two ways)
-Still providing support for {base} users but let's move toward using {ggplot2} because of at least three things we love about it: more intuitive **language**, more **arguments** you can manipulate, and more **layers** to add on to your plots.
-&lt;img src="lab802.png" style="width: 99%" /&gt;
-
----
-### Best fit lines (two ways)
-Make sure to set y axis to the correct range to avoid missleading images
-
-&lt;img src="lab803.png" style="width: 99%" /&gt;
-
----
-### Perform bivariate regression in R
-
-&lt;img src="lab804.png" style="width: 80%" /&gt;
-
----
-### Working time
-
-  - Retrieve the code file from your mailbox
-  - Run the code and see if you have any issues/questions
-  - Discuss your findings with your neighbors 
+  - All code needed for this assignment is covered in .link-style2[[lab8.R](./code/lab8.R)] and .link-style2[[lab9.R](./code/lab9.R)] 
+  
+  - Make sure to review lecture slides .link-style1[[14](https://daviddliebowitz.github.io/EDUC641_22F/slides/EDUC641_15_regression.html#1)] and .link-style1[[15](https://daviddliebowitz.github.io/EDUC641_22F/slides/EDUC641_16_residuals.html#1)] while forging your answers 
+  
   - Q &amp; A for your TAs
+
+---
+### Goal 1. datasummary_skim(): quick overview of numeric or categorical variables
+  - If you haven't done so: install.packages("modelsummary") 
+  - Set up your RStudio environment as following
+  - But directly using datasummary_skim() didn't work well, why? (see next slide for result)
+
+&lt;img src="lab901.png"&gt;
+
+---
+&lt;img src="lab902.png" style="width: 90%" /&gt;
+
+---
+#### Because datasummary_skim() summarizes continuous and categorical variables differently (as it should) AND it doesn't allow users to summarize two types together in a single table
+  - So first thing first, select the variables you'll be using, check their types, and recode them as needed
+  - Today we'll be using three variables: **status**, **total_expenditure**, and **life_expectancy**
+     - Note that the variable **status** didn't show up in the previous slide, because of the default argument: datasummary_skim(type = "continuous") 
+  
+&lt;img src="lab903.png" style="width: 80%" /&gt;
+
+---
+You don't need these code for assignment 4 but for your curiosity 
+&lt;img src="lab904.png" style="width: 80%" /&gt;
+---
+### Goal 2. modelsummary(): regression tables with side-by-side models
+
+&lt;img src="lab905.png"&gt;
+
+---
+&lt;img src="lab906.png"&gt;
+
+---
+You don't need these code for assignment 4 but for your curiosity as a researcher
+&lt;img src="lab907.png"&gt;
+
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

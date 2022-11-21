@@ -40,6 +40,8 @@ knitr::opts_chunk$set(echo = TRUE)
 
 #### [Lab 8 slides (week 8)](./EDUC64122F/lab8.html) and [Lab 8 code](./EDUC64122F/code/lab8.R)
 
+#### [Lab 9 slides (week 9)](./EDUC64122F/lab9.html) and [Lab 9 code](./EDUC64122F/code/lab9.R)
+
 # Conference presentations
 
 ## 2022
