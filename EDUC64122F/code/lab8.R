@@ -60,12 +60,12 @@ model$coefficients
 model$coefficients[2]
 
 modelsummary(model)
+
 modelsummary(model,
              stars = TRUE,
              gof_omit = "Adj.|Log.Lik.|F|AIC|BIC|RMSE",
              coef_rename = c('total_expenditure' = 'Expenditure on Health'))
 
-|||||||||||||
 
 
 
