@@ -41,7 +41,7 @@ abline(lm(df$life_expectancy ~ df$total_expenditure),
 
 ggplot(df, aes(total_expenditure, life_expectancy)) +
   geom_point(color = "royalblue", alpha = 0.6) +
-  geom_smooth(color = "brown") +
+  geom_smooth(method = "lm", se = FALSE, color = "brown") +
   labs(x = "Expenditure on Health (% of Total)",
        y = "Life Expectancy (age)") +
   ylim(0, 100)

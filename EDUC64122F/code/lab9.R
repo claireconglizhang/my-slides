@@ -29,15 +29,6 @@ datasummary_skim(df_lab9)
 ### Summarizing categorical variables
 datasummary_skim(df_lab9, type="categorical")
 
-# You don't need the following code in assignment 4 but just for your curiosity
-ggplot(df_lab9, aes(total_expenditure, life_expectancy)) +
-  geom_point(color = "royalblue", alpha = 0.6) +
-  geom_smooth(method = "lm", se = FALSE, color = "brown") +
-  labs(x = "Expenditure on Health (% of Total)",
-       y = "Life Expectancy (age)") +
-  ylim(0, 100) +
-  facet_wrap(~status)
-
 # Create a regression table
 m1 <- lm(life_expectancy ~ total_expenditure, df_lab9)
 modelsummary(m1)
@@ -55,12 +46,19 @@ modelsummary(m1,
 ### Even fancier
 modelsummary(list("Full sample" = m1),
              stars = TRUE,
-             gof_omit = "Adj.|Log.Lik.|F|AIC|BIC|RMSE",
+             gof_omit = "Adj.&Log.Lik.|F|AIC|BIC|RMSE",
              coef_rename = c('total_expenditure' = 'Expenditure on Health'))
 
 
-
-# You don't need this for assignment 4 but for your curiosity
+# You don't need the following code in assignment 4 but just for your curiosity
+### Does the relationship between expectancy and expenditure differ for developed vs developing countries?
+ggplot(df_lab9, aes(total_expenditure, life_expectancy)) +
+  geom_point(color = "royalblue", alpha = 0.6) +
+  geom_smooth(method = "lm", se = FALSE, color = "brown") +
+  labs(x = "Expenditure on Health (% of Total)",
+       y = "Life Expectancy (age)") +
+  ylim(0, 100) +
+  facet_wrap(~status)
 
 ### Fit two more models
 df_lab9_dvlped <- df_lab9 %>% 
@@ -74,7 +72,7 @@ m3 <- lm(life_expectancy ~ total_expenditure, df_lab9_dvlping)
 ### Put three models side-by-side 
 modelsummary(list("Full sample" = m1,
                   "Developed countries" = m2,
-                  "Developing countries" = m3),
+                  "Developing countries" = m3), 
              stars = TRUE,
              gof_omit = "Adj.|Log.Lik.|F|AIC|BIC|RMSE",
              coef_rename = c('total_expenditure' = 'Expenditure on Health'))

@@ -51,29 +51,29 @@ style_duo_accent()
   - Make sure to review lecture slides .link-style1[[14](https://daviddliebowitz.github.io/EDUC641_22F/slides/EDUC641_15_regression.html#1)] and .link-style1[[15](https://daviddliebowitz.github.io/EDUC641_22F/slides/EDUC641_16_residuals.html#1)] while forging your answers 
   
   - Q & A for your TAs
+  
+---
+
+### Same guiding question from last week: what is the relationship between life expectancy and government expenditure on health?
 
 ---
 ### Goal 1. datasummary_skim(): quick overview of numeric or categorical variables
   - If you haven't done so: install.packages("modelsummary") 
   - Set up your RStudio environment as following
-  - But directly using datasummary_skim() didn't work well, why? (see next slide for result)
 
 <img src="lab901.png">
 
 ---
+Note that directly using datasummary_skim() didn't work well:
 <img src="lab902.png" style="width: 90%" />
 
 ---
 #### Because datasummary_skim() summarizes continuous and categorical variables differently (as it should) AND it doesn't allow users to summarize two types together in a single table
-  - So first thing first, select the variables you'll be using, check their types, and recode them as needed
-  - Today we'll be using three variables: **status**, **total_expenditure**, and **life_expectancy**
-     - Note that the variable **status** didn't show up in the previous slide, because of the default argument: datasummary_skim(type = "continuous") 
+  - So first thing first, always do this before using this function: select key variables (for our case today, three variables: **status**, **total_expenditure**, and **life_expectancy**), check their types, and recode them as needed
+     - Note that the variable **status** didn't show up in the previous slide, because it is coded as a character variable but the default argument is datasummary_skim(type = "continuous") 
   
 <img src="lab903.png" style="width: 80%" />
 
----
-You don't need these code for assignment 4 but for your curiosity 
-<img src="lab904.png" style="width: 80%" />
 ---
 ### Goal 2. modelsummary(): regression tables with side-by-side models
 
@@ -83,6 +83,14 @@ You don't need these code for assignment 4 but for your curiosity
 <img src="lab906.png">
 
 ---
-You don't need these code for assignment 4 but for your curiosity as a researcher
+### Appendix
+Does the relationship between expectancy and expenditure differ for developed vs developing countries? You don't need these code for assignment 4 but for your curiosity as a researcher:
+
+---
+<img src="lab904.png" style="width: 80%" /> 
+
+---
 <img src="lab907.png">
+
+
 
