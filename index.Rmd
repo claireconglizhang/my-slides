@@ -20,7 +20,6 @@ knitr::opts_chunk$set(echo = TRUE)
 
 [Check out my website: http://congliclairezhang.com](http://congliclairezhang.com)
 
-
 # EDUC 641 2022 Fall Labs
 
 #### [Lab 1 slides (week 1)](./EDUC64122F/lab1.html)
@@ -41,6 +40,9 @@ knitr::opts_chunk$set(echo = TRUE)
 #### [Lab 8 slides (week 8)](./EDUC64122F/lab8.html) and [Lab 8 code](./EDUC64122F/code/lab8.R)
 
 #### [Lab 9 slides (week 9)](./EDUC64122F/lab9.html) and [Lab 9 code](./EDUC64122F/code/lab9.R)
+
+#### No slides for week 10
+
 
 # Conference presentations
 
