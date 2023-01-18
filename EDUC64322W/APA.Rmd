@@ -18,7 +18,7 @@ Note that this is a very minumum introduction of creating an .Rmd file with APA 
 
 Check https://frederikaust.com/papaja_man/ for more details.
 
-The package you'll be using is {papaja}, before start, note that {papaja} only supports APA style 6.
+The package you'll be using is {papaja}, before start, note that {papaja} only supports APA style 6th edition.
 
 Here are the steps:
 
