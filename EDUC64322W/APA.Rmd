@@ -1,0 +1,37 @@
+---
+title: "Minimum intro of APA style with R Markdown"
+output: html_document
+date: '2023-01-18'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{css, echo=FALSE}
+p {
+  font-size: 18px;
+}
+```
+
+Note that this is a very minumum introduction of creating an .Rmd file with APA style format.
+
+Check https://frederikaust.com/papaja_man/ for more details.
+
+The package you'll be using is {papaja}, before start, note that {papaja} only supports APA style 6.
+
+Here are the steps:
+
+1. Install {papaja} from Github rather than CRAN by a code line: devtools::install_github("crsh/papaja")
+
+2. {papaja} depends on {pandoc}, which can be installed [here](https://pandoc.org/installing.html)
+ 
+3. Typically you also need TeX [(a tutorial)](https://www.reed.edu/data-at-reed/software/R/r_studio_pc.html) but for the minumum effort, I would get around it by NOT using pdf output. See step 5
+
+4. In RStudio, file - New file - R Markdown - From Template - APA-style manuscript (6th edition) {papaja}
+
+5. Change the *output: papaja::apa6_pdf* to *output: papaja::apa6_doc*
+
+6. Save the .Rmd then knit it to see a word document and go from there
+
+Good luck!

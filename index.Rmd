@@ -1,5 +1,5 @@
 ---
-title: "My Slides"
+title: ""
 output:
   html_document:
     toc: TRUE
@@ -13,12 +13,18 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```
 
+```{css, echo=FALSE}
+p {
+  font-size: 20px;
+}
+```
 
-#### This is a personal repository where I store my slides decks for conference presentations, workshops, labs, and more.
 
-# About me
+#### Welcome! This is personal repository where I store my slides decks for conference presentations, workshops, labs, and more.
 
-[Check out my website: http://congliclairezhang.com](http://congliclairezhang.com)
+# APA Style with RMarkdown
+
+Check out this [minimum intro](./EDUC64322W/APA.html) for creating an .Rmd file with APA style 6th edition format.
 
 # EDUC 641 2022 Fall Labs
 
@@ -78,4 +84,15 @@ Paper title: Does Advisor-Advisee Relationship with Content Teacher Impact Stude
 
 Author: Congli (Claire) Zhang 
 
+# About me
+
+I am currently a doctoral candidate at the University of Oregon, majoring in Quantitative Research Methods in Education and specialized in Educational Data Science. I am professionally proficient in English and Chinese. My best programming language is R.  
+
+As an educational researcher, I am interested in the causal impacts of school-, principal-, and teacher-level factors on student near- and long-term outcomes. My dissertation is focused on teacher effects, in which I analyze a nationally representative, longitudinal data from Chinese middle schools to examine whether and to what extent teacher human capital characteristics, advisor-advisee relationship, and classroom teacher-student relationship impact student academic performance. 
+
+I am passionate about applying my knowledge and skills in quantitative methods and causal inference to education and social sciences research, with the goal to help policy makers, researchers, and educators understand what makes a good teacher, principal, and school, and how to improve the quality of public education. 
+
+I will be graduating in June, 2023 and am currently on job market looking for academic positions in universities as well as applied analyst jobs in education research organizations. 
+
+[Check out my website: http://congliclairezhang.com](http://congliclairezhang.com)
 
