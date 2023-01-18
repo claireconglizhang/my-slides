@@ -34,4 +34,6 @@ Here are the steps:
 
 6. Save the .Rmd then knit it to see a word document and go from there
 
+7. You may be amazed by the nice format you got in a finger snap but note that this is just the beginning. There are some learning curves. An example is that the citation feature demands a lot of self learning - check [this page](https://bookdown.org/yihui/rmarkdown-cookbook/bibliography.html) out to get started. 
+
 Good luck!
