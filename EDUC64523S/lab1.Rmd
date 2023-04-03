@@ -82,18 +82,7 @@ What is the relationship between percentage of ELL students and math achievement
 Outcome variable: math
 Predictor variable: percent_ell
 
-**Figure 1. Visualization of the relationship between math achievement and percentage of ELL students**
-
-```{r}
-ggplot(seda,
-       aes(x = percent_ell, y = math)) +
-  geom_smooth(method = 'lm', se = F) +
-  labs(x = "Percentage of ELL students",
-       y = "Math achievement") +
-  theme_minimal(base_size = 14) 
-```
-
-**Figure 2. Visualization of the relationship betwee math achievement and percentage of ELL students by grade level**
+**Figure 1. Visualization of the relationship between math achievement and percentage of ELL students by grade level**
 
 ```{r}
 ggplot(seda,
@@ -105,7 +94,7 @@ ggplot(seda,
   theme_minimal(base_size = 14) 
 ```
 
-3. Figure 2 allows both intercept and slope to vary by grade and hints us that the relationship between math and percent_ell varies by grade level. How does intercept vary by grade? What about slope?
+3. Figure 1 allows both intercept and slope of the best fit line to vary by grade. The plot hints us that the relationship between math and percent_ell varies by grade level. How does intercept vary by grade? What about slope?
 
 4. Calculate the ICC to explain how much variance in math is attributable to between-grade variation; interpret the results in a sentence 
 
