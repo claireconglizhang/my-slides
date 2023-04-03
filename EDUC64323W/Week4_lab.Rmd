@@ -1,0 +1,206 @@
+---
+title: "Week 4 Lab"
+author: "(add your name)"
+date: "1/30/2023"
+output: 
+ html_document:
+     code_folding: hide
+---
+
+#### Task 1: Load the libraries and read the data
+
+```{r setup, include=FALSE}
+# Don't make a change here
+knitr::opts_chunk$set(include = TRUE,
+                      echo = TRUE,
+                      warning = FALSE,
+                      message = FALSE)
+```
+
+
+```{r}
+library(haven)
+library(tidyverse)
+library(modelsummary)
+library(flextable)
+```
+
+
+```{r, include = FALSE}
+# Saving the data in an eat object
+
+eat0 <- read_spss("https://daviddliebowitz.github.io/EDUC643_23W/data/male_do_eating.sav")
+```
+
+#### Task 2: Summarize the bivariate relationship between BMI and Directory restraint index (EDEQ_restraint)
+
+```{r}
+eat <- eat0 %>%
+  select(Study_ID, BMI, EDEQ_restraint) %>%
+  drop_na()
+
+m1 <- lm(BMI ~ EDEQ_restraint, data = eat)
+
+```
+
+Visually:
+
+```{r}
+ggplot(eat, aes(y = BMI, x = EDEQ_restraint)) +
+  geom_point() +
+  geom_smooth(color = "red") +
+  ylab("BMI") + xlab("EDEQ_restraint") +
+  theme_minimal(base_size = 16) 
+```
+
+```{r}
+ggplot(eat, aes(y = BMI, x = EDEQ_restraint)) +
+  geom_point() +
+  geom_smooth(method = "lm", color = "red") +
+  ylab("BMI") + xlab("EDEQ_restraint") +
+  theme_minimal(base_size = 16) 
+```
+
+
+Just examples of how to present your regression results:
+
+```{r}
+broom::tidy(m1)
+```
+
+Or,
+
+```{r}
+modelsummary(m1,
+             output = 'flextable',
+             stars = TRUE,
+             estimate  = c("{estimate} {stars} [{conf.low}, {conf.high}]"),
+             gof_omit = "Adj.|Log.Lik.|AIC|BIC",
+             coef_rename = c('EDEQ_restraint' = 'Dietary restraint')) %>% 
+  autofit()
+```
+
+Or,
+
+```{r}
+modelsummary(m1,
+             output = 'flextable',
+             stars = TRUE,
+             coef_omit = "(Intercept)",
+             gof_omit = "Adj.|Log.Lik.|AIC|BIC",
+             coef_rename = c('EDEQ_restraint' = 'Dietary restraint')) %>% 
+  autofit()
+```
+
+#### Task 3: Regression Assumptions
+
+First, add to your dataset some variables/columns that are
+
+ - fitted/predicted values:
+ 
+```{r}
+eat$predict <- predict(m1)
+```
+ 
+ - raw residuals:
+ 
+```{r}
+eat$resid <- residuals(m1)
+```
+ 
+ - standardized residuals:
+ 
+```{r}
+eat$std_resid <- rstandard(m1)
+```
+ 
+  - studentized residuals:
+ 
+```{r}
+eat$stu_resid <- rstudent(m1)
+```
+
+alternatively,
+
+```{r}
+eat1 <- eat %>% 
+  mutate(predict = predict(m1),
+         resid = residuals(m1),
+         std_resid = rstandard(m1),
+         stu_resid = rstudent(m1))
+```
+
+
+```{r}
+foo <- eat %>% 
+  filter(Study_ID == "R_3JIDoE3H6kkoGBN")
+
+foo
+```
+
+
+Use the updated dataset to assess the residuals for evidence on fitted model’s linearity and homogeneity of variance
+
+```{r}
+ggplot(eat, aes(x = predict, y = resid)) +
+  geom_point() +
+  geom_hline(yintercept = 0, color = "red", linetype = "dashed") +
+  ylab("Raw Residuals") + xlab("Fitted values") +
+  theme_minimal(base_size = 16)
+```
+
+Assess the residuals for evidence on the normality of residuals
+
+```{r}
+boxplot(eat$stu_resid)
+```
+
+```{r}
+eat %>% 
+  ggplot(aes(stu_resid)) +
+  geom_histogram(color = "white", fill = "grey50") +
+  xlab("Studendized Residuals") +
+  theme_minimal(base_size = 16)
+```
+
+```{r}
+ggplot(eat) +
+  stat_qq(aes(sample = stu_resid)) +
+  geom_abline(color = "blue") +
+  theme_minimal(base_size = 16)
+```
+
+
+
+#### Single case residual visualization
+
+Some students asked me to look at a single observation (e.g., Study_ID of "R_3kttBL7IoeBvlOC") and visualize its raw residual. 
+
+In the bivariate relationship plot, the observed value is indicated by the black dot, the predicted value is indicated by the intercept of blue line and grey line, so we can see the distance between these two dots is the residual for this single observation: 
+
+```{r}
+point1 <- as.numeric(eat[eat$Study_ID == "R_3kttBL7IoeBvlOC", "EDEQ_restraint"]) 
+
+ggplot(eat, aes(y = BMI, x = EDEQ_restraint)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  ylab("BMI") + xlab("EDEQ_restraint") +
+  theme_minimal(base_size = 16) +
+  gghighlight::gghighlight(Study_ID == "R_3kttBL7IoeBvlOC") +
+  geom_vline(xintercept = point1, color = "blue")
+```
+
+Alternatively, let's look at the residual plot, the raw residual is indicated by the black dot, and the distance between it and zero is the residual for this single observation.
+
+```{r}
+point2 <- as.numeric(eat[eat$Study_ID == "R_3kttBL7IoeBvlOC", "predict"]) 
+
+ggplot(eat, aes(x = predict, y = resid)) +
+  geom_point() +
+  geom_hline(yintercept = 0, color = "brown", linetype = "dashed") +
+  ylab("Raw Residuals") + xlab("Fitted values") +
+  theme_minimal(base_size = 16) +
+  gghighlight::gghighlight(Study_ID == "R_3kttBL7IoeBvlOC") +
+  geom_vline(xintercept = point2, color = "blue")
+```
+

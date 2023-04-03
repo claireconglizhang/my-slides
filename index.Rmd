@@ -1,5 +1,5 @@
 ---
-title: ""
+title: "Congli (Claire) Zhang's Slides Repo"
 output:
   html_document:
     toc: TRUE
@@ -15,50 +15,74 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{css, echo=FALSE}
 p {
-  font-size: 20px;
+  font-size: 14px;
 }
 ```
 
 
-#### Welcome! This is personal repository where I store my slides decks for conference presentations, workshops, labs, and more.
+#### This is personal repository where I store my slides decks for conference presentations, workshops, labs, and more. Learn more about me on my [academic website](http://congliclairezhang.com).
 
-# APA Style with RMarkdown
+# Teaching
 
-Check out this [minimum intro](./EDUC64322W/APA.html) for creating an .Rmd file with APA style 6th edition format.
+## EDUC 645 2023 Spring Labs 
 
-# EDUC 641 2022 Fall Labs
+#### [Lab 1 worksheet](./EDUC64523S/lab1.html)
 
-#### [Lab 1 slides (week 1)](./EDUC64122F/lab1.html)
+## EDUC 643 2023 Winter Labs 
+**(shout out to Havi for her inputs in the lab worksheets)**
 
-#### [Lab 2 slides (week 2)](./EDUC64122F/lab2.html)
+#### [Lab 2 worksheet](./EDUC64323W/Week2_lab.html)
+#### [Lab 3 worksheet](./EDUC64323W/Week3_lab.html)
+#### [Lab 4 worksheet](./EDUC64323W/Week4_lab.html)
+#### [Lab 5 worksheet](./EDUC64323W/Week5_lab.html)
+#### [Lab 6 worksheet](./EDUC64323W/Week6_lab.html)
+#### [Lab 7 worksheet](./EDUC64323W/Week7_lab.html)
+#### [Lab 8 worksheet](./EDUC64323W/Week8_lab.html); [Lab 8 answer sheet](./EDUC64323W/Week8_lab_answer.html)
+#### [Lab 9 worksheet](./EDUC64323W/Week9_lab.html)
 
+Note: no lab worksheet for week 1 and week 10.
+
+## EDUC 641 2022 Fall Labs
+
+#### [Lab 1 slides](./EDUC64122F/lab1.html)
+#### [Lab 2 slides](./EDUC64122F/lab2.html)
  - [lab2 data](./EDUC64122F/ah_smoke.csv); 
  - [data description](./EDUC64122F/smoke.png)
+ 
+#### [Lab 3 slides](./EDUC64122F/lab3.html)
+#### [Lab 4 slides](./EDUC64122F/lab4.html) and [Lab 4 code](./EDUC64122F/code/lab4.R)
+#### [Lab 5 slides](./EDUC64122F/lab5.html)
+#### [Lab 6 & 7 slides)](./EDUC64122F/lab6.html)
+#### [Lab 8 slides](./EDUC64122F/lab8.html) and [Lab 8 code](./EDUC64122F/code/lab8.R)
+#### [Lab 9 slides](./EDUC64122F/lab9.html) and [Lab 9 code](./EDUC64122F/code/lab9.R)
 
-#### [Lab 3 slides (week 3)](./EDUC64122F/lab3.html)
+Note: no lab slides for week 10.
 
-#### [Lab 4 slides (week 4)](./EDUC64122F/lab4.html) and [Lab 4 code](./EDUC64122F/code/lab4.R)
+## How to: APA Style with RMarkdown
 
-#### [Lab 5 slides (week 5)](./EDUC64122F/lab5.html)
+Check out this [minimum intro](./EDUC64323W/APA.html) for creating an .Rmd file with APA style 6th edition format.
 
-#### [Lab 6 & 7 slides(Week 6 & 7)](./EDUC64122F/lab6.html)
+# Research
 
-#### [Lab 8 slides (week 8)](./EDUC64122F/lab8.html) and [Lab 8 code](./EDUC64122F/code/lab8.R)
+## Conference presentations
 
-#### [Lab 9 slides (week 9)](./EDUC64122F/lab9.html) and [Lab 9 code](./EDUC64122F/code/lab9.R)
+### AEFP 2023
 
-#### No slides for week 10
+Date: 3/24/2023
 
+Location: Denver, CO, USA
 
-# Conference presentations
+Session: Evaluations of Teacher Performance and Productivity
 
-## 2022
+Paper title: Education, Experience, or More? Causal Impacts of Teacher Human Capital Characteristics on Student Learning in Chinese Junior High Schools
+
+Authors: Congli (Claire) Zhang and Anwesha Guha
+
+#### [Presentation slides](https://claireconglizhang.github.io/my-site/1_presentation/AEFP2023-char/char.html#1)
 
 ### SREE 2022
 
 Date: 9/24/2022
-
-Conference: SREE 2022
 
 Location: Arlington, VA, USA
 
@@ -68,13 +92,11 @@ Paper title: Investigating Causal Impacts of Affective Teacher–Student Relatio
 
 Authors: Congli (Claire) Zhang and Merly Klaas
 
-#### [Check out our slides](./SREE2022/sree2022.html)
+#### [Presentation slides](./SREE2022/sree2022.html)
 
 ### AERA 2022
 
 Date: 4/21/2022
-
-Conference: SREE 2022
 
 Location: San Diego, CA, USA
 
@@ -84,15 +106,4 @@ Paper title: Does Advisor-Advisee Relationship with Content Teacher Impact Stude
 
 Author: Congli (Claire) Zhang 
 
-# About me
-
-I am currently a doctoral candidate at the University of Oregon, majoring in Quantitative Research Methods in Education and specialized in Educational Data Science. I am professionally proficient in English and Chinese. My best programming language is R.  
-
-As an educational researcher, I am interested in the causal impacts of school-, principal-, and teacher-level factors on student near- and long-term outcomes. My dissertation is focused on teacher effects, in which I analyze a nationally representative, longitudinal data from Chinese middle schools to examine whether and to what extent teacher human capital characteristics, advisor-advisee relationship, and classroom teacher-student relationship impact student academic performance. 
-
-I am passionate about applying my knowledge and skills in quantitative methods and causal inference to education and social sciences research, with the goal to help policy makers, researchers, and educators understand what makes a good teacher, principal, and school, and how to improve the quality of public education. 
-
-I will be graduating in June, 2023 and am currently on job market looking for academic positions in universities as well as applied analyst jobs in education research organizations. 
-
-[Check out my website: http://congliclairezhang.com](http://congliclairezhang.com)
 

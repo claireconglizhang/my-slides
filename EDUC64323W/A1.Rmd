@@ -1,0 +1,93 @@
+---
+title: "Assignment 1"
+output: 
+ html_document:
+     code_folding: hide
+---
+
+```{r setup, include=FALSE}
+# Don't make a change here
+knitr::opts_chunk$set(include = TRUE,
+                      echo = FALSE,
+                      warning = FALSE,
+                      message = FALSE)
+```
+
+
+```{r}
+library(haven)
+library(tidyverse)
+library(modelsummary)
+```
+
+
+```{r, include = FALSE}
+nerds <- read.csv("Data/nerds.csv") 
+nerds <- read_csv("./data/nerds.csv") 
+head(nerds)
+str(nerds)
+```
+
+
+```{r}
+# cleaning the data
+nerds1 <- nerds %>% 
+  select(ppe, frpl) %>% 
+  drop_na()
+
+datasummary_skim(nerds1)
+
+```
+
+
+```{r}
+lm_plot <- ggplot(nerds1, aes(x= frpl, y= ppe)) +
+              geom_point() +
+              labs(
+              x = "Percentage of students with free lunch status",
+              y = "Expenditure per student",
+              title = "Bivariate relationship between ppe and frpl") +
+              theme_minimal(base_size = 16) +
+              geom_smooth(method='lm', se=F)
+
+lm_plot
+```
+
+
+```{r}
+m1 <- lm(ppe ~ frpl, nerds1)
+
+modelsummary(m1,
+             stars = TRUE,
+             gof_omit = "Adj.|Log.Lik.|F|AIC|BIC|RMSE")
+
+```
+
+Visualizing CI:
+
+```{r}
+lm_plot_se1 <- ggplot(nerds1, aes(x= frpl, y= ppe)) +
+              geom_point(alpha = 0.3) +
+              labs(
+              x = "Percentage of students with free lunch status",
+              y = "Expenditure per student",
+              title = "Bivariate relationship between ppe and frpl") +
+              theme_minimal(base_size = 16) +
+              geom_smooth(method='lm', fill = "red")
+
+lm_plot_se1
+```
+
+```{r}
+modelplot(m1)
+```
+
+Reporting CI:
+
+```{r}
+modelsummary(
+  m1,
+  estimate  = c("{estimate} ({std.error}){stars} [{conf.low}, {conf.high}]"),
+  gof_omit = "Adj.|Log.Lik.|F|AIC|BIC|RMSE")
+```
+

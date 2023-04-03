@@ -1,0 +1,118 @@
+---
+title: "Week 2 Lab"
+author: "(add your name)"
+date: "1/11/2023"
+output: 
+ html_document:
+     code_folding: hide
+---
+
+```{r setup, include=FALSE}
+# Don't make a change here
+knitr::opts_chunk$set(echo = TRUE,
+                      warning = FALSE,
+                      message = FALSE)
+```
+
+
+### Task 1: Load the libraries and read the data
+
+```{r}
+# For this lab, you will need the following libraries: 
+# haven, tidyverse, modelsummary
+# load them in your environment by completing the blanks
+# Remember to uncomment (remove the hash) the code for it ru
+
+# library(.......)
+# ....
+# ....
+```
+
+
+```{r}
+# Saving the data in an eat object
+
+# eat <- read_spss("https://daviddliebowitz.github.io/EDUC643_23W/data/male_do_eating.sav") %>%
+#     select(OE_frequency, EDEQ_restraint, EDS_total, BMI, age_year, income_group)
+
+# Print the head of the data
+# Print the str of the data
+
+# head(...)
+# ....
+```
+
+**Q1. Describe the structure of the data in a few lines.**
+
+*<Enter answer here>*
+
+### Task 2 - Descriptive statistics
+
+```{r}
+# cleaning the data
+
+# eat <- eat %>%
+#     filter(!is.na(OE_frequency), !is.na(EDS_total)) %>%
+#     mutate(EDS_total = ifelse(EDS_total==-99, NA, EDS_total)) %>%
+#     drop_na()
+
+# Find some descriptive statistics for the variables - BMI and EDEQ_restraint
+
+# .....
+# .....
+    
+```
+
+**Q2. Report the descriptive statistics for BMI and EDEQ_restraint.**
+
+*<Enter answer here>*
+
+### Task 3 - Bi-variate Relationship
+
+We are interested in how dietary restraint (EDEQ_restraint) predicts a person's body-mass index (BMI). 
+
+**Q3. What are the dependent and independent variables here?**
+
+*<Enter answer here>*
+
+```{r}
+# Make a bivariate plot. Fill what should be on the x and y-axis.
+# And give a meaningful title
+
+# lm_plot <- ggplot(data=do, aes(x= ....., y= .....)) + 
+#               geom_point() +
+#               labs(
+#               x = "Dietary restraint index (0-6)",
+#               title = "") +
+#               theme_minimal(base_size = 16) +
+#               geom_smooth(method='lm', se=F)
+
+# lm_plot
+```
+
+**Q4. Describe the bi-variate relationship using direction, linearity, outliers, strength, and magnitude.**
+
+*<Enter answer here>*
+
+```{r}
+# Run an OLS linear regression model
+# Write the function, and the formula
+
+#eat_model <- ...(... ~ ..., data = eat)
+
+#summary(eat_model)
+
+```
+
+**Q5. Describe the model result. Report and interpret the intercept and slope. Comment if the relationship is statistically significant**
+
+### Task 4 - Summarize
+
+**In this lab, we explored the relationship between dietary restraint and BMI. To do so, we calculated summary statistics, plotted the bi-variate relationship, and ran an OLS linear regression model. To explain your work to an audience, write a paragraph synthesizing all the pertinent informaiton.**
+
+*<Enter answer here>*
+
+### Challenge
+
+**Choose two continuous variables from the data set that you find interesting. Explore and report their bi-variate relationship.**
+

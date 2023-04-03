@@ -1,0 +1,155 @@
+---
+title: "Week 1 Lab"
+author: "(add your name)"
+date: "4/7/2023"
+output: 
+ html_document:
+     code_folding: hide
+---
+
+```{r setup, include=FALSE}
+# Don't make a change here
+knitr::opts_chunk$set(echo = TRUE,
+                      warning = FALSE,
+                      message = FALSE)
+```
+
+Instruction to work on this sheet: in each code chunk, you can find some code being taken out purposely and left with three dots instead. Your task is to first uncomment the code line, then replace the three dots with the code you would write.
+
+Topic: nested data modeling
+
+### Data 
+
+```{r}
+pacman::p_load(tidyverse, dplyr, lme4, equatiomatic, performance, lmerTest, gtsummary, modelsummary)
+```
+
+
+```{r}
+seda <- read.csv("https://uo-educ-quant.github.io/645/data/seda_oregon.csv") %>%
+  filter(subject == "mth") %>% 
+  select(district, 
+         math = achievement, 
+         grade, gap_gender, percent_ell, percent_sped, percent_frl)
+
+head(seda)
+
+# data management: noticing the variable grade is coded as integer but should be changed to factor
+
+seda$grade <- as.factor(seda$grade)
+```
+
+The dataset we'll be using in this lab is drawn from the Stanford Education Data Archive (SEDA) version 4.1, it is district-by-grade level data for Oregon districts in school year 2017-18.
+
+Brief variable descriptions:
+ - district, NCES district ID
+ - grade, grade level
+ - math, average math achievement score
+ - gap_gender, gender achievement gap
+ - percent_ell, district-level proportion of ELL students
+ - percent_sped, district-level proportion of students receiving special education
+ - percent_frl, district-level proportion of students eligible for free- or reduced-price school lunch
+
+**Table 1. Analytic sample summary statistics**
+
+```{r}
+set_gtsummary_theme(list(
+  `tbl_summary-fn:percent_fun` = function(x) sprintf("%.2f", x * 100)
+))
+
+seda %>%
+  select(-district) %>% 
+  tbl_summary(
+    statistic = list(all_continuous() ~ "{mean} ({sd})",
+                     all_categorical() ~ "{p}%"),
+    label = list(grade ~ "Grade",
+                 math ~ "Math",
+                 gap_gender ~ "Gender gap",
+                 percent_ell ~ "ELL percentage",
+                 percent_sped ~ "SPED percentage",
+                 percent_frl ~ "FRPL percentage"))
+
+```
+
+1. Write a short paragraph describe the sample, key variables, and the summary statistics displayed in Table 1.
+
+2. There are `r length(unique(seda$district))` districts in the data, which is not the same with the number of total observations (*N* = `r nrow(seda)`). Use your knowledge about nested data to explain why. Talk more about this district-by-grade nesting structure.
+
+### Research question 
+
+What is the relationship between percentage of ELL students and math achievement in Oregon districts?
+
+Outcome variable: math
+Predictor variable: percent_ell
+
+**Figure 1. Visualization of the relationship between math achievement and percentage of ELL students**
+
+```{r}
+ggplot(seda,
+       aes(x = percent_ell, y = math)) +
+  geom_smooth(method = 'lm', se = F) +
+  labs(x = "Percentage of ELL students",
+       y = "Math achievement") +
+  theme_minimal(base_size = 14) 
+```
+
+**Figure 2. Visualization of the relationship betwee math achievement and percentage of ELL students by grade level**
+
+```{r}
+ggplot(seda,
+       aes(x = percent_ell, y = math, color = grade)) +
+  geom_smooth(method = 'lm', se = F) +
+  labs(x = "Percentage of ELL students",
+       y = "Math achievement",
+       color = "Grade level") +
+  theme_minimal(base_size = 14) 
+```
+
+3. Figure 2 allows both intercept and slope to vary by grade and hints us that the relationship between math and percent_ell varies by grade level. How does intercept vary by grade? What about slope?
+
+4. Calculate the ICC to explain how much variance in math is attributable to between-grade variation; interpret the results in a sentence 
+
+```{r}
+m0 <- lmer(math ~ 1 + (1 | grade), seda)
+performance::icc(m0)
+```
+
+5. Fit a model to estimate the relationship between math and percent_ell without taking into consideration of grade-level variation; interpret the results in a sentence 
+
+```{r}
+m1 <- lm(math ~ percent_ell, seda)
+summary(m1)
+coef(m1)
+```
+
+6. Fit a model to estimate the relationship between math and percent_ell and allow only the intercept to vary across grades; interpret the results in a sentence
+
+```{r}
+m2 <- lme4::lmer(math ~ percent_ell + (1|grade), seda)
+summary(m2)
+coef(m2)
+```
+
+
+7. Fit a model to estimate the relationship between math and percent_ell and allow only the slope to vary across grades; interpret the results in a sentence
+
+```{r}
+m3 <- lmer(math ~ 1 + (0 + percent_ell|grade), seda)
+summary(m3)
+coef(m3)
+```
+
+8. Fit a model to estimate the relationship between math and percent_ell and allow both intercept and slope to vary across grades; interpret the results in a sentence
+
+```{r}
+m4 <- lmer(math ~ percent_ell + (1 + percent_ell|grade), seda)
+summary(m4)
+coef(m4)
+```
+
+9. Write you own code to assess model fit and interpret the results in a sentence
+
+```{r}
+
+```
+

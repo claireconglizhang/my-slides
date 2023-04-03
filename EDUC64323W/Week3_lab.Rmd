@@ -1,0 +1,132 @@
+---
+title: "Week 3 Lab"
+author: ""
+date: "1/23/2023"
+output: 
+ word_document
+---
+
+Hello, welcome to EDUC 643 week 3. To allocate more time for you to work on assignment 1 and obtain individual assistance from your GEs, this worksheet is finished in terms of coding (text answers to substantive questions are left out; you're more than welcome to discuss these with your classmates or GEs during the lab).
+
+To use this worksheet, follow the steps:
+
+  - Knit this Rmd file first and check out the output. You should see a word document that contains the output **elements** that are expected in your assignment 1 submission (only the dataset here is the BMI data)
+  - Go back to this Rmd file, find the code that you need for some specific **elements**, and rewrite the code in a way that works for your assignment 1
+  - If you have any issues using the code in this Rmd file, ask your GEs for assistance
+  
+
+```{r setup, include=FALSE}
+# Don't make a change here
+knitr::opts_chunk$set(include = TRUE,
+                      echo = FALSE,
+                      warning = FALSE,
+                      message = FALSE)
+```
+
+### Task 1: Load the libraries and read the data
+
+For this lab, you will need the following libraries: haven, tidyverse, modelsummary, and flextable. 
+
+What's new today about these packages:
+
+ - We'll use the modelplot() function of the {modelsummary} package to generate nice plot to visualize coefficients and corresponding confidence intervals in one code line. 
+ - We'll use the "output = flextable" argument in the modelsummary() function to create more, I mean, the package {flextable} is kind of self-explaining: more flexible tables.
+
+```{r}
+library(haven)
+library(tidyverse)
+library(modelsummary)
+library(flextable)
+```
+
+
+```{r, include = FALSE}
+# Saving the data in an eat object
+
+eat <- read_spss("https://daviddliebowitz.github.io/EDUC643_23W/data/male_do_eating.sav") %>%
+    select(OE_frequency, EDEQ_restraint, EDS_total, BMI, age_year, income_group)
+
+# Print the head of the data
+# Print the str of the data
+
+head(eat)
+str(eat)
+```
+
+Q1. Describe the structure of the data in a few lines: How many observations? How many variables? For each variable, is it currently continuous or categorical? Should you recode it?
+
+### Task 2 - Descriptive statistics
+
+```{r}
+# cleaning the data
+eat <- eat %>% 
+  mutate(EDS_total = ifelse(EDS_total==-99, NA, EDS_total)) %>%
+  drop_na()
+
+# Find some descriptive statistics for the variables - BMI and EDEQ_restraint
+
+eat %>% 
+  select(BMI, EDEQ_restraint) %>% 
+  datasummary_skim()
+```
+
+Q2. Report the descriptive statistics for BMI and EDEQ_restraint: since they are all continuous variables, report and interpret their mean and standard deviation for the minimum, and report other statistics as you see fit.
+
+### Task 3 - Bi-variate Relationship
+
+We are interested in how dietary restraint (EDEQ_restraint) predicts a person's body-mass index (BMI). 
+
+Q3. What are the dependent and independent variables here?
+
+```{r}
+# Make a bivariate plot. Fill what should be on the x and y-axis.
+# And give a meaningful title
+
+lm_plot <- ggplot(data=eat, aes(x= EDEQ_restraint, y= BMI)) +
+  geom_point() +
+  labs(x = "Dietary restraint index (0-6)",
+       y = "BMI",
+       title = "Bivariate relationship between dietary restraint and BMI") +
+  theme_minimal(base_size = 16) +
+  geom_smooth(method='lm', se=F)
+
+lm_plot
+```
+
+Q4. Based on the plot, describe the bi-variate relationship using direction, linearity, outliers, strength, and magnitude.
+
+
+Q5. Write a formal linear model that describes the simple, bivariate relationship
+
+$$ BMI = \beta_0 + \beta_1 * EDEQ_restraint + \epsilon $$
+Q6. Fit a linear model using OLS approach and report the results
+
+**Important note**: the table below reports $R^2$, $RMSE$, $F$ statistic, and confidence intervals only because you're now learning these concepts, not because they are common practice among researchers. 
+
+```{r}
+# Run an OLS linear regression model
+# Write the function, and the formula
+
+m1 <- lm(BMI ~ EDEQ_restraint, data = eat)
+
+modelsummary(m1,
+             output = 'flextable',
+             stars = TRUE,
+             estimate  = c("{estimate} {stars} [{conf.low}, {conf.high}]"),
+             gof_omit = "Adj.|Log.Lik.|AIC|BIC",
+             coef_rename = c('EDEQ_restraint' = 'Dietary restraint')) %>% 
+  autofit()
+
+```
+
+Q7. (This is completely extra and not required in the assignment) Visualize confidence interval
+
+```{r}
+lm_plot +
+  geom_smooth(method='lm', fill = "red")
+```
+
+
+```{r}
+modelplot(m1)
+```

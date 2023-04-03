@@ -1,0 +1,223 @@
+---
+title: "Week 6 Lab"
+author: "(add your name)"
+date: "2/13, 2/14/2023"
+output: 
+ html_document:
+     code_folding: hide
+---
+
+#### Task 1: Set up 
+
+ - Define your chunk options
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(include = TRUE,
+                      echo = TRUE,
+                      warning = FALSE,
+                      message = FALSE)
+```
+
+
+```{css, echo=FALSE}
+/* Whole document: */
+body{
+  font-family: Helvetica;
+  font-size: 14pt;
+}
+/* Headers */
+h1,h2,h3,h4,h5,h6{
+  font-size: 16pt;
+}
+```
+
+ - Load the libraries that will be frequently used throughout this file
+
+```{r}
+pacman::p_load(haven, tidyverse, modelsummary, flextable, data.table)
+```
+
+ - Read in the datasets 
+ 
+```{r, include = FALSE}
+df0 <- read_spss("https://daviddliebowitz.github.io/EDUC643_23W/data/male_do_eating.sav")
+```
+
+
+ - Clean the dataset and prepare for analysis
+ 
+In this analysis, we select the identifier and two key variables, outcome variable (y = BMI), predictor variable (x = EDEQ_restraint), as well as four covariates (v1 = age_year, v2 = OE_frequency, v3 = EDS_total, v4 = income_group) from the data ^[Noticing in the lab that some of you are still misplacing y (outcome variable) and x (predictor variable) then get overwhelmed by bug messages, from this lab going forward, I will explicitly use the notations of **x (predictor variable), y (outcome variable), v1 (covariate 1), v2 (covariate 2), ...vz(covariate z)** in my code instead of variable names, so you'll be clear about the arguments of a function, like lm(**y ~ x**, data) and ggplot(data, aes(**x, y**)). Note that you don't have to do this in your code if you're confident about the function usage - I do not do this in my research. This is just for pedagogical purposes.].
+
+```{r}
+df <- df0 %>%
+  select(id = Study_ID, y = BMI, x = EDEQ_restraint, v1 = OE_frequency, v2 = EDS_total, v3 = age_year, v4 = income_group) %>%
+  mutate(v2 = ifelse(v2 == -99, NA, v2),
+         v4 = as.numeric(as.character(v4))) %>%
+  drop_na()
+```
+
+ - Summary statistics of our sample dataset 
+ 
+```{r}
+df1 <- df %>% 
+  select(-id) %>% 
+  rename(BMI = y,
+         EDEQ = x,
+         BOE = v1,
+         EDS = v2,
+         Age = v3,
+         Income = v4) 
+
+datasummary_skim(df1)
+```
+
+#### Task 2: Summarize the bivariate relationship between BMI and Directory restraint index (EDEQ_restraint)
+
+ - Visualize the bivariate relationship
+
+```{r}
+ggplot(df, aes(x, y)) +
+  geom_point(color = "grey60") +
+  geom_smooth(method = "lm", color = "#de6386") +
+  labs( y = "BMI",
+        x = "EDEQ_restraint") +
+  theme_bw()
+```
+
+ - Null hypothesis for the relationship between BMI and Directory restraint index
+
+There is no relationship between BMI and Directory restraint index, on average, in the population of research interest.
+
+ - Write a formal linear model that describes the simple, bivariate relationship
+
+$$ BMI = \beta_0 + \beta_1 * EDEQ + \epsilon $$
+
+ - Using an OLS estimator to estimate this bivariate relationship and report your regression results in a table
+
+
+```{r}
+m1 <- lm(y ~ x, df)
+modelsummary(m1,
+             output = 'flextable',
+             stars = TRUE,
+             gof_omit = "Adj.|Log.Lik.|AIC|BIC",
+             coef_rename = c('x' = 'Dietary restraint')) %>% 
+  autofit()
+```
+
+
+#### Task 3: Produce a correlation matrix and heatmap to assess for potential multicollinearity
+
+ - Correlation matrix
+
+```{r}
+datasummary_correlation(df1,
+                        fmt = 3,
+                        notes = "Notes: cells report Pearson correlation coefficients.")
+```
+
+ - Easy correlation heatmap
+ 
+```{r}
+cor <- round(cor(df1), 3)
+
+cor %>% 
+  corrplot::corrplot(tl.col = "black", order = "hclust", hclust.method = "average")
+```
+
+
+ - Fancier correlation heatmap
+ 
+```{r}
+cor[upper.tri(cor)] <- NA
+
+reshape2::melt(cor, na.rm = TRUE) %>% 
+  ggplot(aes(Var2, Var1, fill = value)) +
+  geom_tile(color = "white") +
+  scale_fill_gradient2(low = "#4a969e", high = "#d15e81", mid = "white", 
+                       midpoint = 0, limit = c(-1,1), space = "Lab", 
+                       name="Pearson\nCorrelation") +
+  labs(x = "", y = "") +
+  theme_minimal(base_size = 16)
+```
+
+#### Task 4: Add one covariate and see if relationship between BMI and Directory restraint index (EDEQ_restraint) changes
+
+ - Noticing from task 3 that the correlation coefficients between the predictor (EDEQ) and potential candidates for covariates are all far below 0.8, moreover, among all candidates, **age** has the largest Pearson correlation coefficient with BMI and more importantly, it has the smallest correlation with the predictor variable, so here we add **age** to the model as a covariate. 
+
+ - Note that the null hypothesis for the relationship between BMI and Directory restraint index is slightly changed
+
+After accounting for age, there is no relationship between BMI and Directory restraint index, on average, in the population of research interest
+
+ - Write a formal multiple regression model
+
+$$ BMI = \beta_0 + \beta_1 * EDEQ + \beta_2 * AGE + \epsilon $$
+
+Note here $\beta_1$ is still our coefficient of interest.
+
+ - Add the covariate, age, to the previous estimator, and report the results of your estimator together with those of the previous estimator
+
+```{r}
+m2 <- lm(y ~ x + v3, df)
+modelsummary(list (m1, m2),
+             output = 'flextable',
+             stars = TRUE,
+             gof_omit = "Adj.|Log.Lik.|AIC|BIC",
+             coef_rename = c('x' = 'Dietary restraint',
+                             'v3' = 'Age')) %>% 
+  autofit()
+```
+
+
+Tips: refer to [the lecture slide](https://daviddliebowitz.github.io/EDUC643_23W/slides/EDUC643_7_mult_regression.html#92) and the slides following to see, in the table, where to look for evidence of multicollinearity/collider bias and whether this bias exists. 
+
+ - Define the prototypical values of covariate, age, as 18, 23, and 28 (you can explore other scenarios), then plot the multivariate-adjusted relationship between BMI and Directory restraint
+
+ 
+```{r}
+margins::margins(m2, at = list(v3 = c(18, 23, 28))) %>% 
+  ggplot(aes(x, fitted, color = as.factor(v3))) +
+  geom_smooth(method = 'lm', se = F) +
+  labs( y = "Predicted BMI",
+        x = "EDEQ_restraint",
+        color = "Age") +
+  scale_color_discrete(name = "Age",
+                       breaks=c(18, 23, 28)) +
+  theme_bw(base_size = 14)
+```
+
+
+ - Alternatively, you can create prototypical plot by hand with a little help from excel. The excel spreadsheet used in the class is available on [course website](https://daviddliebowitz.github.io/EDUC643_23W/schedule.html).
+ 
+ - Always refer to the lecture code or discuss with your GEs in the lab if you have further questions.
+ 
+ 
+Extra:
+
+```{r}
+m3 <- lm(y ~ x + v3 + v2, df)
+modelsummary(list (m1, m2, m3),
+             output = 'flextable',
+             stars = TRUE,
+             gof_omit = "Adj.|Log.Lik.|AIC|BIC",
+             coef_rename = c('x' = 'Dietary restraint',
+                             'v3' = 'Age')) %>% 
+  autofit()
+```
+
+
+```{r, fig.width = 10}
+range(df$v2)
+
+margins::margins(m3, at = list(v3 = c(18, 23, 28), v2 = c(50, 75, 100))) %>% 
+  ggplot(aes(x, fitted, color = as.factor(v3))) +
+  geom_smooth(method = 'lm', se = F) +
+  labs( y = "Predicted BMI",
+        x = "EDEQ_restraint",
+        color = "Age") +
+  scale_color_discrete(name = "Age",
+                       breaks=c(18, 23, 28)) +
+  facet_wrap(~ as.factor(v2)) +
+  theme_bw(base_size = 14)
+```
+

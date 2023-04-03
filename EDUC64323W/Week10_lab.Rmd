@@ -1,0 +1,179 @@
+---
+title: "Weeks 10 Lab"
+author: "(enter your name)"
+date: "March 13-14"
+output: 
+    html_document:
+        code_folding: hide
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      warning = FALSE,
+                      message = FALSE)
+```
+
+```{css, echo=FALSE}
+/* Whole document: */
+body{
+  font-family: Helvetica;
+  font-size: 13pt;
+}
+```
+
+
+```{r load in packages}
+pacman::p_load(tidyverse, modelsummary, margins)
+```
+
+*In this lab, we continue using [the DIBELS dataset](https://daviddliebowitz.github.io/EDUC643_23W/data/dibels.csv) from lab 7. This lab is designed to align with Assignment 5.*
+
+
+### Dataset and key variables
+
+```{r read in data}
+df0 <- read.csv("https://daviddliebowitz.github.io/EDUC643_23W/data/seda.csv") 
+```
+
+```{r}
+str(df0)
+
+df0 %>% tbl_summary(
+    statistic = list(all_continuous() ~ "{mean} ({sd})",
+                     all_categorical() ~ "{p}%"))
+```
+
+We conducted some data management on the original DIBELS data and currently we have these variables:
+
+ - score: ORF score (school-by-grade-by-wave level)
+ - frpl: proportion (school-by-grade level) of students receiving free or reduced price school lunch 
+ - post: coded one for school year 2020-21 and zero for school year 2019-20
+ - grade: coded 1-5 for 1-5 graders
+ - enrollment: test enrollment (school level) 
+
+**Table 1. Analytic sample ummary statistics**
+
+```{r}
+# Note that modelsummary::tblsummary does not report continuous and categorical variables in one table - but that function remains your first option. Here we try another package::function here - gtsummary::tbl_summary() just for your curiosity.
+
+library(gtsummary)
+set_gtsummary_theme(list(
+  `tbl_summary-fn:percent_fun` = function(x) sprintf("%.2f", x * 100)
+))
+
+df0 %>%
+  select(score, frpl, post, grade, enrollment) %>% 
+  tbl_summary(
+    statistic = list(all_continuous() ~ "{mean} ({sd})",
+                     all_categorical() ~ "{p}%"),
+    label = list(score ~ "ORF score",
+                 frpl ~ "Proportion (free/reduced lunch)",
+                 post ~ "Post pandemic",
+                 grade ~ "Grade level",
+                 enrollment ~ "Test enrollment"))
+
+```
+
+
+### Motivating RQ1: does the relationship between score and proportion of students receiving free/reduced lunch differ across grade levels?
+
+Check the reference group of categorical predictor:
+
+ - According to Table 1, all grade levels have decent number of observations, so it does not matter which one serves as reference group when you use grade as a predictor. 
+ - Nonetheless, we change the reference group to grade 5 here. Note that you can justify the reference group on the fly when you fit an OLS, but experience tells me that the code for your prototypical plot will be complicated (please let me know if you know differently).
+
+```{r}
+df <- df %>% 
+  mutate(grade = factor(grade, levels = c(5, 1, 2, 3, 4)))
+# uncomment and check below to see now grade 5 is your first group
+# table(df$grade)
+```
+
+Model specification:
+
+$$ score = \beta_0 + \beta_1frpl + \beta_2grade1 + \beta_3grade2 + \beta_4grade3 + \\ \beta_5grade4 + \beta_6frpl*grade1 + \beta_7frpl*grade2 + \beta_8frpl*grade3 + \beta_9frpl*grade4 + \epsilon $$
+**Table 2. Estimates of the relationship between score and frpl by grades**
+
+```{r echo=TRUE, eval=TRUE}
+fit1 <- lm(score ~ frpl * grade, df)
+modelsummary(list(fit1),
+             stars=T,
+             vcov = "robust",
+             gof_omit = "Adj.|AIC|BIC|Log|RMSE|RSE|Std.Err")
+
+summary(fit1)
+```
+
+Interpretation four steps: 
+
+ - Null hypothesis testing results
+ - The estimated relationships
+   - score-frpl relationship for grade 5 (reference grade): plug grade1=grade2=grade3=grade4=0 and all the Table 2 coefficients into your model specification
+   - score-frpl relationship for grade 1: plug grade5=grade2=grade3=grade4=0 and all the Table 2 coefficients into your model specification
+   - so on for grades 2-4
+   - Refer to [lecture slide](https://daviddliebowitz.github.io/EDUC643_23W/slides/EDUC643_13_interactions.html#30) for details
+ - Taking together the plot below to visually confirm your estimates
+ - Answer the motivating research question
+
+```{r, fig.width = 10}
+margins::margins(fit1,
+                 at = list(grade = c("1", "2", "3", "4", "5"))) %>% 
+  ggplot(aes(x = frpl, 
+             y = fitted, 
+             color = grade)) +
+  geom_smooth(method='lm', se=F) +
+  geom_ribbon(aes(ymin = fitted-1.96*se.fitted, ymax = fitted+1.96*se.fitted), alpha=0.3, linetype=0) +
+  theme_minimal(base_size = 14) +
+  labs(x = "Proportion of students receiving free/reduced lunch",
+       y = "Predicted ORF score",
+       color = "Grade")
+```
+
+
+### Motivating RQ2: does the relationship between score and proportion of students receiving free/reduced lunch differ by test enrollment?
+
+Model specification:
+
+$$ score = \beta_0 + \beta_1frpl + \beta_2enrollment + \beta_3frpl*enrollment + \epsilon $$
+
+
+**Table 3. Estimates of the relationship between score and frpl by enrollment**
+
+```{r echo=TRUE, eval=TRUE}
+fit2 <- lm(score ~ frpl * enrollment, df)
+modelsummary(list(fit2),
+             stars=T,
+             vcov = "robust",
+             gof_omit = "Adj.|AIC|BIC|Log|RMSE|RSE|Std.Err")
+```
+
+Interpretation four steps: 
+
+ - Null hypothesis testing results
+ - The estimated relationships
+   - score-frpl relationship for no enrollment: plug enrollment=0 and all the Table 3 coefficients into your model specification
+   - so on for any enrollment size at your own interest (check below the enrollment quantile table for ideas)
+ - Taking together the plot below to visually confirm your estimates
+ - Answer the motivating research question
+
+```{r}
+quantile(df$enrollment, probs = seq(0, 1, 0.1))
+
+```
+
+```{r, fig.width = 10}
+margins::margins(fit2,
+                 at = list(enrollment = c(120, 320, 520))) %>% 
+  ggplot(aes(x = frpl, 
+             y = fitted, 
+             color = as.factor(enrollment),
+             ymin = fitted-1.96*se.fitted, ymax = fitted+1.96*se.fitted)) +
+  geom_pointrange() +
+  geom_line() +
+  theme_minimal(base_size = 16) +
+  labs(x = "Proportion of students receiving free/reduced lunch",
+       y = "Predicted ORF score",
+       color = "Grade") +
+  scale_color_discrete(name = "Test enrollment",
+                       breaks = c(120, 320, 520))
+```
+

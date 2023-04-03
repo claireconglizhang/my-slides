@@ -1,0 +1,358 @@
+---
+title: "Week 7 Lab"
+author: "(enter your name)"
+date: "2/21 or 2/22"
+output: 
+    html_document:
+        code_folding: hide
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      warning = FALSE,
+                      message = FALSE)
+```
+
+
+```{css, echo=FALSE}
+/* Whole document: */
+body{
+  font-family: Helvetica;
+  font-size: 13pt;
+}
+
+```
+
+     
+```{r}
+pacman::p_load(tidyverse, modelsummary, margins)
+```
+
+## DIBELS dataset
+
+In this lab, we'll be using [the DIBELS dataset](https://daviddliebowitz.github.io/EDUC643_23W/data/dibels.csv) to check our understanding of multiple regression (ML), where outcome variable is continuous and predictor of research interest is continuous or categorical. 
+
+Read the [DIBELS codebook](https://daviddliebowitz.github.io/EDUC643_23W/data/dibels_codebook.pdf) and print the structure of the dataset to really understand the variables and the levels/values of each variable.
+
+```{r}
+df0 <- read.csv("https://daviddliebowitz.github.io/EDUC643_23W/data/dibels.csv") 
+# str(df0)
+```
+
+### Data management
+
+#### The outcome variable
+
+Our outcome variable of interest is school-by-grade-by-wave ORF score - I know this is confusing, carefully read below information, you'll understand more about this variable:
+
+ - ORF score was collected four times, begin of the year 2019-20 (or fall 2019), middle of the year 2019-20 (or winter 2020), begin of the year 2020-21 (or fall 2020), and middle of the year 2020-21 (or winter 2021)
+     - for the sake of simplicity, we name them four waves and denote them as w1, w2, w3, and w4
+     - a side note here is that we consider w1 and w2 pre-pandemic and w3 and w4 post-pandemic
+
+```{r}
+df1 <- df0 %>% 
+  select(id = sch_deid,
+         grade,
+         w1 = y1_boy_mean,
+         w2 = y1_moy_mean,
+         w3 = y2_boy_mean,
+         w4 = y2_moy_mean,
+         enrollment = school_enroll,
+         frpl = frpl_prop,
+         asian = asian_prop,
+         black = black_prop,
+         hisp = hisp_prop,
+         white = white_prop)
+# str(df1)
+```
+
+ - ORF score was collected at five grade-levels, grades 1-5 in each school, which means the data is school-by-grade level
+
+ - But we would like this variable to be school-by-grade-by-wave level
+     - in other words, we would like to directly see our outcome variable to be the ORF score for a certain school, at a certain grade level, in a certain wave
+     - the original dataset does not have this variable, instead, it has four variables that store the ORF score of four waves, which means the data is in "wide" format ([check here to learn more](https://tavareshugo.github.io/r-intro-tidyverse-gapminder/09-reshaping/index.html) about "wide" vs "long" format dataset and how to use the pivot functions to reshape your data)
+
+ - There're multiple ways to turn this wide format dataset to long format, here we introduce two options
+     - First, intuitively, we can create a dataset for each wave and use rbind() function to combine four datasets
+     - However, this operation is computationally expensive (imagine computing multiple variables this way). In the future, you may want to learn to use pivot_longer() 
+
+```{r}
+df1_w1 <- df1 %>% 
+  select(-c(w2, w3, w4),
+         score = w1) %>% 
+  mutate(wave = 1)
+
+df1_w2 <- df1 %>% 
+  select(-c(w1, w3, w4),
+         score = w2) %>% 
+  mutate(wave = 2)
+
+df1_w3 <- df1 %>% 
+  select(-c(w2, w1, w4),
+         score = w3) %>% 
+  mutate(wave = 3)
+
+df1_w4 <- df1 %>% 
+  select(-c(w2, w3, w1),
+         score = w4) %>% 
+  mutate(wave = 4)
+
+df2 <- rbind(df1_w1, df1_w2, df1_w3, df1_w4) 
+
+# str(df2)
+```
+
+     
+```{r}
+df3 <- pivot_longer(df1,
+                   cols = w1:w4,
+                   names_to = "wave",
+                   names_prefix = "w",
+                   values_to = "score")
+
+# str(df3)
+```
+
+
+### More datamanagement
+
+ - Create a dichotomous variable, post, coded one if the score was collected post-pandemic (waves 3 and 4) and zero otherwise (waves 1 and 2)
+ - Check for the types of variables and convert to the right types if needed; e.g., grade should be a categorical variable
+ - Check and deal with missingness
+ 
+
+```{r}
+df <- df3 %>% 
+  mutate(post = as.factor(ifelse(wave %in% c(3, 4), 1, 0)),
+         id = as.character(id),
+         grade = as.factor(grade),
+         enrollment = as.numeric(enrollment))
+# str(df)  
+```
+
+### The summary statistics of our analytic sample
+
+Summarize continuous variables:
+
+```{r}
+df %>% 
+  datasummary_skim()
+```
+
+Summarize categorical variables:
+
+```{r}
+df %>% 
+  datasummary_skim(type = "categorical")
+```
+
+## Research question 1: is there a relationship between score and enrollment?
+
+Here, y = score, x = enrollment
+
+Null: there is no relationship between score and test enrollment, on average in the population.
+
+Estimation equation: 
+$$ SCORE = \beta_0 + \beta_1 * ENROLLMENT + \epsilon $$
+
+Visualization:
+
+```{r}
+df %>% 
+  ggplot(aes(y = score, x = enrollment)) +
+  geom_point(color = "grey70") +
+  geom_smooth(method = "lm") +
+  labs(x = "Test enrollment",
+       y = "ORF score") +
+  theme_classic(base_size = 14)
+```
+
+
+OLS results:
+
+```{r}
+m1 <- lm(score ~ enrollment, df)
+
+modelsummary(m1,
+             stars = TRUE,
+             gof_omit = "Adj.|Log.Lik.|AIC|BIC") 
+```
+
+
+## Research question 2: does score differ pre- and post-pandemic?
+
+Here, y = score, x = post
+
+Null: the score was equal before and after pandemic, on average in the population.
+
+Estimation equation: 
+$$ SCORE = \beta_0 + \beta_1 * POST + \epsilon $$
+
+Visualization:
+
+Our goal here is to visualize how the outcome variable score differs across different levels of the categorical variable post (same as to research questions 3 and 4 down below). Note that you have multiple options, such as geom_jitter, geom_boxplot, geom_density, or geom_violin. Choose your own adventure.
+
+
+```{r}
+df %>% 
+  mutate(post = factor(post, levels = c(0, 1), labels = c("Pre-pandemic", "Post-pandemic"))) %>% 
+  ggplot(aes(y = score, x = post, color = post)) +
+  geom_jitter(width = 0.2, alpha = 0.3) +
+  labs(x = "Test time", 
+       y = "Average ORF score") +
+  theme_classic(base_size = 14) +
+  theme(legend.position = "")
+```
+
+OLS results:
+
+```{r}
+m2 <- lm(score ~ post, df)
+
+modelsummary(m2,
+             stars = TRUE,
+             gof_omit = "Adj.|Log.Lik.|AIC|BIC") 
+```
+
+
+## Research question 3: does score differ across four waves?
+
+Here, y = score, x = wave
+
+Null: the score was equal across four waves, on average in the population.
+
+Here we pick wave 1 as reference level.
+
+Estimation equation: 
+$$ SCORE = \beta_0 + \beta_1 * WAVE2 + \beta_2 * WAVE3 + \beta_3 * WAVE4 + \epsilon $$
+
+Visualization:
+
+Another option, using geom_boxplot()
+
+```{r}
+df %>% 
+  mutate(wave = factor(wave, levels = c(1, 2, 3, 4), labels = c("Fall 2019", "Winter 2020", "Fall 2020", "Winter 2021"))) %>% 
+  ggplot(aes(y = score, x = wave, fill = wave)) +
+  geom_boxplot(width = 0.4, alpha = 0.6) +
+  labs(x = "Test wave", 
+       y = "ORF score") +
+  theme_classic(base_size = 14)
+```
+
+OLS results:
+
+```{r}
+m3 <- lm(score ~ factor(wave), df)
+
+modelsummary(m3,
+             stars = TRUE,
+             gof_omit = "Adj.|Log.Lik.|AIC|BIC") 
+```
+
+ANOVA test results:
+
+```{r}
+anova(m3)
+```
+
+Review [the lecture slides](https://daviddliebowitz.github.io/EDUC643_23W/slides/EDUC643_10_categorical.html#100) to accurately interpret your ANOVA test results.
+
+## Research question 4: does score differ across grade levels?
+
+Here, y = score, x = grade
+
+Null: the score was equal across five grade levels, on average in the population.
+
+Here we pick grade 1 as reference level.
+
+Estimation equation: 
+$$ SCORE = \beta_0 + \beta_1 * GRADE2 + \beta_2 * GRADE3 + \beta_3 * GRADE4 + \beta_4 * GRADE5 + \epsilon $$
+
+Visualization:
+
+A third option, using geom_violin()
+
+```{r}
+df %>% 
+  mutate(grade = factor(grade, levels = c(1, 2, 3, 4, 5), labels = c("Grade 1", "Grade 2", "Grade 3", "Grade 4", "Grade 5"))) %>% 
+  ggplot(aes(y = score, x = grade)) +
+  geom_violin(aes(fill = grade), alpha = 0.6) +
+  theme_classic(base_size = 14)
+```
+
+OLS results:
+
+```{r}
+m4 <- lm(score ~ factor(grade), df)
+
+modelsummary(m4,
+             stars = TRUE,
+             gof_omit = "Adj.|Log.Lik.|AIC|BIC") 
+```
+
+ANOVA test results:
+
+```{r}
+anova(m4)
+```
+
+
+## Research question 5: is there a relationship between score and enrollment, after accounting for other school-level variation?
+
+Taking from research questions 2-4, we suspect that the above three categorical variables (post, wave, grade) may explain substantive variation in score outcome, take post as an example, check the prototypical plot:
+
+```{r}
+lm(score ~ enrollment + post, df) %>% 
+margins(at = list(post = c("0", "1"))) %>% 
+  ggplot(aes(x= enrollment, y = fitted, color = as.factor(post))) +
+  geom_smooth(method = 'lm', se = F) +
+  labs( y = "Predicted score",
+        x = "Test enrollment",
+        color = "Test time") +
+  scale_color_discrete(name = "Test time",
+                       breaks = c("0", "1"),
+                       labels = c("Pre-pandemic", "Post-pandemic")) +
+  theme_bw(base_size = 14)
+```
+
+There are also some continuous variables in the data, if we want to add them as covariates to our model, we have to valuate potential multicollinearity beforehand:
+
+```{r}
+datasummary_correlation(df,
+                        fmt = 3,
+                        notes = "Notes: cells report Pearson correlation coefficients.")
+```
+
+
+Did any variables concern you?
+
+Subjective decision: adding post, grade, and remaining continuous variables (denoted by SCHCHAR) to the model
+
+Here, y = score, x = enrollment
+
+Null: there is no relationship between ORF score and test enrollment, after accounting for post-pandemic, grade-level, and a vector of school characteristics (i.e., proportion of students receiving free or reduced school lunch, asian students, black students, hispanic students, and white students), on average in the population.
+
+Estimation equation: 
+$$ SCORE = \beta_0 + \beta_1 * ENROLLMENT + \beta_2 * POST + \beta_3 * GRADE + \beta_4 * SCHCHAR + \epsilon $$
+
+```{r}
+m5 <- lm(score ~ enrollment + factor(post) + factor(grade) + frpl + asian + black + hisp + white, df)
+
+modelsummary(list(m1, m2, m3, m4, m5),
+             stars = TRUE,
+             gof_omit = "Adj.|Log.Lik.|AIC|BIC") 
+```
+
+
+ANCOVA results:
+
+```{r}
+anova(m5)
+```
+
+Review [the lecture slides](https://daviddliebowitz.github.io/EDUC643_23W/slides/EDUC643_10_categorical.html#131) to accurately interpret your ANCOVA test results.
+
+Additional notes:
+I recently came across [this blog](https://mlu-explain.github.io/linear-regression/) that looks to me like a neat, quick reference of multiple regression. Hope you find it helpful. The lecture slides/video recordings are of course still your best resources. 
+

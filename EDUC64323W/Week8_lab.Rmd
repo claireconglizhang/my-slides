@@ -1,0 +1,251 @@
+---
+title: "Week 8 Lab (Answer Sheet)"
+author: "(enter your name)"
+date: "2/27 or 2/28"
+output: 
+    html_document:
+        code_folding: hide
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      warning = FALSE,
+                      message = FALSE)
+```
+
+```{css, echo=FALSE}
+/* Whole document: */
+body{
+  font-family: Helvetica;
+  font-size: 13pt;
+}
+```
+
+
+```{r load in packages}
+pacman::p_load(tidyverse, modelsummary, margins)
+```
+
+## Read in DIBELS dataset
+
+```{r read in data}
+df0 <- read.csv("https://daviddliebowitz.github.io/EDUC643_23W/data/dibels.csv") 
+```
+
+```{r}
+df1 <- df0 %>% 
+  select(id = sch_deid,
+         grade,
+         w1 = y1_boy_mean,
+         w2 = y1_moy_mean,
+         w3 = y2_boy_mean,
+         w4 = y2_moy_mean,
+         enrollment = school_enroll,
+         frpl = frpl_prop)
+
+df <- pivot_longer(df1,
+                   cols = w1:w4,
+                   names_to = "wave",
+                   names_prefix = "w",
+                   values_to = "score") %>% 
+  mutate(id = as.character(id),
+         post = as.factor(ifelse(wave %in% c(1, 2), 0, 1)),
+         grade = as.factor(grade),
+         enrollment = as.numeric(enrollment))
+```
+
+In this lab, we continue using [the DIBELS dataset](https://daviddliebowitz.github.io/EDUC643_23W/data/dibels.csv) from lab 7 to check our understanding of multiple regression (ML), where outcome variable is continuous and predictor of research interest is a continuous variable AND its interaction term with another continuous/categorical variable.
+
+## Intuition
+
+We start with our old friend model 1, where our research inquiry is the relationship between outcome Y and predictor X, and our coefficient of interest is $\beta_1$ - the coefficient on X. 
+
+Now we go a step further: we theorize that another variable Z will change the relationship between Y and X, so we fit our data to model 2 and we are now interested in both $\beta_1$ and $\beta_3$ - the slope and the change in slope brought upon by Z. Additionally, we may be also interested in $\beta_0$ and $\beta_2$ - the intercept and the change in intercept brought upon by Z.
+
+Model 1:
+$$ Y = \beta_0 + \beta_1X + \epsilon $$
+
+```{r, echo=FALSE}
+ggplot(df, aes(score, frpl)) +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(x = "X",
+       y = "Y") +
+  theme_bw(base_size=16) 
+```
+
+
+Model 2:
+$$ Y = \beta_0 + \beta_1X + \beta_2Z + \beta_3X:Z + \epsilon $$
+
+```{r, echo=FALSE}
+df %>% 
+  mutate(Z = as.factor(ifelse(wave == 1 | wave == 3, 1, 0))) %>% 
+  ggplot(aes(score, frpl, color = Z)) +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(x = "X",
+       y = "Y") +
+  theme_bw(base_size=16) 
+```
+
+Hopefully, after this lab, you'll figure out how to use OLS regression to help you find out the intercept and slope for the best fit line of Z = 0 as well as the intercept and slope for the best fit line of Z = 1. Imagine Z = 0 vs Z = 1 is the condition of control vs treatment, how helpful this skill will be to your understanding of the effect of an intervention. 
+
+Putting the models and plots together, for your curiosity, 
+
+ - the intercept and slope for line Z = 0 are $\beta_0$ and $\beta_1$
+ - the intercept and slope for line Z = 1 are $\beta_0 + \beta_2$ and $\beta_1 + \beta_3$
+ - the change in intercept is $\beta_2$ and the change in slope is $\beta_3$
+ 
+Making sense? Let's dive into research questions and analyses.
+
+## Key variables
+
+We conducted some data management on the original DIBELS data and currently we have these following variables:
+
+our outcome variable Y (continous, required by OLS)
+
+ - score: ORF score (school-by-grade-by-wave level)
+
+our predictor variable X (continous for this lab, check the lecture code for categorical predictor)
+
+ - frpl: proportion (school-by-grade level) of students receiving free or reduced price school lunch 
+
+our theoretical third variable Z (categorical or continous) that may change the Y-X relationship 
+
+ - post: coded one for school year 2020-21 and zero for school year 2019-20
+ - grade: coded 1-5 for 1-5 graders
+ - enrollment: test enrollment (school level) 
+
+Descriptives of continuous variables:
+
+```{r}
+df <- df %>% 
+  select(-wave)
+
+datasummary_skim(df)
+```
+
+Descriptives of categorical variables:
+
+```{r}
+datasummary_skim(df, type = "categorical")
+```
+
+## Research questions
+
+Q1. How did students' Oral Reading Fluency (ORF) trajectories differ pre- and post-pandemic-onset?
+
+Q2. To what extent did differences in students' ORF trajectories pre- and post-pandemic-onset differ by the proportion of students receiving free- or reduced-price lunch (FRPL) in their schools?
+
+Q3. To what extent did differences in students' ORF trajectories pre- and post-pandemic-onset differ by grade level?
+
+Q4. To what extent do students' average ORF scores differ by the rate of FRPL-receipt and enrollment in their schools?
+
+## Data analysis
+
+We use OLS regression to estimate four linear models in the following.
+
+
+```{r}
+fit1 <- lm(score ~ post, df)
+fit2 <- lm(score ~ post*frpl, df)
+fit3 <- lm(score ~ post*grade, df)
+fit4 <- lm(score ~ frpl*enrollment, df)
+```
+
+
+Q1 How did students' Oral Reading Fluency (ORF) trajectories differ pre- and post-pandemic-onset?
+
+$$SCORE = \beta_0 + \beta_1POST + \epsilon$$
+
+```{r}
+modelsummary(fit1,
+             stars = TRUE,
+             gof_omit = "Adj.|Log.Lik.|AIC|BIC")
+```
+
+Compared to pre-pandemic, the average score was ____ (higher/lower) (p_____) post pandemic.
+
+
+Q2. To what extent did differences in students' ORF trajectories pre- and post-pandemic-onset differ by the proportion of students receiving free- or reduced-price lunch (FRPL) in their schools?
+
+$$SCORE = \beta_0 + \beta_1POST + \beta_2FRPL + \beta_3POST:FRPL + \epsilon$$
+
+
+```{r}
+modelsummary(fit2,
+             stars = TRUE,
+             gof_omit = "Adj.|Log.Lik.|AIC|BIC")
+```
+
+
+In schools where no student receives free/reduced lunch (frpl = 0 or 0%), 
+
+ - intercept: ____, is the pre-pandemic average score
+ - slope: ____, is the change in score after pandemic, compared to pre-pandemic
+
+Careful - in schools where all students receives free/reduced lunch (frpl = 1 or 100%) (hint: plug frpl = 1 into your model), 
+
+ - intercept: ____, is the pre-pandemic average score
+ - slope: ____, is the change in score after pandemic, compared to pre-pandemic
+ 
+Taking together, what is the change in slope (i.e., change in score from pre to post-pandemic) that is related to one unit change in the proportion of student receiving free/reduced lunch? is it statistically significant? What is your answer to Q2?
+ 
+
+Q3. To what extent did differences in students' ORF trajectories pre- and post-pandemic-onset differ by grade level?
+
+$$SCORE = \beta_0 + \beta_1POST + \beta_2GRADE + \beta_3POST:GRADE + \epsilon$$
+
+```{r}
+modelsummary(fit3,
+             stars = TRUE,
+             gof_omit = "Adj.|Log.Lik.|AIC|BIC")
+```
+
+
+For grade 1 students, 
+
+ - intercept: ____, is the pre-pandemic average score
+ - slope: ____, is the change in score after pandemic, compared to pre-pandemic
+
+Careful - for grade 2 students (hint: plug these into your model, grade2 = 1, grade3 = 0, grade4 = 0, grade5 = 0), 
+
+ - intercept: ____, is the pre-pandemic average score
+ - slope: ____, is the change in score after pandemic, compared to pre-pandemic
+
+Careful - for grade 3 students, 
+
+ - intercept: ____, is the pre-pandemic average score
+ - slope: ____, is the change in score after pandemic, compared to pre-pandemic
+
+Careful - for grade 4 students, 
+
+ - intercept: ____, is the pre-pandemic average score
+ - slope: ____, is the change in score after pandemic, compared to pre-pandemic
+
+Careful - for grade 5 students, 
+
+ - intercept: ____, is the pre-pandemic average score
+ - slope: ____, is the change in score after pandemic, compared to pre-pandemic
+
+Taking together, what is the difference in slope (i.e., difference in score from pre to post-pandemic) between grade 1 and grade 2? what is the substantive meaning of this number? is it statistically significant? is it one of the answers to Q3? What is your full answer to Q3?
+
+Q4. To what extent do students' average ORF scores differ by the rate of FRPL-receipt and enrollment in their schools?
+
+$$SCORE = \beta_0 + \beta_1FRPL + \beta_2ENROLLMENT + \beta_3FRPL:ENROLLMENT + \epsilon$$
+```{r}
+modelsummary(fit4,
+             stars = TRUE,
+             gof_omit = "Adj.|Log.Lik.|AIC|BIC")
+```
+
+In schools where no student receives free/reduced lunch (frpl = 0 or 0%), 
+
+ - intercept: ____, is the average score for schools with no enrollment
+ - slope: ____, is the change in score related to one student enrollment at school 
+
+Careful - in schools where all students receives free/reduced lunch (frpl = 1 or 100%), 
+
+ - intercept: ____, is the average score for schools with no enrollment
+ - slope: ____, is the change in score related to one student enrollment at school
+ 
+Taking together, what is the difference in slope (i.e., difference in score from pre to post-pandemic) for schools with frpl = 0 vs schools with frpl = 1? what is the substantive meaning of this number? is it statistically significant? is it the answer to Q4?
+
