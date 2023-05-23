@@ -26,7 +26,7 @@ p {
 
 ## EDUC 645 2023 Spring Labs 
 
-#### [Lab 1 worksheet](./EDUC64523S/lab1.html)
+#### [Lab 8 worksheet](./EDUC64523S/lab8.html)
 
 ## EDUC 643 2023 Winter Labs 
 **(shout out to Havi for her inputs in the lab worksheets)**
