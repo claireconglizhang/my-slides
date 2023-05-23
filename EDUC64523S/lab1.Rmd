@@ -14,6 +14,16 @@ knitr::opts_chunk$set(echo = TRUE,
                       message = FALSE)
 ```
 
+```{css, echo=FALSE}
+/* Whole document: */
+body{
+  font-family: Helvetica;
+  font-size: 13pt;
+}
+
+```
+
+
 Instruction to work on this sheet: 
 
  - In each code chunk, you can find some code being taken out purposefully and left with three dots instead
@@ -31,8 +41,8 @@ pacman::p_load(tidyverse, dplyr, lme4, performance, lmerTest, gtsummary, modelsu
 
 
 ```{r}
-df0 <- read.csv("https://github.com/claireconglizhang/my-slides/EDUC64523S/popular.csv") %>% 
-  select(class, extrav, sex, texp, popteach)
+df0 <- read.csv("https://claireconglizhang.github.io/my-slides/EDUC64523S/popular.csv") %>% 
+  select(pupil, class, extrav, sex, texp, popteach)
 head(df0)
 ```
 
@@ -224,5 +234,5 @@ predicted
 plot(predicted)
 ```
 
-**In a sentence, interpret how the relationships between teacher rated popularity and extraversion differ by teacher experience.**
+**Q: In a sentence, interpret how the relationships between teacher rated popularity and extraversion differ by teacher experience.**
 
