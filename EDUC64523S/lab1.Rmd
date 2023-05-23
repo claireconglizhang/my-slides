@@ -31,10 +31,11 @@ pacman::p_load(tidyverse, dplyr, lme4, performance, lmerTest, gtsummary, modelsu
 
 
 ```{r}
-df0 <- read.csv("") %>% 
-  select(pupil, class, extrav, sex, texp, popteach)
+df0 <- read.csv("https://github.com/claireconglizhang/my-slides/EDUC64523S/popular.csv") %>% 
+  select(class, extrav, sex, texp, popteach)
 head(df0)
 ```
+
 Data management:
  - Check if all variables have the right class
     - pupil, class, sex, should be nominal (factor) rather than continuous (double)

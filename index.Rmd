@@ -27,6 +27,7 @@ p {
 ## EDUC 645 2023 Spring Labs 
 
 #### [Lab 8 worksheet](./EDUC64523S/lab8.html)
+ - [lab8 data](./EDUC64523S/popular.csv)
 
 ## EDUC 643 2023 Winter Labs 
 **(shout out to Havi for her inputs in the lab worksheets)**
