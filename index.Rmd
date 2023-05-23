@@ -24,13 +24,13 @@ p {
 
 # Teaching
 
-## EDUC 645 2023 Spring Labs 
+### EDUC 645 2023 Spring Labs 
 
 #### [Lab 8 worksheet](./EDUC64523S/lab8.Rmd)
  - [Lab 8 worksheet key](./EDUC64523S/lab8_key.html)
  - [lab8 data](./EDUC64523S/popular.csv)
 
-## EDUC 643 2023 Winter Labs 
+### EDUC 643 2023 Winter Labs 
 **(shout out to Havi for her inputs in the lab worksheets)**
 
 #### [Lab 2 worksheet](./EDUC64323W/Week2_lab.html)
@@ -44,7 +44,7 @@ p {
 
 Note: no lab worksheet for week 1 and week 10.
 
-## EDUC 641 2022 Fall Labs
+### EDUC 641 2022 Fall Labs
 
 #### [Lab 1 slides](./EDUC64122F/lab1.html)
 #### [Lab 2 slides](./EDUC64122F/lab2.html)
@@ -60,13 +60,13 @@ Note: no lab worksheet for week 1 and week 10.
 
 Note: no lab slides for week 10.
 
-## How to: APA Style with RMarkdown
+#### How to: APA Style with RMarkdown
 
 Check out this [minimum intro](./EDUC64323W/APA.html) for creating an .Rmd file with APA style 6th edition format.
 
 # Research
 
-## Conference presentations
+### Conference presentations
 
 ### AEFP 2023
 
