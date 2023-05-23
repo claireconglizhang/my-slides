@@ -219,13 +219,13 @@ plot(check_outliers(m5))
 
 ### Interpreting interaction
 
-Using 2, 10, 25 as prototypical values of "texp" to see, for teachers with different experience level, how the 
+Using 2, 10, 25 as prototypical values of "texp" to see, for teachers with different experience level, how the estimated relationship differs.
 
 ```{r}
 library(ggeffects)
 predicted <- ggpredict(m5,
                        type = "re",
-                       terms = c("extrav", "texp [2, 10, 25]"))
+                       terms = c("extrav", "texp [2, 10, 25]")) 
 predicted
 ```
 
@@ -234,5 +234,4 @@ predicted
 plot(predicted)
 ```
 
-**Q: In a sentence, interpret how the relationships between teacher rated popularity and extraversion differ by teacher experience.**
-
+**Question: In a sentence, interpret how does the estimated relationship between teacher rated popularity and extraversion differ by teacher experience.**

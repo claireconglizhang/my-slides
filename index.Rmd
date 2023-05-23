@@ -20,13 +20,14 @@ p {
 ```
 
 
-#### This is personal repository where I store my slides decks for conference presentations, workshops, labs, and more. Learn more about me on my [academic website](http://congliclairezhang.com).
+#### This is personal repository serving as a storage of my slides decks for conference presentations, workshops, labs, etc. Learn more about my most up-to-date work on my [academic website](http://congliclairezhang.com).
 
 # Teaching
 
 ## EDUC 645 2023 Spring Labs 
 
-#### [Lab 8 worksheet](./EDUC64523S/lab8.html)
+#### [Lab 8 worksheet](./EDUC64523S/lab8.Rmd)
+ - [Lab 8 worksheet key](./EDUC64523S/lab8_key.html)
  - [lab8 data](./EDUC64523S/popular.csv)
 
 ## EDUC 643 2023 Winter Labs 

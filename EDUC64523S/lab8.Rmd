@@ -1,0 +1,247 @@
+---
+title: "Week 8 Lab"
+author: "(add your name)"
+date: "5/23/2023 and 5/24/2023"
+output: 
+ html_document:
+     code_folding: hide
+---
+
+```{r setup, include=FALSE}
+# Don't make any change here
+knitr::opts_chunk$set(echo = TRUE,
+                      warning = FALSE,
+                      message = FALSE)
+```
+
+```{css, echo=FALSE}
+/* Whole document: */
+body{
+  font-family: Helvetica;
+  font-size: 13pt;
+}
+
+```
+
+
+Instruction to work on this sheet: 
+
+ - In each code chunk, you can find some code being taken out purposefully and left with three dots instead
+ - Your task is to first **uncomment all the code lines in this worksheet**, then **replace the three dots with the code you would write**
+
+### Today's topic: clustered data modeling
+
+Refer to the [lecture slides](https://uo-educ-quant.github.io/645/slides/EDUC645_nested_data_Sp23.html#1) and [textbook chapter](https://bookdown.org/roback/bookdown-BeyondMLR/ch-multilevelintro.html) to refresh your content knowledge. 
+
+### Data 
+
+We're missing an important package here to run random-effects models, finish the code chunk below.
+
+```{r}
+#pacman::p_load(tidyverse, dplyr, performance, lmerTest, gtsummary, modelsummary, ...)
+```
+
+
+```{r}
+# df0 <- read.csv("https://claireconglizhang.github.io/my-slides/EDUC64523S/popular.csv") %>% 
+#   select(pupil, class, extrav, sex, texp, popteach)
+# head(df0)
+```
+
+Data management:
+ - Check if all variables have the right class
+    - pupil, class, sex, should be nominal (factor) rather than continuous (double)
+ - Check if there's any missing value
+ - Produce a summary stats table
+ 
+One more variable needs to be coded as factor, finish the code chunk below.
+
+```{r}
+# df <- df0 %>% 
+#   mutate_at(c("pupil", "...", "sex"), as.factor)
+```
+
+
+**Table 1. Analytic sample summary statistics**
+
+Finish the code chunk below to give meaningful names to your variables in the summary table.
+
+```{r}
+# set_gtsummary_theme(list(
+#   `tbl_summary-fn:percent_fun` = function(x) sprintf("%.2f", x * 100)
+# ))
+
+# df %>%
+#   select(popteach, extrav, sex, texp) %>% 
+#   tbl_summary(
+#     statistic = list(all_continuous() ~ "{mean} ({sd})",
+#                      all_categorical() ~ "{p}%"),
+#     label = list(popteach ~ "Popularity (rated by teacher)",
+#                  extrav ~ "...",
+#                  sex ~ "Gender",
+#                  texp ~ "..."))
+```
+
+**Question: report the summary stats in a sentence**
+
+### Research question 
+
+What is the relationship between popularity rated by teacher and level of extraversion?
+
+Identify your variables:
+ - popteach is outcome variable
+ - extrav is predictor variable
+ - sex and texp are covariates or potential moderators
+ 
+### Understand data clustering:
+
+**Figure 1. Visualization of the bivariate relationship**
+
+Think about your research question and how to complete the aesthetic specifications of ggplot() function, finish the code chunks below.
+
+```{r}
+# ggplot(df,
+#        aes(x = ..., y = ...)) +
+#   geom_smooth(method = 'lm', se = F) +
+#   labs(x = "Extraversion",
+#        y = "Popularity (rated by teacher)") +
+#   theme_minimal(base_size = 14) 
+```
+
+
+**Figure 2. Visualization of the bivariate relationship within each class (first six classes)**
+
+```{r}
+# df %>% 
+#   filter(class %in% c("1", "2", "3", "4", "5", "6")) %>% 
+#   ggplot(aes(x = ..., y = ..., color = ...)) +
+#   geom_smooth(method = 'lm', se = F) +
+#   labs(x = "Extraversion",
+#        y = "Popularity (rated by teacher)",
+#        color = "Class") +
+#   theme_minimal(base_size = 14) 
+```
+**Question: compare the two plots in a sentence to illustrate the clustering nature of the data**
+
+### Unconditional model and ICC
+
+Fit an unconditional model.
+
+```{r}
+# m0 <- lmer(popteach ~ ... + (... | class), df)
+# coef(summary(m0))
+```
+
+Calculate the ICC to explain how much variance in 'popteach' is attributable to between-class variation
+
+```{r}
+# icc(...)
+```
+
+**Question: interpret the ICC in a sentence**
+
+### Modeling the relationship ("sex" and "texp" as covariates) 
+
+Fixed-effects model:
+
+```{r}
+# m1 <- lm(popteach ~ ... + sex + texp, df)
+# coef(summary(m1))
+```
+
+Random-intercept (by "class"), fixed-slope model:
+
+```{r}
+# m2 <- lmer(popteach ~ ... + sex + texp + (... | class), df)
+# coef(summary(m2))
+```
+
+Random-effects model (allow both intercepts and slopes to vary by "class"):
+
+```{r}
+# m3 <- lmer(popteach ~ ... + sex + texp + (... | class), df)
+# coef(summary(m3))
+```
+
+**Question: interpret each model in a sentence, focus on only the fixed effect, the coeffcient of interest (coefficient on "extrav").**
+
+### Compare model fitting
+
+Compare the model fitting of random-intercepts model and the random-effects model 
+
+```{r}
+# compare_performance(..., ..., metrics = "common") %>% 
+#   print_md()
+```
+
+**Question: Compare the two models in a sentence.**
+
+Test whether there is a significant difference in fit between models with and without random slopes:
+
+```{r}
+# lmerTest::ranova(m3)
+```
+
+### Testing interaction effects
+
+"sex" as moderator:
+
+```{r}
+# m4 <- lmer(popteach ~ ... + sex + texp + ... + (... | class), df)
+# coef(summary(m4))
+```
+
+"texp" as moderator:
+
+
+```{r}
+# m5 <- lmer(popteach ~ ... + sex + texp + ... + (... | class), df)
+# coef(summary(m5))
+```
+
+**Question: are there significant interaction effects?**
+
+### Test assumptions
+
+Let's select the random-effects model with "extrav" and "texp" interaction.
+
+Residual normality:
+
+```{r}
+# plot(check_normality(m5), type = "qq")
+```
+
+Multicollinearity:
+
+```{r}
+# plot(check_collinearity(m5))
+```
+
+Influential outliers:
+
+```{r}
+# plot(check_outliers(m5))
+```
+
+**Question: in a sentence, discuss whether the critical assumptions were violated.**
+
+### Interpreting interaction
+
+Using 2, 10, 25 as prototypical values of "texp" to see, for teachers with different experience level, how the estimated relationship differs.
+
+```{r}
+# predicted <- ggeffects::ggpredict(...,
+#                        type = "re",
+#                        terms = c("extrav", "texp [2, 10, 25]"))
+# predicted
+```
+
+Visualizing the interaction effects:
+
+```{r}
+# plot(...)
+```
+
+**Question: In a sentence, interpret how does the estimated relationship between teacher rated popularity and extraversion differ by teacher experience.**
+
+#### When finished, knit this Rmd file and compare your answers to the [key](./lab8_key.html) and ask questions if you have any.
