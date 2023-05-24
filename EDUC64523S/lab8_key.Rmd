@@ -57,6 +57,12 @@ df <- df0 %>%
   mutate_at(c("pupil", "class", "sex"), as.factor)
 ```
 
+Quick code to check missingness on every variable:
+
+```{r}
+apply(is.na(df), 2, sum)
+```
+
 
 **Table 1. Analytic sample summary statistics**
 
@@ -76,7 +82,7 @@ df %>%
                  texp ~ "Teacher experience"))
 ```
 
-**Q: report the summary stats in a sentence**
+**Question: report the summary stats in a sentence**
 
 ### Research question 
 
@@ -102,7 +108,6 @@ ggplot(df,
   theme_minimal(base_size = 14) 
 ```
 
-
 **Figure 2. Visualization of the bivariate relationship within each class (first six classes)**
 
 ```{r}
@@ -115,7 +120,8 @@ df %>%
        color = "Class") +
   theme_minimal(base_size = 14) 
 ```
-**Q: compare the two plots in a sentence to illustrate the clustering nature of the data**
+
+**Question: compare the two plots in a sentence to illustrate the clustering nature of the data**
 
 ### Unconditional model and ICC
 
@@ -131,7 +137,8 @@ Calculate the ICC to explain how much variance in 'popteach' is attributable to 
 ```{r}
 performance::icc(m0)
 ```
-**Q: interpret the ICC in a sentence**
+
+**Question: interpret the ICC in a sentence**
 
 ### Modeling the relationship ("sex" and "texp" as covariates) 
 
@@ -155,7 +162,8 @@ Random-effects model (allow both intercepts and slopes to vary by "class"):
 m3 <- lmer(popteach ~ extrav + sex + texp + (extrav | class), df)
 coef(summary(m3))
 ```
-**Q: interpret each model in a sentence, focus on only the fixed effect, the coeffcient of interest (coefficient on "extrav").**
+
+**Question: interpret each model in a sentence, focus on only the fixed effect, the coeffcient of interest (coefficient on "extrav").**
 
 ### Compare model fitting
 
@@ -166,7 +174,7 @@ performance::compare_performance(m2, m3, metrics = "common") %>%
   print_md()
 ```
 
-**Q: Compare the two models in a sentence.**
+**Question: Compare the two models in a sentence.**
 
 Test whether there is a significant difference in fit between models with and without random slopes:
 
@@ -191,7 +199,7 @@ m5 <- lmer(popteach ~ extrav + sex + texp + texp:extrav + (extrav | class), df)
 coef(summary(m5))
 ```
 
-**Q: are there significant interaction effects?**
+**Question: are there significant interaction effects?**
 
 ### Test assumptions
 
@@ -215,7 +223,7 @@ Influential outliers:
 plot(check_outliers(m5))
 ```
 
-**Q: in a sentence, discuss whether the critical assumptions were violated.**
+**Question: in a sentence, discuss whether the critical assumptions were violated.**
 
 ### Interpreting interaction
 
